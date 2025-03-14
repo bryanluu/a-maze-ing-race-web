@@ -33,6 +33,41 @@ header {
   border-bottom: 1px solid white;
 }
 
+details {
+  display: flex;
+  flex-direction: column;
+  gap: 1ex;
+}
+
+summary:hover {
+  color: greenyellow;
+}
+
+#controls-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1ex;
+}
+
+#controls-info > span {
+  display: flex;
+  align-items: baseline;
+  gap: 1ex;
+  font-size: smaller;
+  font-weight: lighter;
+}
+
+.key-symbol {
+  background-color: gray;
+  width: 1.2em;
+  height: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  border: 2px outset white;
+}
+
 #play-space {
   display: flex;
   flex-direction: column;
