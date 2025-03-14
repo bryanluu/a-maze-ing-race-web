@@ -5,6 +5,7 @@ body {
   align-items: center;
   background-color: black;
   color: white;
+  font-family: 'Silkscreen', Courier, monospace;
 }
 
 .container {
@@ -21,11 +22,22 @@ body {
 h1 {
   align-self: center;
   font-size: xx-large;
-  font-weight: bolder;
+  font-weight: 36pt;
+}
+
+#title > em {
+  color: greenyellow;
 }
 
 header {
   border-bottom: 1px solid white;
+}
+
+#play-space {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 
 #maze-grid {
@@ -40,4 +52,18 @@ header {
   height: 50px;
   /* background-color: white; */
   border: 1px solid greenyellow;
+}
+
+footer {
+  font-weight: 12pt;
+}
+
+a#website-link {
+  color: lightblue;
+  text-decoration: none;
+}
+
+a#website-link:hover {
+  color: cyan;
+  text-decoration: underline;
 }
