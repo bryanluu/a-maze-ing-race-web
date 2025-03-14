@@ -95,6 +95,11 @@ summary:hover {
 
 /* Timer  */
 
+#time-value {
+  font-size: larger;
+  font-weight: bold;
+}
+
 #time-progress {
   background-color: greenyellow; /* TODO adjust to dynamic */
   width: 95%; /* TODO adjust to dynamic */
