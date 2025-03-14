@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A-Maze-ing Race</title>
+  <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +19,7 @@
       <p><pre class="key-symbol">↓</pre> Move down</p>
     </details>
   </header>
-  <div class="container">
+  <div id="play-space" class="container">
     <div id="maze-content">
       <div id="maze-0-0"></div>
       <div id="maze-0-1"></div>
@@ -37,11 +38,11 @@
       <div id="maze-3-2"></div>
       <div id="maze-3-3"></div>
     </div>
+    <div id="time-content" class="container">
+      <span id="time-label">Time Remaining:</span>
+      <div id="time-progress"></div>
+      <span id="time-value"></span>
+    </div>
   </div>
-  <footer id="time-content" class="container">
-    <span id="time-label">Time Remaining:</span>
-    <div id="time-progress"></div>
-    <span id="time-value"></span>
-  </footer>
 </body>
 </html>
