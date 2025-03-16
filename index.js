@@ -4,8 +4,8 @@ var mazeHeight = 4;
 
 function buildMaze(mazeWidth, mazeHeight) {
   let mazeHTML = "";
-  for (let row = 0; row < mazeWidth; row++) {
-    for (let col = 0; col < mazeHeight; col++) {
+  for (let row = 0; row < mazeHeight; row++) {
+    for (let col = 0; col < mazeWidth; col++) {
       let id = `maze-${row}-${col}`
       let tileHTML = `<div id="${id}" class="maze-tile"></div>`;
       mazeHTML += tileHTML;
