@@ -16,7 +16,7 @@ function buildMaze(mazeWidth, mazeHeight) {
 };
 
 function loadGame() {
-  buildMaze(4, 4);
+  buildMaze(3, 3);
 };
 
 $(document).ready(loadGame);
