@@ -1,10 +1,23 @@
 // Demo Settings
 var mazeWidth = 4;
 var mazeHeight = 4;
+
+/**
+ *
+ * @param {number} row
+ * @param {number} col
+ * @returns the JQuery reference to the tile at given row, col
+ */
 function getTile(row, col) {
   return $(`#maze-${row}-${col}`);
 };
 
+/**
+ *
+ * @param {number} row
+ * @param {number} col
+ * @returns the center position of the tile at given row, col
+ */
 function getTileMiddlePosition(row, col) {
   let tile = getTile(row, col);
   let {top, left} = tile.position();
@@ -16,6 +29,12 @@ function getTileMiddlePosition(row, col) {
   };
 };
 
+/**
+ *
+ * @param {object} position
+ *
+ * Moves the player's center to the position coordinates: {top, left}
+ */
 function centerPlayerAt(position) {
   let player = $("#player");
   let newPosition = {
@@ -25,6 +44,9 @@ function centerPlayerAt(position) {
   player.css(newPosition);
 };
 
+/**
+ * Initializes the player
+ */
 function readyPlayer() {
   $("#player").load("public/assets/cursor-vertical.svg", () => {
     centerPlayerAt(getTileMiddlePosition(0, 0));
