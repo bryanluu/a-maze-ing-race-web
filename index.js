@@ -109,4 +109,32 @@ function initializeGame() {
   readyPlayer();
 };
 
+/**
+ *
+ * @param {object} keyEvent
+ *
+ * Handles the keyboard down presses, which control the game
+ */
+function handleKeydown(keyEvent) {
+  let key = keyEvent.key;
+  switch(key) {
+    case "ArrowUp":
+      pointPlayerTo("top");
+      break;
+    case "ArrowRight":
+      pointPlayerTo("right");
+      break;
+    case "ArrowDown":
+      pointPlayerTo("bottom");
+      break;
+    case "ArrowLeft":
+      pointPlayerTo("left");
+      break;
+    default:
+      // do nothing
+  }
+}
+
 $(document).ready(initializeGame);
+
+$(document).keydown(handleKeydown);
