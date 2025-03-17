@@ -1,6 +1,35 @@
 // Demo Settings
 var mazeWidth = 4;
 var mazeHeight = 4;
+function getTile(row, col) {
+  return $(`#maze-${row}-${col}`);
+};
+
+function getTileMiddlePosition(row, col) {
+  let tile = getTile(row, col);
+  let {top, left} = tile.position();
+  let width = tile.outerWidth();
+  let height = tile.outerHeight();
+  return {
+    "top": top + (height / 2),
+    "left": left + (width / 2)
+  };
+};
+
+function centerPlayerAt(position) {
+  let player = $("#player");
+  let newPosition = {
+    "top": position.top - (player.outerHeight() / 2),
+    "left": position.left - (player.outerWidth() / 2)
+  };
+  player.css(newPosition);
+};
+
+function readyPlayer() {
+  $("#player").load("public/assets/cursor-vertical.svg", () => {
+    centerPlayerAt(getTileMiddlePosition(0, 0));
+  });
+};
 
 function buildMaze(mazeWidth, mazeHeight) {
   let mazeHTML = "";
@@ -17,6 +46,7 @@ function buildMaze(mazeWidth, mazeHeight) {
 
 function loadGame() {
   buildMaze(3, 3);
+  readyPlayer();
 };
 
 $(document).ready(loadGame);
