@@ -81,6 +81,13 @@ function readyPlayer() {
   });
 };
 
+/**
+ *
+ * @param {number} mazeWidth - number of columns the maze should have
+ * @param {*} mazeHeight - number of rows the maze should have
+ *
+ * Creates the HTML for the Maze and inserts it into the document
+ */
 function buildMaze(mazeWidth, mazeHeight) {
   let mazeHTML = "";
   for (let row = 0; row < mazeHeight; row++) {
@@ -94,9 +101,12 @@ function buildMaze(mazeWidth, mazeHeight) {
   $("#maze-grid").html(mazeHTML);
 };
 
-function loadGame() {
+/**
+ * Initializes the game
+ */
+function initializeGame() {
   buildMaze(3, 3);
   readyPlayer();
 };
 
-$(document).ready(loadGame);
+$(document).ready(initializeGame);
