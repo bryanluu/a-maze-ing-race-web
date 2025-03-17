@@ -45,6 +45,34 @@ function centerPlayerAt(position) {
 };
 
 /**
+ *
+ * @param {string} direction - left | right | top | bottom
+ *
+ * Rotates the player to the left, right, top, bottom
+ */
+function pointPlayerTo(direction) {
+  let angle = 0
+  switch(direction) {
+    case "top":
+      angle = 0;
+      break;
+    case "right":
+      angle = 90;
+      break;
+    case "bottom":
+      angle = 180;
+      break;
+    case "left":
+      angle = -90;
+      break;
+    default:
+      console.error(`Invalid direction: "${direction}"`)
+      return;
+  }
+  $("#player").css("transform", `rotate(${angle}deg)`);
+}
+
+/**
  * Initializes the player
  */
 function readyPlayer() {
