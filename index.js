@@ -51,25 +51,35 @@ function centerPlayerAt(position) {
  * Rotates the player to the left, right, top, bottom
  */
 function pointPlayerTo(direction) {
-  let angle = 0
+  let player = $("#player");
+  let angle = Number.parseInt(player.css("rotate"));
+  let targetAngle = null;
   switch(direction) {
     case "top":
-      angle = 0;
+      targetAngle = 0;
       break;
     case "right":
-      angle = 90;
+      targetAngle = 90;
       break;
     case "bottom":
-      angle = 180;
+      targetAngle = 180;
       break;
     case "left":
-      angle = -90;
+      targetAngle = 270;
       break;
     default:
       console.error(`Invalid direction: "${direction}"`)
       return;
   }
-  $("#player").css("transform", `rotate(${angle}deg)`);
+  // choose the sensible short arc if the angles are periodically close
+  while((targetAngle - angle) > 180) {
+    angle += 360;
+  }
+  while((targetAngle - angle) < -180) {
+    angle -= 360;
+  }
+  player.css("rotate", angle);
+  player.animate({"rotate": `${targetAngle}deg`});
 }
 
 /**
