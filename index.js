@@ -52,7 +52,7 @@ function centerPlayerAt(position) {
  */
 function pointPlayerTo(direction) {
   let player = $("#player");
-  let angle = Number.parseInt(player.css("rotate"));
+  let angle = Number.parseInt(player.css("rotate")) || 0;
   let targetAngle = null;
   switch(direction) {
     case "top":
@@ -71,15 +71,27 @@ function pointPlayerTo(direction) {
       console.error(`Invalid direction: "${direction}"`)
       return;
   }
-  // choose the sensible short arc if the angles are periodically close
+  // chooses the sensible short arc if the angles are periodically close
   while((targetAngle - angle) > 180) {
     angle += 360;
   }
   while((targetAngle - angle) < -180) {
     angle -= 360;
   }
-  player.css("rotate", angle);
-  player.animate({"rotate": `${targetAngle}deg`});
+  // this keeps the angle within [0, 360)
+  player.css("rotate", `${angle}deg`);
+  player.animate({
+    "rotate": `+=${(targetAngle - angle)}deg`
+  },
+  {
+    // TODO remove this once event queue implemented
+    // this ensures the final resting position is the target angle
+    "complete": () => {
+      player.css("rotate", `${targetAngle}deg`);
+    },
+    "duration": 100, // quick rotation
+    "easing": "linear"
+  });
 }
 
 /**
