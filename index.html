@@ -17,17 +17,21 @@
   </header>
   <div id="play-space" class="container">
     <div id="player"></div>
-    <div id="maze-grid"></div>
     <div id="time-content" class="container">
       <span id="time-label">Time Remaining:</span>
       <span id="time-value">5:00</span>
       <div id="time-progress"></div>
     </div>
+    <div id="maze-grid"></div>
     <div id="controls">
-      <span><pre class="key-symbol">←</pre> Move left</span>
-      <span><pre class="key-symbol">↑</pre> Move up</span>
-      <span><pre class="key-symbol">→</pre> Move right</span>
-      <span><pre class="key-symbol">↓</pre> Move down</span>
+      <pre class="key-symbol" id="up">↑</pre>
+      <pre class="key-symbol" id="left">←</pre>
+      <pre class="key-symbol" id="right">→</pre>
+      <pre class="key-symbol" id="down">↓</pre>
+      <span id="up-label">Move up</span>
+      <span id="left-label">Move left</span>
+      <span id="right-label">Move right</span>
+      <span id="down-label">Move down</span>
     </div>
   </div>
   <footer>© <a id="website-link" href="https://bryanluu.github.io/">Bryan Luu</a>. All rights reserved.</footer>

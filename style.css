@@ -35,42 +35,22 @@ header {
   border-bottom: 1px solid white;
 }
 
-details {
-  display: flex;
-  flex-direction: column;
-  gap: 1ex;
+/* --- Game Area --- */
+
+/* Timer  */
+
+#time-value {
+  font-size: larger;
+  font-weight: bold;
 }
 
-summary:hover {
-  color: greenyellow;
-}
-
-#controls {
-  display: grid;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 1ex;
-}
-
-#controls > span {
-  display: flex;
-  align-items: baseline;
-  gap: 1ex;
-  font-size: smaller;
-  font-weight: lighter;
-}
-
-.key-symbol {
-  background-color: gray;
-  width: 1.2em;
+#time-progress {
+  background-color: greenyellow; /* TODO adjust to dynamic */
+  width: 95%; /* TODO adjust to dynamic */
   height: 1em;
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  border: 2px outset white;
 }
 
-/* Game Area */
+/* Play Space */
 
 #play-space {
   display: flex;
@@ -108,17 +88,69 @@ summary:hover {
   padding: 0;
 }
 
-/* Timer  */
+/* Controls */
 
-#time-value {
-  font-size: larger;
-  font-weight: bold;
+#controls {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: 3fr 1fr 1fr 1fr 3fr;
+  gap: 1ex;
+  place-items: center
 }
 
-#time-progress {
-  background-color: greenyellow; /* TODO adjust to dynamic */
-  width: 95%; /* TODO adjust to dynamic */
+#controls > span {
+  font-size: smaller;
+  font-weight: lighter;
+}
+
+#up-label {
+  grid-row-start: 1;
+  grid-column: 2 / 5;
+}
+
+#up {
+  grid-row-start: 2;
+  grid-column-start: 3;
+}
+
+#left-label {
+  grid-row-start: 3;
+  grid-column-start: 1;
+}
+
+#left {
+  grid-row-start: 3;
+  grid-column-start: 2;
+}
+
+#right {
+  grid-row-start: 3;
+  grid-column-start: 4;
+}
+
+#right-label {
+  grid-row-start: 3;
+  grid-column-start: 5;
+}
+
+#down {
+  grid-row-start: 4;
+  grid-column-start: 3;
+}
+
+#down-label {
+  grid-row-start: 5;
+  grid-column: 2 / 5;
+}
+
+.key-symbol {
+  background-color: gray;
+  width: 1.2em;
   height: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px outset white;
 }
 
 /* Footer */
