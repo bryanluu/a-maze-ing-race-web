@@ -223,9 +223,11 @@ $(document).ready(initializeGame);
 $(document).on("keydown", handleKeydown);
 $(document).on("keyup", handleKeyup);
 
-$("button.key-symbol").on("click",
+$("button.key-symbol").on("mousedown",
   (event) => {
     let key = event.target.id
     inputDPad(key);
   }
 );
+
+$("button.key-symbol").on("mouseup", releaseDPad);
