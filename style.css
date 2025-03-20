@@ -159,7 +159,7 @@ header {
 
 .key-symbol:hover {
   background-color: lightgray;
-  color: black;
+  color: white;
 }
 
 .key-symbol.pressed {
