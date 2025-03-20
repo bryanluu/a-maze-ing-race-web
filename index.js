@@ -46,9 +46,9 @@ function centerPlayerAt(position) {
 
 /**
  *
- * @param {string} direction - left | right | top | bottom
+ * Rotates the player to the left, right, up, down
  *
- * Rotates the player to the left, right, top, bottom
+ * @param {string} direction - left | right | up |down
  */
 function pointPlayerTo(direction) {
   let player = $("#player");
@@ -92,6 +92,25 @@ function pointPlayerTo(direction) {
     "duration": 100, // quick rotation
     "easing": "linear"
   });
+}
+
+/**
+ * Styles the DPad button to look like its being pressed
+ *
+ * @param {string} direction - up | right | left | down
+ */
+function styleDpadButton(direction) {
+  switch(direction) {
+    case "up":
+    case "right":
+    case "down":
+    case "left":
+      $("#" + direction).addClass("pressed");
+      break;
+    default:
+      console.error(`Invalid direction: "${direction}"`)
+      return;
+  }
 }
 
 /**
@@ -143,6 +162,7 @@ function handleDPadInput(direction) {
     case "right":
     case "down":
     case "left":
+      styleDpadButton(direction);
       pointPlayerTo(direction);
       break;
     default:
@@ -177,9 +197,33 @@ function handleKeydown(keyEvent) {
   }
 }
 
+function handleKeyup(keyEvent) {
+  if (keyEvent.type != "keyup")
+    return;
+
+  let key = keyEvent.key;
+  switch(key) {
+    case "ArrowUp":
+      $("#up").removeClass("pressed");
+      break;
+    case "ArrowRight":
+      $("#right").removeClass("pressed");
+      break;
+    case "ArrowDown":
+      $("#down").removeClass("pressed");
+      break;
+    case "ArrowLeft":
+      $("#left").removeClass("pressed");
+      break;
+    default:
+      // do nothing
+  }
+}
+
 $(document).ready(initializeGame);
 
-$(document).keydown(handleKeydown);
+$(document).on("keydown", handleKeydown);
+$(document).on("keyup", handleKeyup);
 
 $("button.key-symbol").on("click",
   (event) => {

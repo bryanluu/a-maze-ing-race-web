@@ -157,6 +157,15 @@ header {
   font-size: larger;
 }
 
+.key-symbol:hover {
+  background-color: lightgray;
+  color: black;
+}
+
+.key-symbol.pressed {
+  border: 2px inset white;
+}
+
 /* Footer */
 
 footer {
