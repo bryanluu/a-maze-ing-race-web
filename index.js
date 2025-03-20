@@ -198,7 +198,9 @@ function handleKeydown(keyEvent) {
       break;
     default:
       // do nothing
+      return;
   }
+  keyEvent.preventDefault();
 }
 
 function handleKeyup(keyEvent) {
