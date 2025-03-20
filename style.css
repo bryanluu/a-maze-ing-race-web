@@ -150,7 +150,11 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1ex;
   border: 2px outset white;
+  color: white;
+  font-family: 'Silkscreen', Courier, monospace;
+  font-size: larger;
 }
 
 /* Footer */

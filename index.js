@@ -55,13 +55,13 @@ function pointPlayerTo(direction) {
   let angle = Number.parseInt(player.css("rotate")) || 0;
   let targetAngle = null;
   switch(direction) {
-    case "top":
+    case "up":
       targetAngle = 0;
       break;
     case "right":
       targetAngle = 90;
       break;
-    case "bottom":
+    case "down":
       targetAngle = 180;
       break;
     case "left":
@@ -135,22 +135,42 @@ function initializeGame() {
  *
  * @param {object} keyEvent
  *
+ * Handles the d-pad clicks, which control the game
+ */
+function handleDPadInput(direction) {
+  switch(direction) {
+    case "up":
+    case "right":
+    case "down":
+    case "left":
+      pointPlayerTo(direction);
+      break;
+    default:
+      console.error(`Invalid direction: "${direction}"`)
+      return;
+  }
+}
+
+/**
+ *
+ * @param {object} keyEvent
+ *
  * Handles the keyboard down presses, which control the game
  */
 function handleKeydown(keyEvent) {
   let key = keyEvent.key;
   switch(key) {
     case "ArrowUp":
-      pointPlayerTo("top");
+      handleDPadInput("up");
       break;
     case "ArrowRight":
-      pointPlayerTo("right");
+      handleDPadInput("right");
       break;
     case "ArrowDown":
-      pointPlayerTo("bottom");
+      handleDPadInput("down");
       break;
     case "ArrowLeft":
-      pointPlayerTo("left");
+      handleDPadInput("left");
       break;
     default:
       // do nothing
@@ -160,3 +180,10 @@ function handleKeydown(keyEvent) {
 $(document).ready(initializeGame);
 
 $(document).keydown(handleKeydown);
+
+$("button.key-symbol").on("click",
+  (event) => {
+    let key = event.target.id
+    handleDPadInput(key);
+  }
+);
