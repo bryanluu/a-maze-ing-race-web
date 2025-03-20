@@ -154,9 +154,9 @@ function initializeGame() {
  *
  * @param {object} keyEvent
  *
- * Handles the d-pad clicks, which control the game
+ * Triggers the d-pad clicks
  */
-function handleDPadInput(direction) {
+function inputDPad(direction) {
   switch(direction) {
     case "up":
     case "right":
@@ -171,6 +171,10 @@ function handleDPadInput(direction) {
   }
 }
 
+function releaseDPad() {
+  $(".key-symbol.pressed").removeClass("pressed");
+}
+
 /**
  *
  * @param {object} keyEvent
@@ -181,16 +185,16 @@ function handleKeydown(keyEvent) {
   let key = keyEvent.key;
   switch(key) {
     case "ArrowUp":
-      handleDPadInput("up");
+      inputDPad("up");
       break;
     case "ArrowRight":
-      handleDPadInput("right");
+      inputDPad("right");
       break;
     case "ArrowDown":
-      handleDPadInput("down");
+      inputDPad("down");
       break;
     case "ArrowLeft":
-      handleDPadInput("left");
+      inputDPad("left");
       break;
     default:
       // do nothing
@@ -204,16 +208,10 @@ function handleKeyup(keyEvent) {
   let key = keyEvent.key;
   switch(key) {
     case "ArrowUp":
-      $("#up").removeClass("pressed");
-      break;
     case "ArrowRight":
-      $("#right").removeClass("pressed");
-      break;
     case "ArrowDown":
-      $("#down").removeClass("pressed");
-      break;
     case "ArrowLeft":
-      $("#left").removeClass("pressed");
+      releaseDPad();
       break;
     default:
       // do nothing
@@ -228,6 +226,6 @@ $(document).on("keyup", handleKeyup);
 $("button.key-symbol").on("click",
   (event) => {
     let key = event.target.id
-    handleDPadInput(key);
+    inputDPad(key);
   }
 );
