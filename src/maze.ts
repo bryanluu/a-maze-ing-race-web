@@ -8,10 +8,8 @@ interface Rect {
   height: number;
 }
 
-type ID = string | number;
-
-interface Vertex<dataType> {
-  id: ID;
+interface Vertex<idType, dataType> {
+  id: idType;
   data: dataType;
 }
 
@@ -27,7 +25,7 @@ interface TileData {
 /**
  * Implements a tile for the maze
  */
-class Tile implements Vertex<TileData> {
+class Tile implements Vertex<string, TileData> {
   readonly id: string; // the id for the tile
   readonly data: TileData // data payload for tile
   static existingTiles: Tile[] = []; // all existing tiles
@@ -70,18 +68,14 @@ class Tile implements Vertex<TileData> {
   }
 }
 
-interface edgeList {
-  [index: ID]: number;
-}
-
 /**
  * Implements a weighted undirected graph
  */
-class Graph {
-  nodes: Set<ID>
-  edges: edgeList;
+class Graph<VertexType> {
+  nodes: Set<VertexType>
+  edges: Map<VertexType, number>;
 
-  insertEdge(source: ID, target: ID, weight: number) {
+  insertEdge(source: VertexType, target: VertexType, weight: number) {
     // do stuff
   }
 }
