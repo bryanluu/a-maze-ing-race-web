@@ -3,16 +3,21 @@
  */
 class Tile {
     constructor(row, col) {
-        let id = `maze-${row}-${col}`;
-        this.selector = "#" + id;
-        this.row = row;
-        this.column = col;
-        this.html = `<div id="${id}" class="maze-tile"></div>`;
-        this.index = Tile.existingTiles.length;
+        let id = `${row}-${col}`;
+        let elementID = "grid-" + id;
+        this.id = id;
+        this.data = {
+            row: row,
+            column: col,
+            elementID: elementID,
+            html: `<div id="${elementID}" class="maze-tile"></div>`,
+            selector: "#" + elementID,
+            index: Tile.existingTiles.length,
+        };
         Tile.existingTiles.push(this);
     }
     ref() {
-        return $(this.selector);
+        return $(this.data.selector);
     }
     dimensions() {
         let el = this.ref();
@@ -24,4 +29,12 @@ class Tile {
     }
 }
 Tile.existingTiles = []; // all existing tiles
+/**
+ * Implements a weighted undirected graph
+ */
+class Graph {
+    insertEdge(source, target, weight) {
+        // do stuff
+    }
+}
 //# sourceMappingURL=maze.js.map

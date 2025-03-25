@@ -108,7 +108,7 @@ function buildMaze(mazeWidth, mazeHeight) {
   for (let row = 0; row < mazeHeight; row++) {
     for (let col = 0; col < mazeWidth; col++) {
       let tile = new Tile(row, col);
-      mazeHTML += tile.html;
+      mazeHTML += tile.data.html;
     }
   }
   // fill the maze with tiles

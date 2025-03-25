@@ -1,40 +1,57 @@
 /**
- * Describes a DOM element's dimensions
+ * Describes a DOM element's rect
  */
-interface Dimensions {
+interface Rect {
   top: number;
   left: number;
   width: number;
   height: number;
 }
 
-/**
- * Implements a tile for the maze
- */
-class Tile {
+type ID = string | number;
+
+interface Vertex<dataType> {
+  id: ID;
+  data: dataType;
+}
+
+interface TileData {
   readonly row: number; // the row of the this tile is in
   readonly column: number; // the column of the this tile is in
   readonly html: string; // the  html of the tile
-  readonly id: string; // the id for the tile
+  readonly elementID: string; // the id for the tile element
   readonly selector: string; // the selector for the tile
   readonly index: number; // the index within the tiles list
+}
+
+/**
+ * Implements a tile for the maze
+ */
+class Tile implements Vertex<TileData> {
+  readonly id: string; // the id for the tile
+  readonly data: TileData // data payload for tile
   static existingTiles: Tile[] = []; // all existing tiles
 
   constructor(row: number, col: number) {
-    let id = `maze-${row}-${col}`;
-    this.selector = "#" + id;
-    this.row = row;
-    this.column = col;
-    this.html = `<div id="${id}" class="maze-tile"></div>`;
-    this.index = Tile.existingTiles.length;
+    let id = `${row}-${col}`;
+    let elementID = "grid-"+id;
+    this.id = id;
+    this.data = {
+      row: row,
+      column: col,
+      elementID: elementID,
+      html: `<div id="${elementID}" class="maze-tile"></div>`,
+      selector: "#" + elementID,
+      index: Tile.existingTiles.length,
+    }
     Tile.existingTiles.push(this);
   }
 
   protected ref(): JQuery {
-    return $(this.selector);
+    return $(this.data.selector);
   }
 
-  dimensions(): Dimensions {
+  dimensions(): Rect {
     let el = this.ref();
     return {
       ...el.position(),
@@ -43,12 +60,28 @@ class Tile {
     }
   }
 
-  center(): Dimensions {
+  center(): Rect {
     let dim = this.dimensions();
     return {
       ...dim,
       left: dim.left + (dim.width / 2),
       top: dim.top + (dim.height / 2)
     }
+  }
+}
+
+interface edgeList {
+  [index: ID]: number;
+}
+
+/**
+ * Implements a weighted undirected graph
+ */
+class Graph {
+  nodes: Set<ID>
+  edges: edgeList;
+
+  insertEdge(source: ID, target: ID, weight: number) {
+    // do stuff
   }
 }
