@@ -4,33 +4,6 @@ var mazeHeight = 4;
 
 /**
  *
- * @param {number} row
- * @param {number} col
- * @returns the JQuery reference to the tile at given row, col
- */
-function getTile(row, col) {
-  return $(`#maze-${row}-${col}`);
-};
-
-/**
- *
- * @param {number} row
- * @param {number} col
- * @returns the center position of the tile at given row, col
- */
-function getTileMiddlePosition(row, col) {
-  let tile = getTile(row, col);
-  let {top, left} = tile.position();
-  let width = tile.outerWidth();
-  let height = tile.outerHeight();
-  return {
-    "top": top + (height / 2),
-    "left": left + (width / 2)
-  };
-};
-
-/**
- *
  * @param {object} position
  *
  * Moves the player's center to the position coordinates: {top, left}
@@ -117,8 +90,9 @@ function styleDpadButton(direction) {
  * Initializes the player
  */
 function readyPlayer() {
+  let firstTile = Tile.existingTiles[0];
   $("#player").load("public/assets/cursor-vertical.svg", () => {
-    centerPlayerAt(getTileMiddlePosition(0, 0));
+    centerPlayerAt(firstTile.center());
   });
 };
 
