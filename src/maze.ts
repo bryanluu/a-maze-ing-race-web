@@ -69,11 +69,16 @@ class Tile implements Vertex<string, TileData> {
 }
 
 /**
- * Implements a weighted undirected graph
+ * Implements a weighted undirected acyclic graph
  */
 class Graph<VertexType> {
   nodes: Set<VertexType>
   edges: Map<VertexType, number>;
+
+  constructor(nodes: VertexType[]) {
+    this.nodes = new Set<VertexType>(nodes);
+    this.edges = new Map<VertexType, number>();
+  }
 
   insertEdge(source: VertexType, target: VertexType, weight: number) {
     // do stuff

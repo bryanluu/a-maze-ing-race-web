@@ -30,9 +30,13 @@ class Tile {
 }
 Tile.existingTiles = []; // all existing tiles
 /**
- * Implements a weighted undirected graph
+ * Implements a weighted undirected acyclic graph
  */
 class Graph {
+    constructor(nodes) {
+        this.nodes = new Set(nodes);
+        this.edges = new Map();
+    }
     insertEdge(source, target, weight) {
         // do stuff
     }
