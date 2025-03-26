@@ -46,7 +46,7 @@ class Tile implements Vertex<string, TileData> {
   }
 
   toString() : string {
-    return `(${this.id})`;
+    return `(${this.data.row},${this.data.column})`;
   }
 
   protected ref(): JQuery {

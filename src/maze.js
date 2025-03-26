@@ -17,7 +17,7 @@ class Tile {
         Tile.existingTiles.push(this);
     }
     toString() {
-        return `(${this.id})`;
+        return `(${this.data.row},${this.data.column})`;
     }
     ref() {
         return $(this.data.selector);
