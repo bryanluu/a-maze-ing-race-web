@@ -30,15 +30,19 @@ class Tile {
 }
 Tile.existingTiles = []; // all existing tiles
 /**
- * Implements a weighted undirected acyclic graph
+ * Implements a weighted graph
  */
 class Graph {
     constructor(nodes) {
         this.nodes = new Set(nodes);
         this.edges = new Map();
     }
-    insertEdge(source, target, weight) {
-        // do stuff
+    insertEdge(source, target, weight, directed = false) {
+        let newEdges = this.edges.get(source) || new Map();
+        newEdges.set(target, weight);
+        this.edges.set(source, newEdges);
+        if (!directed)
+            this.insertEdge(target, source, weight, true);
     }
 }
 //# sourceMappingURL=maze.js.map
