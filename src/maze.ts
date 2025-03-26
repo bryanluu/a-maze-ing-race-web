@@ -72,6 +72,7 @@ class Tile implements Vertex<string, TileData> {
   }
 }
 
+type Edge<VertexType> = readonly [VertexType, VertexType];
 type EdgeList<VertexType> = Map<VertexType, number>;
 
 /**
@@ -79,20 +80,25 @@ type EdgeList<VertexType> = Map<VertexType, number>;
  */
 class Graph<VertexType> {
   nodes: Set<VertexType>
-  edges: Map<VertexType, EdgeList<VertexType>>;
+  // stores unique edges for easier indexing
+  edges: Set<Edge<VertexType>>;
+  weights: Map<VertexType, EdgeList<VertexType>>;
 
   constructor(nodes: VertexType[]) {
     this.nodes = new Set<VertexType>(nodes);
-    this.edges = new Map<VertexType, EdgeList<VertexType>>();
+    this.edges = new Set<Edge<VertexType>>();
+    this.weights = new Map<VertexType, EdgeList<VertexType>>();
   }
 
   insertEdge(source: VertexType, target: VertexType, weight: number, directed: boolean = false) {
-    let newEdges = this.edges.get(source) || new Map<VertexType, number>();
+    let newEdges = this.weights.get(source) || new Map<VertexType, number>();
     newEdges.set(target, weight);
-    this.edges.set(source, newEdges);
+    this.weights.set(source, newEdges);
 
     if (!directed)
       this.insertEdge(target, source, weight, true);
+    else
+      this.edges.add([source, target]);
   }
 
   toString(): string {
@@ -108,8 +114,8 @@ class Graph<VertexType> {
         str += "}\n";
     }
     // edges toString
-    str +="edges:\n"
-    this.edges.forEach((neighbors, src, m) => {
+    str += "edges:\n"
+    this.weights.forEach((neighbors, src, m) => {
       str += "\t";
       str += src.toString() + ": [";
       i = 0;

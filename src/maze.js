@@ -38,14 +38,17 @@ Tile.existingTiles = []; // all existing tiles
 class Graph {
     constructor(nodes) {
         this.nodes = new Set(nodes);
-        this.edges = new Map();
+        this.edges = new Set();
+        this.weights = new Map();
     }
     insertEdge(source, target, weight, directed = false) {
-        let newEdges = this.edges.get(source) || new Map();
+        let newEdges = this.weights.get(source) || new Map();
         newEdges.set(target, weight);
-        this.edges.set(source, newEdges);
+        this.weights.set(source, newEdges);
         if (!directed)
             this.insertEdge(target, source, weight, true);
+        else
+            this.edges.add([source, target]);
     }
     toString() {
         let str = "nodes: {";
@@ -61,7 +64,7 @@ class Graph {
         }
         // edges toString
         str += "edges:\n";
-        this.edges.forEach((neighbors, src, m) => {
+        this.weights.forEach((neighbors, src, m) => {
             str += "\t";
             str += src.toString() + ": [";
             i = 0;

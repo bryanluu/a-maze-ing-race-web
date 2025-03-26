@@ -125,7 +125,18 @@ function buildMaze(mazeWidth, mazeHeight) {
   g.insertEdge(nodes[5], nodes[4], 1);
   g.insertEdge(nodes[6], nodes[7], 1);
   g.insertEdge(nodes[7], nodes[8], 1);
+  g.dimensions = {
+    width: mazeWidth,
+    height: mazeHeight
+  };
 };
+
+/**
+ *
+ * @param {Graph} g - graph object to display as the maze
+ */
+function displayMaze(g) {
+}
 
 /**
  * Initializes the game
