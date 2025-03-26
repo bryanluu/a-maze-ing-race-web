@@ -47,5 +47,36 @@ class Graph {
         if (!directed)
             this.insertEdge(target, source, weight, true);
     }
+    toString() {
+        let str = "nodes: {";
+        // nodes toString
+        let i = 0;
+        for (let node of this.nodes) {
+            str += node.toString();
+            i++;
+            if (i < this.nodes.size)
+                str += ", ";
+            else // last node
+                str += "}\n";
+        }
+        // edges toString
+        str += "edges:\n";
+        this.edges.forEach((neighbors, src, m) => {
+            str += "\t";
+            str += src.toString() + ": [";
+            i = 0;
+            neighbors.forEach((weight, tgt, _) => {
+                str += tgt.toString() + ":" + weight.toString();
+                i++;
+                if (i < neighbors.size)
+                    str += ", ";
+            });
+            str += "]\n";
+        });
+        return str;
+    }
+    print() {
+        console.log(this.toString());
+    }
 }
 //# sourceMappingURL=maze.js.map
