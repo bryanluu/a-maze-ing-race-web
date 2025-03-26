@@ -45,6 +45,10 @@ class Tile implements Vertex<string, TileData> {
     Tile.existingTiles.push(this);
   }
 
+  toString() : string {
+    return `(${this.id})`;
+  }
+
   protected ref(): JQuery {
     return $(this.data.selector);
   }

@@ -16,6 +16,9 @@ class Tile {
         };
         Tile.existingTiles.push(this);
     }
+    toString() {
+        return `(${this.id})`;
+    }
     ref() {
         return $(this.data.selector);
     }

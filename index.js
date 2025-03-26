@@ -113,6 +113,18 @@ function buildMaze(mazeWidth, mazeHeight) {
   }
   // fill the maze with tiles
   $("#maze-grid").html(mazeHTML);
+
+
+  let nodes = Tile.existingTiles;
+  g = new Graph(nodes);
+  g.insertEdge(nodes[0], nodes[1], 1);
+  g.insertEdge(nodes[1], nodes[2], 1);
+  g.insertEdge(nodes[2], nodes[5], 1);
+  g.insertEdge(nodes[3], nodes[6], 1);
+  g.insertEdge(nodes[4], nodes[7], 1);
+  g.insertEdge(nodes[5], nodes[4], 1);
+  g.insertEdge(nodes[6], nodes[3], 1);
+  g.insertEdge(nodes[7], nodes[8], 1);
 };
 
 /**
@@ -206,3 +218,5 @@ $("button.key-symbol").on("mousedown",
 );
 
 $("button.key-symbol").on("mouseup", releaseDPad);
+
+var g; // TODO delete me!!
