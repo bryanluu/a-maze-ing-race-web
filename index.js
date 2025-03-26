@@ -123,7 +123,7 @@ function buildMaze(mazeWidth, mazeHeight) {
   g.insertEdge(nodes[3], nodes[6], 1);
   g.insertEdge(nodes[4], nodes[7], 1);
   g.insertEdge(nodes[5], nodes[4], 1);
-  g.insertEdge(nodes[6], nodes[3], 1);
+  g.insertEdge(nodes[6], nodes[7], 1);
   g.insertEdge(nodes[7], nodes[8], 1);
 };
 
