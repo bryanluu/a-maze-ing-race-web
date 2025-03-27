@@ -14,9 +14,6 @@ interface Vertex<idType, dataType> {
 }
 
 interface TileData {
-  readonly row: number; // the row of this tile is in
-  readonly column: number; // the column of this tile is in
-  readonly html: string; // the  html of the tile
   readonly elementID: string; // the id for the tile element
   readonly selector: string; // the selector for the tile
   readonly index: number; // the index within the tiles list
@@ -25,28 +22,25 @@ interface TileData {
 /**
  * Implements a tile for the maze
  */
-class Tile implements Vertex<string, TileData> {
+class MazeVertex implements Vertex<string, TileData> {
   readonly id: string; // the id for the tile
   readonly data: TileData // data payload for tile
-  static existingTiles: Tile[] = []; // all existing tiles
+  static nodes: MazeVertex[] = []; // all existing tiles
 
-  constructor(row: number, col: number) {
-    let index = Tile.existingTiles.length;
+  constructor() {
+    let index = MazeVertex.nodes.length;
     let id = `v${index}`;
     this.id = id;
     this.data = {
-      row: row,
-      column: col,
       elementID: id,
-      html: `<div id="${id}" class="maze-tile maze-path"></div>`,
       selector: "#" + id,
-      index: Tile.existingTiles.length,
+      index: MazeVertex.nodes.length,
     }
-    Tile.existingTiles.push(this);
+    MazeVertex.nodes.push(this);
   }
 
   toString() : string {
-    return `(${this.data.row},${this.data.column})`;
+    return this.id.toString();
   }
 
   protected ref(): JQuery {

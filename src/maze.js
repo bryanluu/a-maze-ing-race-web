@@ -1,23 +1,20 @@
 /**
  * Implements a tile for the maze
  */
-class Tile {
-    constructor(row, col) {
-        let index = Tile.existingTiles.length;
+class MazeVertex {
+    constructor() {
+        let index = MazeVertex.nodes.length;
         let id = `v${index}`;
         this.id = id;
         this.data = {
-            row: row,
-            column: col,
             elementID: id,
-            html: `<div id="${id}" class="maze-tile maze-path"></div>`,
             selector: "#" + id,
-            index: Tile.existingTiles.length,
+            index: MazeVertex.nodes.length,
         };
-        Tile.existingTiles.push(this);
+        MazeVertex.nodes.push(this);
     }
     toString() {
-        return `(${this.data.row},${this.data.column})`;
+        return this.id.toString();
     }
     ref() {
         return $(this.data.selector);
@@ -31,7 +28,7 @@ class Tile {
         return Object.assign(Object.assign({}, dim), { left: dim.left + (dim.width / 2), top: dim.top + (dim.height / 2) });
     }
 }
-Tile.existingTiles = []; // all existing tiles
+MazeVertex.nodes = []; // all existing tiles
 /**
  * Implements a weighted graph
  */

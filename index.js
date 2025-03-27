@@ -90,7 +90,7 @@ function styleDpadButton(direction) {
  * Initializes the player
  */
 function readyPlayer() {
-  let firstTile = Tile.existingTiles[0];
+  let firstTile = MazeVertex.nodes[0];
   $("#player").load("public/assets/cursor-vertical.svg", () => {
     centerPlayerAt(firstTile.center());
   });
@@ -112,22 +112,21 @@ function buildMaze(mazeWidth, mazeHeight) {
   let index = 0;
   for (let i = 0; i < 2*mazeHeight-1; i++) {
     for (let j = 0; j < 2*mazeWidth-1; j++) {
-      if ((i % 2 == 0) && (j % 2 == 0)) {
-        let row = Math.floor(i / 2);
-        let col = Math.floor(j / 2);
-        let tile = new Tile(row, col);
+      if ((i % 2 == 0) && (j % 2 == 0)) { // vertex tile
+        let vtile = new MazeVertex(); // make a vertex tile
+        let vertexHTML = `<div id="${vtile.id}" class="maze-tile maze-path"></div>`;
+        mazeHTML += vertexHTML;
         index++
-        mazeHTML += tile.data.html;
       } else {
-        if (i % 2 == 0) {
+        if (i % 2 == 0) { // horizontal edge tile
           let src = index - 1;
           let tgt = index;
           mazeHTML += makeEdgeHTML(src, tgt);
-        } else if (j % 2 == 0) {
+        } else if (j % 2 == 0) { // vertical edge tile
           let tgt = index + (j / 2);
           let src = tgt - mazeWidth;
           mazeHTML += makeEdgeHTML(src, tgt);
-        } else
+        } else // gap
           mazeHTML += gapHTML;
       }
     }
@@ -136,7 +135,7 @@ function buildMaze(mazeWidth, mazeHeight) {
   $("#maze-grid").html(mazeHTML);
 
   // TODO remove demo code
-  let nodes = Tile.existingTiles;
+  let nodes = MazeVertex.nodes;
   g = new Graph(nodes);
   g.insertEdge(nodes[0], nodes[1], 1);
   g.insertEdge(nodes[1], nodes[2], 1);
