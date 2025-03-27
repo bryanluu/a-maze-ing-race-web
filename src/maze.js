@@ -9,12 +9,15 @@ class MazeVertex {
         this.data = {
             elementID: id,
             selector: "#" + id,
-            index: MazeVertex.nodes.length,
+            index: index,
         };
         MazeVertex.nodes.push(this);
     }
     toString() {
         return this.id.toString();
+    }
+    getIndex() {
+        return this.data.index;
     }
     ref() {
         return $(this.data.selector);
@@ -27,10 +30,13 @@ class MazeVertex {
         let dim = this.dimensions();
         return Object.assign(Object.assign({}, dim), { left: dim.left + (dim.width / 2), top: dim.top + (dim.height / 2) });
     }
+    static getNode(index) {
+        return MazeVertex.nodes[index];
+    }
 }
 MazeVertex.nodes = []; // all existing tiles
 /**
- * Implements a weighted graph
+ * Implements a weighted undirected graph
  */
 class Graph {
     constructor(nodes) {
@@ -77,6 +83,18 @@ class Graph {
     }
     print() {
         console.log(this.toString());
+    }
+    isNeighbour(src, tgt) {
+        // check the edges for a src-tgt or tgt-src pair
+        for (let edge of this.edges) {
+            let s = edge[0], t = edge[1];
+            if (((s == src) && (t == tgt)) || ((t == src) && (s == tgt))) {
+                // src-tgt or tgt-src found
+                return true;
+            }
+        }
+        // if no edges match, return false
+        return false;
     }
 }
 //# sourceMappingURL=maze.js.map
