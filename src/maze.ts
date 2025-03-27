@@ -14,8 +14,8 @@ interface Vertex<idType, dataType> {
 }
 
 interface TileData {
-  readonly row: number; // the row of the this tile is in
-  readonly column: number; // the column of the this tile is in
+  readonly row: number; // the row of this tile is in
+  readonly column: number; // the column of this tile is in
   readonly html: string; // the  html of the tile
   readonly elementID: string; // the id for the tile element
   readonly selector: string; // the selector for the tile

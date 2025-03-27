@@ -105,7 +105,7 @@ function readyPlayer() {
  */
 function buildMaze(mazeWidth, mazeHeight) {
   let mazeHTML = "";
-  let gapHTML = '<div class="maze-tile"></div>';
+  let gapHTML = '<div class="maze-gap"></div>';
   let makeEdgeHTML = (src, tgt) => {
     return `<div id="e${src}-${tgt}" class="maze-tile"></div>`;
   }
@@ -116,12 +116,17 @@ function buildMaze(mazeWidth, mazeHeight) {
         let row = Math.floor(i / 2);
         let col = Math.floor(j / 2);
         let tile = new Tile(row, col);
+        index++
         mazeHTML += tile.data.html;
       } else {
         if (i % 2 == 0) {
-          mazeHTML += makeEdgeHTML(index, index+1);
+          let src = index - 1;
+          let tgt = index;
+          mazeHTML += makeEdgeHTML(src, tgt);
         } else if (j % 2 == 0) {
-          mazeHTML += makeEdgeHTML((index+1)-mazeWidth, index+1);
+          let tgt = index + (j / 2);
+          let src = tgt - mazeWidth;
+          mazeHTML += makeEdgeHTML(src, tgt);
         } else
           mazeHTML += gapHTML;
       }
