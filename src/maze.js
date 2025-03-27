@@ -10,7 +10,7 @@ class Tile {
             row: row,
             column: col,
             elementID: elementID,
-            html: `<div id="${elementID}" class="maze-tile"></div>`,
+            html: `<div id="${elementID}" class="maze-tile maze-path"></div>`,
             selector: "#" + elementID,
             index: Tile.existingTiles.length,
         };

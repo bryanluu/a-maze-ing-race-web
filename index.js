@@ -105,10 +105,18 @@ function readyPlayer() {
  */
 function buildMaze(mazeWidth, mazeHeight) {
   let mazeHTML = "";
-  for (let row = 0; row < mazeHeight; row++) {
-    for (let col = 0; col < mazeWidth; col++) {
-      let tile = new Tile(row, col);
-      mazeHTML += tile.data.html;
+  let gapHTML = '<div class="maze-tile"></div>';
+  for (let i = 0; i < 2*mazeHeight-1; i++) {
+    for (let j = 0; j < 2*mazeWidth-1; j++) {
+      if ((i % 2 == 0) && (j % 2 == 0)) {
+        let row = Math.floor(i / 2);
+        let col = Math.floor(j / 2);
+        let tile = new Tile(row, col);
+        mazeHTML += tile.data.html;
+      } else {
+        mazeHTML += gapHTML;
+      }
+
     }
   }
   // fill the maze with tiles
