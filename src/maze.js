@@ -39,7 +39,11 @@ MazeVertex.nodes = []; // all existing tiles
  * Implements a weighted undirected graph
  */
 class Graph {
-    constructor(nodes) {
+    constructor(nodes, width, height) {
+        this.dimensions = {
+            width: width,
+            height: height
+        };
         this.nodes = new Set(nodes);
         this.edges = new Set();
         this.weights = new Map();

@@ -74,19 +74,35 @@ class MazeVertex implements Vertex<string, TileData> {
   }
 }
 
+interface Maze<VertexType> {
+  nodes: Set<VertexType>;
+  dimensions: {
+    width: number,
+    height: number
+  };
+}
+
 type Edge<VertexType> = readonly [VertexType, VertexType];
 type EdgeList<VertexType> = Map<VertexType, number>;
 
 /**
  * Implements a weighted undirected graph
  */
-class Graph<VertexType> {
+class Graph<VertexType> implements Maze<VertexType> {
   nodes: Set<VertexType>
   // stores unique edges for easier indexing
   edges: Set<Edge<VertexType>>;
   weights: Map<VertexType, EdgeList<VertexType>>;
+  dimensions: {
+    width: number,
+    height: number
+  }
 
-  constructor(nodes: VertexType[]) {
+  constructor(nodes, width, height) {
+    this.dimensions = {
+      width: width,
+      height: height
+    };
     this.nodes = new Set<VertexType>(nodes);
     this.edges = new Set<Edge<VertexType>>();
     this.weights = new Map<VertexType, EdgeList<VertexType>>();

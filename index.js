@@ -109,7 +109,7 @@ function buildMaze(mazeWidth, mazeHeight) {
 
   // TODO remove demo code
   let nodes = MazeVertex.nodes;
-  g = new Graph(nodes);
+  g = new Graph(nodes, mazeWidth, mazeHeight);
   g.insertEdge(nodes[0], nodes[1], 1);
   g.insertEdge(nodes[1], nodes[2], 1);
   g.insertEdge(nodes[2], nodes[5], 1);
@@ -118,10 +118,6 @@ function buildMaze(mazeWidth, mazeHeight) {
   g.insertEdge(nodes[5], nodes[4], 1);
   g.insertEdge(nodes[6], nodes[7], 1);
   g.insertEdge(nodes[7], nodes[8], 1);
-  g.dimensions = {
-    width: mazeWidth,
-    height: mazeHeight
-  };
 }
 
 /**
@@ -135,8 +131,8 @@ function displayMaze(g) {
   let mazeHTML = "";
   let gapHTML = '<div class="maze-tile maze-gap"></div>';
   let makeEdgeHTML = (srcIndex, tgtIndex) => {
-    let src = MazeVertex.nodes[srcIndex];
-    let tgt = MazeVertex.nodes[tgtIndex];
+    let src = MazeVertex.getNode(srcIndex);
+    let tgt = MazeVertex.getNode(tgtIndex);
     let visible = g.isNeighbor(src, tgt);
     let classes = (visible ? "maze-tile maze-edge maze-path" : "maze-tile maze-edge maze-gap");
     return `<div id="e${srcIndex}-${tgtIndex}" class="${classes}"></div>`;
@@ -164,8 +160,6 @@ function displayMaze(g) {
   }
   // fill the maze with tiles
   $("#maze-grid").html(mazeHTML);
-
-
 };
 
 /**
