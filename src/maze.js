@@ -84,7 +84,7 @@ class Graph {
     print() {
         console.log(this.toString());
     }
-    isNeighbour(src, tgt) {
+    isNeighbor(src, tgt) {
         // check the edges for a src-tgt or tgt-src pair
         for (let edge of this.edges) {
             let s = edge[0], t = edge[1];

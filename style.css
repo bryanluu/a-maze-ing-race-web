@@ -71,7 +71,7 @@ header {
   width: 50px; /* TODO adjust to dynamic */
   height: 50px; /* TODO adjust to dynamic */
   box-sizing: border-box;
-  border: 1px solid white;
+  /* border: 1px solid white; */
 }
 
 .maze-path {

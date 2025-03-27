@@ -97,24 +97,55 @@ function readyPlayer() {
 };
 
 /**
+ * Creates the Maze graph with the given dimensions
  *
- * @param {number} mazeWidth - number of columns the maze should have
- * @param {*} mazeHeight - number of rows the maze should have
- *
- * Creates the HTML for the Maze and inserts it into the document
+ * @param {*} mazeWidth
+ * @param {*} mazeHeight
  */
 function buildMaze(mazeWidth, mazeHeight) {
+  let numNodes = mazeWidth * mazeHeight;
+  for (let i = 0; i < numNodes; i++)
+    new MazeVertex();
+
+  // TODO remove demo code
+  let nodes = MazeVertex.nodes;
+  g = new Graph(nodes);
+  g.insertEdge(nodes[0], nodes[1], 1);
+  g.insertEdge(nodes[1], nodes[2], 1);
+  g.insertEdge(nodes[2], nodes[5], 1);
+  g.insertEdge(nodes[3], nodes[6], 1);
+  g.insertEdge(nodes[4], nodes[7], 1);
+  g.insertEdge(nodes[5], nodes[4], 1);
+  g.insertEdge(nodes[6], nodes[7], 1);
+  g.insertEdge(nodes[7], nodes[8], 1);
+  g.dimensions = {
+    width: mazeWidth,
+    height: mazeHeight
+  };
+}
+
+/**
+ * Creates the HTML for the Maze and inserts it into the document
+ *
+ * @param {Graph} g - graph object to display as the maze
+ */
+function displayMaze(g) {
+  let mazeWidth = g.dimensions.width;
+  let mazeHeight = g.dimensions.height;
   let mazeHTML = "";
-  let gapHTML = '<div class="maze-gap"></div>';
-  let makeEdgeHTML = (src, tgt) => {
-    return `<div id="e${src}-${tgt}" class="maze-tile"></div>`;
+  let gapHTML = '<div class="maze-tile maze-gap"></div>';
+  let makeEdgeHTML = (srcIndex, tgtIndex) => {
+    let src = MazeVertex.nodes[srcIndex];
+    let tgt = MazeVertex.nodes[tgtIndex];
+    let visible = g.isNeighbor(src, tgt);
+    let classes = (visible ? "maze-tile maze-edge maze-path" : "maze-tile maze-edge maze-gap");
+    return `<div id="e${srcIndex}-${tgtIndex}" class="${classes}"></div>`;
   }
   let index = 0;
   for (let i = 0; i < 2*mazeHeight-1; i++) {
     for (let j = 0; j < 2*mazeWidth-1; j++) {
       if ((i % 2 == 0) && (j % 2 == 0)) { // vertex tile
-        let vtile = new MazeVertex(); // make a vertex tile
-        let vertexHTML = `<div id="${vtile.id}" class="maze-tile maze-path"></div>`;
+        let vertexHTML = `<div id="v${index}" class="maze-tile maze-vertex maze-path"></div>`;
         mazeHTML += vertexHTML;
         index++
       } else {
@@ -134,28 +165,15 @@ function buildMaze(mazeWidth, mazeHeight) {
   // fill the maze with tiles
   $("#maze-grid").html(mazeHTML);
 
-  // TODO remove demo code
-  let nodes = MazeVertex.nodes;
-  g = new Graph(nodes);
-  g.insertEdge(nodes[0], nodes[1], 1);
-  g.insertEdge(nodes[1], nodes[2], 1);
-  g.insertEdge(nodes[2], nodes[5], 1);
-  g.insertEdge(nodes[3], nodes[6], 1);
-  g.insertEdge(nodes[4], nodes[7], 1);
-  g.insertEdge(nodes[5], nodes[4], 1);
-  g.insertEdge(nodes[6], nodes[7], 1);
-  g.insertEdge(nodes[7], nodes[8], 1);
-  g.dimensions = {
-    width: mazeWidth,
-    height: mazeHeight
-  };
+
 };
 
 /**
  * Initializes the game
  */
 function initializeGame() {
-  buildMaze(3, 3);
+  buildMaze(3, 3); // TODO make dynamic
+  displayMaze(g);
   readyPlayer();
 };
 
