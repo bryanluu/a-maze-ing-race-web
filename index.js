@@ -106,6 +106,10 @@ function readyPlayer() {
 function buildMaze(mazeWidth, mazeHeight) {
   let mazeHTML = "";
   let gapHTML = '<div class="maze-tile"></div>';
+  let makeEdgeHTML = (src, tgt) => {
+    return `<div id="e${src}-${tgt}" class="maze-tile"></div>`;
+  }
+  let index = 0;
   for (let i = 0; i < 2*mazeHeight-1; i++) {
     for (let j = 0; j < 2*mazeWidth-1; j++) {
       if ((i % 2 == 0) && (j % 2 == 0)) {
@@ -114,15 +118,19 @@ function buildMaze(mazeWidth, mazeHeight) {
         let tile = new Tile(row, col);
         mazeHTML += tile.data.html;
       } else {
-        mazeHTML += gapHTML;
+        if (i % 2 == 0) {
+          mazeHTML += makeEdgeHTML(index, index+1);
+        } else if (j % 2 == 0) {
+          mazeHTML += makeEdgeHTML((index+1)-mazeWidth, index+1);
+        } else
+          mazeHTML += gapHTML;
       }
-
     }
   }
   // fill the maze with tiles
   $("#maze-grid").html(mazeHTML);
 
-
+  // TODO remove demo code
   let nodes = Tile.existingTiles;
   g = new Graph(nodes);
   g.insertEdge(nodes[0], nodes[1], 1);
@@ -138,13 +146,6 @@ function buildMaze(mazeWidth, mazeHeight) {
     height: mazeHeight
   };
 };
-
-/**
- *
- * @param {Graph} g - graph object to display as the maze
- */
-function displayMaze(g) {
-}
 
 /**
  * Initializes the game

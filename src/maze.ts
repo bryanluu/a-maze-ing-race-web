@@ -31,15 +31,15 @@ class Tile implements Vertex<string, TileData> {
   static existingTiles: Tile[] = []; // all existing tiles
 
   constructor(row: number, col: number) {
-    let id = `${row}-${col}`;
-    let elementID = "grid-"+id;
+    let index = Tile.existingTiles.length;
+    let id = `v${index}`;
     this.id = id;
     this.data = {
       row: row,
       column: col,
-      elementID: elementID,
-      html: `<div id="${elementID}" class="maze-tile maze-path"></div>`,
-      selector: "#" + elementID,
+      elementID: id,
+      html: `<div id="${id}" class="maze-tile maze-path"></div>`,
+      selector: "#" + id,
       index: Tile.existingTiles.length,
     }
     Tile.existingTiles.push(this);
@@ -96,7 +96,7 @@ class Graph<VertexType> {
     this.weights.set(source, newEdges);
 
     if (!directed)
-      this.insertEdge(target, source, weight, true);
+      this.insertEdge(target, source, weight, true); // insert return direction
     else
       this.edges.add([source, target]);
   }
