@@ -36,21 +36,40 @@ function readyPlayer() {
  * @param {*} mazeHeight
  */
 function buildMaze(mazeWidth, mazeHeight) {
-  let numNodes = mazeWidth * mazeHeight;
-  for (let i = 0; i < numNodes; i++)
+  for (let i = 0; i < (mazeWidth * mazeHeight); i++)
     new MazeVertex();
+  let nodes = MazeVertex.nodes;
+
+  Graph.adjacencyGraph = new Graph(nodes, mazeWidth, mazeHeight);
+  let adj = Graph.adjacencyGraph;
+  let i = 0;
+  for (let r = 0; r < mazeHeight; r++) {
+    for (let c = 0; c < mazeWidth; c++) {
+      let src = MazeVertex.getNode(i);
+      if ((c % mazeWidth) > 0)
+      {
+        let left = MazeVertex.getNode(src.data.index - 1);
+        adj.insertEdge(src, left);
+      }
+      if (r > 0) {
+        let above = MazeVertex.getNode(src.data.index - mazeWidth);
+        adj.insertEdge(src, above);
+      }
+      i++;
+    }
+  }
 
   // TODO remove demo code
-  let nodes = MazeVertex.nodes;
   Graph.mazeGraph = new Graph(nodes, mazeWidth, mazeHeight);
-  Graph.mazeGraph.insertEdge(nodes[0], nodes[1], 1);
-  Graph.mazeGraph.insertEdge(nodes[1], nodes[2], 1);
-  Graph.mazeGraph.insertEdge(nodes[2], nodes[5], 1);
-  Graph.mazeGraph.insertEdge(nodes[3], nodes[6], 1);
-  Graph.mazeGraph.insertEdge(nodes[4], nodes[7], 1);
-  Graph.mazeGraph.insertEdge(nodes[5], nodes[4], 1);
-  Graph.mazeGraph.insertEdge(nodes[6], nodes[7], 1);
-  Graph.mazeGraph.insertEdge(nodes[7], nodes[8], 1);
+  let maze = Graph.mazeGraph;
+  maze.insertEdge(nodes[0], nodes[1], 1);
+  maze.insertEdge(nodes[1], nodes[2], 1);
+  maze.insertEdge(nodes[2], nodes[5], 1);
+  maze.insertEdge(nodes[3], nodes[6], 1);
+  maze.insertEdge(nodes[4], nodes[7], 1);
+  maze.insertEdge(nodes[5], nodes[4], 1);
+  maze.insertEdge(nodes[6], nodes[7], 1);
+  maze.insertEdge(nodes[7], nodes[8], 1);
 }
 
 /**
