@@ -207,6 +207,31 @@ class Player extends VertexTile {
 
   /**
    *
+   * @param {MazeVertex} target
+   *
+   * Moves the player's center to the target vertex
+   */
+  moveTo(target: MazeVertex) {
+    let ref = this.ref();
+    let position = target.center();
+    let newPosition = {
+      "top": position.top - (ref.outerHeight() / 2),
+      "left": position.left - (ref.outerWidth() / 2)
+    };
+    ref.animate(
+      newPosition,
+    {
+      // this ensures the final resting position is the target
+      complete: () => {
+        ref.css(newPosition);
+      },
+      duration: 100, // quick movement
+      easing: "linear"
+    });
+  }
+
+  /**
+   *
    * Points the player to the left, right, up, down
    *
    * @param {string} direction - left | right | up |down
@@ -247,11 +272,11 @@ class Player extends VertexTile {
     {
       // TODO remove this once event queue implemented
       // this ensures the final resting position is the target angle
-      "complete": () => {
+      complete: () => {
         player.css("rotate", `${targetAngle}deg`);
       },
-      "duration": 100, // quick rotation
-      "easing": "linear"
+      duration: 100, // quick rotation
+      easing: "linear"
     });
   }
 
@@ -288,7 +313,7 @@ class Player extends VertexTile {
     let tgt = MazeVertex.getNode(newIndex);
     if (g.isNeighbor(src, tgt)) {
       this.data.index = newIndex;
-      this.centerAt(MazeVertex.getNode(newIndex).center());
+      this.moveTo(MazeVertex.getNode(newIndex));
     }
   }
 }
