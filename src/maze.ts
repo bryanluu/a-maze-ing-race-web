@@ -11,7 +11,7 @@ interface Rect {
 interface TileData {
   readonly elementID: string; // the id for the tile element
   readonly selector: string; // the selector for the tile
-  readonly index: number; // the index within the tiles list
+  index: number; // the index within the tiles list
 }
 
 /**
@@ -185,7 +185,7 @@ class Player extends VertexTile {
     super(id, startIndex);
     // load the image and position at the startIndex's node
     this.ref().load("public/assets/cursor-vertical.svg", () => {
-      this.centerAt(MazeVertex.nodes[startIndex].center());
+      this.centerAt(MazeVertex.getNode(startIndex).center());
     });
     Player.instance = this;
   }
@@ -255,4 +255,40 @@ class Player extends VertexTile {
     });
   }
 
+  attemptMove(g: Graph<MazeVertex>, direction: string) {
+    this.pointTo(direction);
+    let startIndex = this.data.index;
+    let newIndex = startIndex;
+    switch(direction) {
+      case "up":
+        newIndex = startIndex - g.dimensions.width;
+        if (newIndex < 0) // at the top edge
+          return;
+        break;
+      case "right":
+        newIndex = startIndex + 1;
+        if ((newIndex % g.dimensions.width) === 0) // at right edge
+          return;
+        break;
+      case "down":
+        newIndex = startIndex + g.dimensions.width;
+        if (newIndex >= MazeVertex.nodes.length) // at bottom edge
+          return;
+        break;
+      case "left":
+        newIndex = startIndex - 1;
+        if ((startIndex % g.dimensions.width) === 0) // at left edge
+          return;
+        break;
+      default:
+        console.error(`Invalid direction: "${direction}"`)
+        return;
+    }
+    let src = MazeVertex.getNode(startIndex);
+    let tgt = MazeVertex.getNode(newIndex);
+    if (g.isNeighbor(src, tgt)) {
+      this.data.index = newIndex;
+      this.centerAt(MazeVertex.getNode(newIndex).center());
+    }
+  }
 }

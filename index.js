@@ -117,7 +117,7 @@ function inputDPad(direction) {
     case "down":
     case "left":
       styleDpadButton(direction);
-      Player.instance.pointTo(direction);
+      Player.instance.attemptMove(g, direction);
       break;
     default:
       console.error(`Invalid direction: "${direction}"`)
