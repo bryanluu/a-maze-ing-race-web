@@ -46,13 +46,14 @@ function buildMaze(mazeWidth, mazeHeight) {
   for (let r = 0; r < mazeHeight; r++) {
     for (let c = 0; c < mazeWidth; c++) {
       let src = MazeVertex.getNode(i);
+      let srcIndex = src.data.index;
       if ((c % mazeWidth) > 0)
       {
-        let left = MazeVertex.getNode(src.data.index - 1);
+        let left = MazeVertex.getNode(MazeVertex.getNeighborIndex(srcIndex, "left"));
         adj.insertEdge(src, left);
       }
       if (r > 0) {
-        let above = MazeVertex.getNode(src.data.index - mazeWidth);
+        let above = MazeVertex.getNode(MazeVertex.getNeighborIndex(srcIndex, "up"));
         adj.insertEdge(src, above);
       }
       i++;

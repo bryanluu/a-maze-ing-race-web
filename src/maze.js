@@ -46,6 +46,39 @@ class MazeVertex extends VertexTile {
     static getNode(index) {
         return MazeVertex.nodes[index];
     }
+    static isValidIndex(index) {
+        return ((0 <= index) && (index < MazeVertex.nodes.length));
+    }
+    /**
+     *
+     * @param index - index of the src node
+     * @param direction - direction of the neighbor node
+     * @returns the index of neighbor node in the direction, null otherwise
+     */
+    static getNeighborIndex(index, direction) {
+        let newIndex = index;
+        switch (direction) {
+            case "up":
+                newIndex = index - Graph.adjacencyGraph.dimensions.width;
+                break;
+            case "right":
+                newIndex = index + 1;
+                break;
+            case "down":
+                newIndex = index + Graph.adjacencyGraph.dimensions.width;
+                break;
+            case "left":
+                newIndex = index - 1;
+                break;
+            default:
+                console.error(`Invalid direction: "${direction}"`);
+                return null;
+        }
+        if (MazeVertex.isValidIndex(newIndex))
+            return newIndex;
+        else
+            return null;
+    }
 }
 MazeVertex.nodes = []; // all existing tiles
 /**
@@ -228,32 +261,10 @@ class Player extends VertexTile {
             return;
         this.pointTo(direction);
         let startIndex = this.data.index;
-        let newIndex = startIndex;
-        switch (direction) {
-            case "up":
-                newIndex = startIndex - maze.dimensions.width;
-                if (newIndex < 0) // at the top edge
-                    return;
-                break;
-            case "right":
-                newIndex = startIndex + 1;
-                if ((newIndex % maze.dimensions.width) === 0) // at right edge
-                    return;
-                break;
-            case "down":
-                newIndex = startIndex + maze.dimensions.width;
-                if (newIndex >= MazeVertex.nodes.length) // at bottom edge
-                    return;
-                break;
-            case "left":
-                newIndex = startIndex - 1;
-                if ((startIndex % maze.dimensions.width) === 0) // at left edge
-                    return;
-                break;
-            default:
-                console.error(`Invalid direction: "${direction}"`);
-                return;
-        }
+        let newIndex = MazeVertex.getNeighborIndex(startIndex, direction);
+        // if newIndex is invalid, i.e. player would move out-of-bounds, stop
+        if (!MazeVertex.isValidIndex(newIndex))
+            return;
         let src = MazeVertex.getNode(startIndex);
         let tgt = MazeVertex.getNode(newIndex);
         if (maze.isNeighbor(src, tgt)) {
