@@ -8,11 +8,6 @@ interface Rect {
   height: number;
 }
 
-interface Vertex<idType, dataType> {
-  id: idType;
-  data: dataType;
-}
-
 interface TileData {
   readonly elementID: string; // the id for the tile element
   readonly selector: string; // the selector for the tile
@@ -20,23 +15,19 @@ interface TileData {
 }
 
 /**
- * Implements a tile for the maze
+ * Implements an element that lives on a MazeVertex spot
  */
-class MazeVertex implements Vertex<string, TileData> {
-  readonly id: string; // the id for the tile
-  readonly data: TileData // data payload for tile
-  static nodes: MazeVertex[] = []; // all existing tiles
+class VertexTile {
+  id: string;
+  data: TileData
 
-  constructor() {
-    let index = MazeVertex.nodes.length;
-    let id = `v${index}`;
+  constructor(id: string, index: number) {
     this.id = id;
     this.data = {
       elementID: id,
       selector: "#" + id,
       index: index,
     }
-    MazeVertex.nodes.push(this);
   }
 
   toString() : string {
@@ -61,12 +52,29 @@ class MazeVertex implements Vertex<string, TileData> {
   }
 
   center(): Rect {
-    let dim = this.dimensions();
+    let {top, left, width, height} = this.dimensions();
     return {
-      ...dim,
-      left: dim.left + (dim.width / 2),
-      top: dim.top + (dim.height / 2)
+      top: top + (height / 2),
+      left: left + (width / 2),
+      width: width,
+      height: height
     }
+  }
+}
+
+/**
+ * Implements a tile for the maze
+ */
+class MazeVertex extends VertexTile {
+  readonly id: string; // the id for the tile
+  readonly data: TileData // data payload for tile
+  static nodes: MazeVertex[] = []; // all existing tiles
+
+  constructor() {
+    let index = MazeVertex.nodes.length;
+    let id = `v${index}`;
+    super(id, index);
+    MazeVertex.nodes.push(this);
   }
 
   static getNode(index: number): MazeVertex {
@@ -165,4 +173,86 @@ class Graph<VertexType> implements Maze<VertexType> {
     // if no edges match, return false
     return false;
   }
+}
+
+class Player extends VertexTile {
+  id: string = "player"; // pseudo-constant id
+  data: TileData; // contains metadata about player element
+  static instance: Player;
+
+  constructor(startIndex: number) {
+    let id = "player";
+    super(id, startIndex);
+    // load the image and position at the startIndex's node
+    this.ref().load("public/assets/cursor-vertical.svg", () => {
+      this.centerAt(MazeVertex.nodes[startIndex].center());
+    });
+    Player.instance = this;
+  }
+
+  /**
+   *
+   * @param {Rect} position
+   *
+   * Moves the player's center to the position coordinates: {top, left}
+   */
+  centerAt(position: Rect) {
+    let ref = this.ref();
+    let newPosition = {
+      "top": position.top - (ref.outerHeight() / 2),
+      "left": position.left - (ref.outerWidth() / 2)
+    };
+    ref.css(newPosition);
+  }
+
+  /**
+   *
+   * Points the player to the left, right, up, down
+   *
+   * @param {string} direction - left | right | up |down
+   */
+  pointTo(direction) {
+    let player = $("#player");
+    let angle = Number.parseInt(player.css("rotate")) || 0;
+    let targetAngle = null;
+    switch(direction) {
+      case "up":
+        targetAngle = 0;
+        break;
+      case "right":
+        targetAngle = 90;
+        break;
+      case "down":
+        targetAngle = 180;
+        break;
+      case "left":
+        targetAngle = 270;
+        break;
+      default:
+        console.error(`Invalid direction: "${direction}"`)
+        return;
+    }
+    // chooses the sensible short arc if the angles are periodically close
+    while((targetAngle - angle) > 180) {
+      angle += 360;
+    }
+    while((targetAngle - angle) < -180) {
+      angle -= 360;
+    }
+    // this keeps the angle within [0, 360)
+    player.css("rotate", `${angle}deg`);
+    player.animate({
+      "rotate": `+=${(targetAngle - angle)}deg`
+    },
+    {
+      // TODO remove this once event queue implemented
+      // this ensures the final resting position is the target angle
+      "complete": () => {
+        player.css("rotate", `${targetAngle}deg`);
+      },
+      "duration": 100, // quick rotation
+      "easing": "linear"
+    });
+  }
+
 }

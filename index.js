@@ -3,71 +3,6 @@ var mazeWidth = 4;
 var mazeHeight = 4;
 
 /**
- *
- * @param {object} position
- *
- * Moves the player's center to the position coordinates: {top, left}
- */
-function centerPlayerAt(position) {
-  let player = $("#player");
-  let newPosition = {
-    "top": position.top - (player.outerHeight() / 2),
-    "left": position.left - (player.outerWidth() / 2)
-  };
-  player.css(newPosition);
-};
-
-/**
- *
- * Rotates the player to the left, right, up, down
- *
- * @param {string} direction - left | right | up |down
- */
-function pointPlayerTo(direction) {
-  let player = $("#player");
-  let angle = Number.parseInt(player.css("rotate")) || 0;
-  let targetAngle = null;
-  switch(direction) {
-    case "up":
-      targetAngle = 0;
-      break;
-    case "right":
-      targetAngle = 90;
-      break;
-    case "down":
-      targetAngle = 180;
-      break;
-    case "left":
-      targetAngle = 270;
-      break;
-    default:
-      console.error(`Invalid direction: "${direction}"`)
-      return;
-  }
-  // chooses the sensible short arc if the angles are periodically close
-  while((targetAngle - angle) > 180) {
-    angle += 360;
-  }
-  while((targetAngle - angle) < -180) {
-    angle -= 360;
-  }
-  // this keeps the angle within [0, 360)
-  player.css("rotate", `${angle}deg`);
-  player.animate({
-    "rotate": `+=${(targetAngle - angle)}deg`
-  },
-  {
-    // TODO remove this once event queue implemented
-    // this ensures the final resting position is the target angle
-    "complete": () => {
-      player.css("rotate", `${targetAngle}deg`);
-    },
-    "duration": 100, // quick rotation
-    "easing": "linear"
-  });
-}
-
-/**
  * Styles the DPad button to look like its being pressed
  *
  * @param {string} direction - up | right | left | down
@@ -90,10 +25,8 @@ function styleDpadButton(direction) {
  * Initializes the player
  */
 function readyPlayer() {
-  let firstTile = MazeVertex.nodes[0];
-  $("#player").load("public/assets/cursor-vertical.svg", () => {
-    centerPlayerAt(firstTile.center());
-  });
+  let firstVertex = MazeVertex.nodes[0];
+  new Player(firstVertex.data.index);
 };
 
 /**
@@ -184,7 +117,7 @@ function inputDPad(direction) {
     case "down":
     case "left":
       styleDpadButton(direction);
-      pointPlayerTo(direction);
+      Player.instance.pointTo(direction);
       break;
     default:
       console.error(`Invalid direction: "${direction}"`)
