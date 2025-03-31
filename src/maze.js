@@ -146,16 +146,20 @@ class Player extends VertexTile {
      * Moves the player's center to the target vertex
      */
     moveTo(target) {
-        let ref = this.ref();
+        let player = this.ref();
+        if (player.hasClass("moving"))
+            return;
         let position = target.center();
         let newPosition = {
-            "top": position.top - (ref.outerHeight() / 2),
-            "left": position.left - (ref.outerWidth() / 2)
+            "top": position.top - (player.outerHeight() / 2),
+            "left": position.left - (player.outerWidth() / 2)
         };
-        ref.animate(newPosition, {
+        player.addClass("moving");
+        player.animate(newPosition, {
             // this ensures the final resting position is the target
             complete: () => {
-                ref.css(newPosition);
+                player.css(newPosition);
+                player.removeClass("moving");
             },
             duration: 100, // quick movement
             easing: "linear"
@@ -168,7 +172,9 @@ class Player extends VertexTile {
      * @param {string} direction - left | right | up |down
      */
     pointTo(direction) {
-        let player = $("#player");
+        let player = this.ref();
+        if (player.hasClass("rotating"))
+            return;
         let angle = Number.parseInt(player.css("rotate")) || 0;
         let targetAngle = null;
         switch (direction) {
@@ -195,21 +201,25 @@ class Player extends VertexTile {
         while ((targetAngle - angle) < -180) {
             angle -= 360;
         }
+        player.addClass("rotating");
         // this keeps the angle within [0, 360)
         player.css("rotate", `${angle}deg`);
         player.animate({
             "rotate": `+=${(targetAngle - angle)}deg`
         }, {
-            // TODO remove this once event queue implemented
             // this ensures the final resting position is the target angle
             complete: () => {
                 player.css("rotate", `${targetAngle}deg`);
+                player.removeClass("rotating");
             },
             duration: 100, // quick rotation
             easing: "linear"
         });
     }
     attemptMove(g, direction) {
+        let player = this.ref();
+        if (player.hasClass("moving"))
+            return;
         this.pointTo(direction);
         let startIndex = this.data.index;
         let newIndex = startIndex;
