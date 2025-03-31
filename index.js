@@ -42,23 +42,22 @@ function buildMaze(mazeWidth, mazeHeight) {
 
   // TODO remove demo code
   let nodes = MazeVertex.nodes;
-  g = new Graph(nodes, mazeWidth, mazeHeight);
-  g.insertEdge(nodes[0], nodes[1], 1);
-  g.insertEdge(nodes[1], nodes[2], 1);
-  g.insertEdge(nodes[2], nodes[5], 1);
-  g.insertEdge(nodes[3], nodes[6], 1);
-  g.insertEdge(nodes[4], nodes[7], 1);
-  g.insertEdge(nodes[5], nodes[4], 1);
-  g.insertEdge(nodes[6], nodes[7], 1);
-  g.insertEdge(nodes[7], nodes[8], 1);
+  Graph.mazeGraph = new Graph(nodes, mazeWidth, mazeHeight);
+  Graph.mazeGraph.insertEdge(nodes[0], nodes[1], 1);
+  Graph.mazeGraph.insertEdge(nodes[1], nodes[2], 1);
+  Graph.mazeGraph.insertEdge(nodes[2], nodes[5], 1);
+  Graph.mazeGraph.insertEdge(nodes[3], nodes[6], 1);
+  Graph.mazeGraph.insertEdge(nodes[4], nodes[7], 1);
+  Graph.mazeGraph.insertEdge(nodes[5], nodes[4], 1);
+  Graph.mazeGraph.insertEdge(nodes[6], nodes[7], 1);
+  Graph.mazeGraph.insertEdge(nodes[7], nodes[8], 1);
 }
 
 /**
  * Creates the HTML for the Maze and inserts it into the document
- *
- * @param {Graph} g - graph object to display as the maze
  */
-function displayMaze(g) {
+function displayMaze() {
+  let g = Graph.mazeGraph;
   let mazeWidth = g.dimensions.width;
   let mazeHeight = g.dimensions.height;
   let mazeHTML = "";
@@ -100,7 +99,7 @@ function displayMaze(g) {
  */
 function initializeGame() {
   buildMaze(3, 3); // TODO make dynamic
-  displayMaze(g);
+  displayMaze();
   readyPlayer();
 };
 
@@ -117,7 +116,7 @@ function inputDPad(direction) {
     case "down":
     case "left":
       styleDpadButton(direction);
-      Player.instance.attemptMove(g, direction);
+      Player.instance.attemptMove(direction);
       break;
     default:
       console.error(`Invalid direction: "${direction}"`)
@@ -187,5 +186,3 @@ $("button.key-symbol").on("mousedown",
 );
 
 $("button.key-symbol").on("mouseup", releaseDPad);
-
-var g; // TODO delete me!!

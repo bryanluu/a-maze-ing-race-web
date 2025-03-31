@@ -105,6 +105,8 @@ class Graph<VertexType> implements Maze<VertexType> {
     width: number,
     height: number
   }
+  static adjacencyGraph: Graph<MazeVertex>;
+  static mazeGraph: Graph<MazeVertex>;
 
   constructor(nodes, width, height) {
     this.dimensions = {
@@ -287,7 +289,13 @@ class Player extends VertexTile {
     });
   }
 
-  attemptMove(g: Graph<MazeVertex>, direction: string) {
+  /**
+   *
+   * @param direction - the direction to attempt to move towards
+   * @returns stops if move is illegal
+   */
+  attemptMove(direction: string) {
+    let maze = Graph.mazeGraph;
     let player = this.ref();
     if (player.hasClass("moving"))
       return;
@@ -296,23 +304,23 @@ class Player extends VertexTile {
     let newIndex = startIndex;
     switch(direction) {
       case "up":
-        newIndex = startIndex - g.dimensions.width;
+        newIndex = startIndex - maze.dimensions.width;
         if (newIndex < 0) // at the top edge
           return;
         break;
       case "right":
         newIndex = startIndex + 1;
-        if ((newIndex % g.dimensions.width) === 0) // at right edge
+        if ((newIndex % maze.dimensions.width) === 0) // at right edge
           return;
         break;
       case "down":
-        newIndex = startIndex + g.dimensions.width;
+        newIndex = startIndex + maze.dimensions.width;
         if (newIndex >= MazeVertex.nodes.length) // at bottom edge
           return;
         break;
       case "left":
         newIndex = startIndex - 1;
-        if ((startIndex % g.dimensions.width) === 0) // at left edge
+        if ((startIndex % maze.dimensions.width) === 0) // at left edge
           return;
         break;
       default:
@@ -321,7 +329,7 @@ class Player extends VertexTile {
     }
     let src = MazeVertex.getNode(startIndex);
     let tgt = MazeVertex.getNode(newIndex);
-    if (g.isNeighbor(src, tgt)) {
+    if (maze.isNeighbor(src, tgt)) {
       this.data.index = newIndex;
       this.moveTo(MazeVertex.getNode(newIndex));
     }
