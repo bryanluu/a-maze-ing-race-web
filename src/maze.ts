@@ -12,6 +12,9 @@ interface TileData {
   readonly elementID: string; // the id for the tile element
   readonly selector: string; // the selector for the tile
   index: number; // the index within the tiles list
+  cost?: number; // the cheapest cost of connection to vertex
+  route?: number; // the index of the neighbor providing the cheapest edge
+  used?: boolean; // whether the tile is in the maze
 }
 
 /**
@@ -27,6 +30,9 @@ class VertexTile {
       elementID: id,
       selector: "#" + id,
       index: index,
+      cost: Infinity,
+      route: null,
+      used: false
     }
   }
 

@@ -8,6 +8,9 @@ class VertexTile {
             elementID: id,
             selector: "#" + id,
             index: index,
+            cost: Infinity,
+            route: null,
+            used: false
         };
     }
     toString() {
