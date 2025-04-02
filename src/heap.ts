@@ -75,9 +75,14 @@ class Heap<T> {
    * @returns - the data at the top of heap
    */
   extract(): T {
-    let top = this.data[0];
-    this.data[0] = this.data.pop();
-    this.bubbleDown(0);
+    if (this.isEmpty())
+      return null;
+
+    let top = this.data.shift();
+    if (!this.isEmpty()) {
+      this.data.unshift(this.data.pop());
+      this.bubbleDown(0);
+    }
     return top;
   }
 

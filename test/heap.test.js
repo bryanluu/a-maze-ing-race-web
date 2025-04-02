@@ -41,8 +41,8 @@ test("insert works correctly for max-heap", () => {
   expect(h.data).toEqual([15, 5, 11, 3, 4, 8]);
 });
 
-test("extract works correctly for min-heap", () => {
-  let h = new Heap(minHeapComparator);
+test("extract works correctly for max-heap", () => {
+  let h = new Heap(maxHeapComparator);
 
   // extracting empty
   let actual = h.extract();
