@@ -70,35 +70,34 @@ function buildMaze(mazeWidth, mazeHeight) {
   priorityQueue.insert(start);
   Graph.mazeGraph = new Graph(nodes, mazeWidth, mazeHeight);
   let maze = Graph.mazeGraph;
-  // // TODO fix, currently buggy and stuck in an infinite loop
-  // while (!priorityQueue.isEmpty()) {
-  //   let v = priorityQueue.extract(); // return border node with cheapest edge
-  //   v.data.used = true;
-  //   let cheapestCost = v.data.cost;
-  //   let cheapestNeighbor = MazeVertex.getNode(v.data.route);
+  while (!priorityQueue.isEmpty()) {
+    let v = priorityQueue.extract(); // return border node with cheapest edge
+    v.data.used = true;
+    let cheapestCost = v.data.cost;
+    let cheapestNeighbor = MazeVertex.getNode(v.data.route);
 
-  //   // if v touches the maze, add cheapest neighboring edge to maze
-  //   if (cheapestNeighbor)
-  //     maze.insertEdge(v, cheapestNeighbor, cheapestCost);
+    // if v touches the maze, add cheapest neighboring edge to maze
+    if (cheapestNeighbor)
+      maze.insertEdge(v, cheapestNeighbor, cheapestCost);
 
-  //   // loop through outgoing edges of v
-  //   let neighbors = adj.weights.get(v);
-  //   neighbors.forEach((weight, w, _) => {
-  //     if ((!w.data.used) && weight < w.data.cost) {
-  //       w.data.cost = weight;
-  //       w.data.route = v.data.index;
-  //       priorityQueue.insert(w);
-  //     }
-  //   })
-  // }
-  maze.insertEdge(nodes[0], nodes[1], 1);
-  maze.insertEdge(nodes[1], nodes[2], 1);
-  maze.insertEdge(nodes[2], nodes[5], 1);
-  maze.insertEdge(nodes[3], nodes[6], 1);
-  maze.insertEdge(nodes[4], nodes[7], 1);
-  maze.insertEdge(nodes[5], nodes[4], 1);
-  maze.insertEdge(nodes[6], nodes[7], 1);
-  maze.insertEdge(nodes[7], nodes[8], 1);
+    // loop through outgoing edges of v
+    let neighbors = adj.weights.get(v);
+    neighbors.forEach((weight, w, _) => {
+      if ((!w.data.used) && weight < w.data.cost) {
+        w.data.cost = weight;
+        w.data.route = v.data.index;
+        priorityQueue.insert(w);
+      }
+    })
+  }
+  // maze.insertEdge(nodes[0], nodes[1], 1);
+  // maze.insertEdge(nodes[1], nodes[2], 1);
+  // maze.insertEdge(nodes[2], nodes[5], 1);
+  // maze.insertEdge(nodes[3], nodes[6], 1);
+  // maze.insertEdge(nodes[4], nodes[7], 1);
+  // maze.insertEdge(nodes[5], nodes[4], 1);
+  // maze.insertEdge(nodes[6], nodes[7], 1);
+  // maze.insertEdge(nodes[7], nodes[8], 1);
 }
 
 /**
