@@ -5,6 +5,7 @@ interface Comparator<T> {
 /** Implements a heap */
 class Heap<T> {
   private data: T[];
+  // heap comparator should return > 0 for the root compared children
   private comparator: Comparator<T>;
 
   /**
@@ -78,5 +79,12 @@ class Heap<T> {
     this.data[0] = this.data.pop();
     this.bubbleDown(0);
     return top;
+  }
+
+  /**
+   * @returns - whether the heap is empty
+   */
+  isEmpty(): boolean {
+    return this.data.length === 0;
   }
 }

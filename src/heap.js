@@ -62,5 +62,11 @@ class Heap {
         this.bubbleDown(0);
         return top;
     }
+    /**
+     * @returns - whether the heap is empty
+     */
+    isEmpty() {
+        return this.data.length === 0;
+    }
 }
 //# sourceMappingURL=heap.js.map
