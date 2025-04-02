@@ -88,3 +88,5 @@ class Heap<T> {
     return this.data.length === 0;
   }
 }
+
+module.exports = Heap;

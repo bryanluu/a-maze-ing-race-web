@@ -69,4 +69,5 @@ class Heap {
         return this.data.length === 0;
     }
 }
+module.exports = Heap;
 //# sourceMappingURL=heap.js.map
