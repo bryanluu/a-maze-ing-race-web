@@ -20,7 +20,7 @@ class Heap {
     bubbleUp(i) {
         let p = Heap.getParentIndex(i);
         // if heap is not correct
-        while (this.comparator(this.data[p], this.data[i]) < 0) {
+        while ((i > 0) && (this.comparator(this.data[p], this.data[i]) < 0)) {
             // swap
             let tmp = this.data[i];
             this.data[i] = this.data[p];
