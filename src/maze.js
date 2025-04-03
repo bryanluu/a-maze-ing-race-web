@@ -149,6 +149,30 @@ class Graph {
         // if no edges match, return false
         return false;
     }
+    /**
+     * Demo maze to debug stuff
+     */
+    static buildDemoGraph() {
+        let mazeWidth = 3, mazeHeight = 3;
+        for (let i = 0; i < (mazeWidth * mazeHeight); i++)
+            new MazeVertex();
+        let nodes = MazeVertex.nodes;
+        const v = MazeVertex.getNode;
+        Graph.adjacencyGraph = new Graph(nodes, mazeWidth, mazeHeight);
+        let adj = Graph.adjacencyGraph;
+        adj.insertEdge(v(0), v(1), 3);
+        adj.insertEdge(v(1), v(2), 5);
+        adj.insertEdge(v(0), v(3), 1);
+        adj.insertEdge(v(1), v(4), 1);
+        adj.insertEdge(v(2), v(5), 3);
+        adj.insertEdge(v(3), v(4), 2);
+        adj.insertEdge(v(4), v(5), 2);
+        adj.insertEdge(v(3), v(6), 4);
+        adj.insertEdge(v(4), v(7), 1);
+        adj.insertEdge(v(5), v(8), 5);
+        adj.insertEdge(v(6), v(7), 1);
+        adj.insertEdge(v(7), v(8), 2);
+    }
     static buildAdjacencyGraph(mazeWidth, mazeHeight) {
         for (let i = 0; i < (mazeWidth * mazeHeight); i++)
             new MazeVertex();
@@ -161,7 +185,7 @@ class Graph {
                 let src = MazeVertex.getNode(i);
                 let srcIndex = src.data.index;
                 let weight = Math.floor(nodes.length * Math.random());
-                if ((c % mazeWidth) > 0) {
+                if (c > 0) {
                     let left = MazeVertex.getNode(MazeVertex.getNeighborIndex(srcIndex, "left"));
                     adj.insertEdge(src, left, weight);
                 }
@@ -179,9 +203,16 @@ class Graph {
      * @param {*} mazeWidth
      * @param {*} mazeHeight
      */
-    static buildMaze(mazeWidth, mazeHeight) {
+    static buildMaze(mazeWidth, mazeHeight, useDemoGraph = false) {
         let nodes = MazeVertex.nodes;
-        Graph.buildAdjacencyGraph(mazeWidth, mazeHeight);
+        if (useDemoGraph) {
+            mazeWidth = 3;
+            mazeHeight = 3;
+            Graph.buildDemoGraph();
+        }
+        else {
+            Graph.buildAdjacencyGraph(mazeWidth, mazeHeight);
+        }
         let adj = Graph.adjacencyGraph;
         let hasCheaperEdge = (u, v) => {
             return v.data.cost - u.data.cost;
@@ -209,14 +240,6 @@ class Graph {
                 }
             });
         }
-        // maze.insertEdge(nodes[0], nodes[1], 1);
-        // maze.insertEdge(nodes[1], nodes[2], 1);
-        // maze.insertEdge(nodes[2], nodes[5], 1);
-        // maze.insertEdge(nodes[3], nodes[6], 1);
-        // maze.insertEdge(nodes[4], nodes[7], 1);
-        // maze.insertEdge(nodes[5], nodes[4], 1);
-        // maze.insertEdge(nodes[6], nodes[7], 1);
-        // maze.insertEdge(nodes[7], nodes[8], 1);
     }
     /**
      * Creates the HTML for the Maze and inserts it into the document
@@ -388,4 +411,5 @@ class Player extends VertexTile {
         }
     }
 }
+module.exports = { MazeVertex, Graph, Player };
 //# sourceMappingURL=maze.js.map
