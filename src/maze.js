@@ -411,5 +411,4 @@ class Player extends VertexTile {
         }
     }
 }
-module.exports = { MazeVertex, Graph, Player };
 //# sourceMappingURL=maze.js.map

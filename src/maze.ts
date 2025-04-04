@@ -496,5 +496,3 @@ class Player extends VertexTile {
     }
   }
 }
-
-module.exports = { MazeVertex, Graph, Player };
