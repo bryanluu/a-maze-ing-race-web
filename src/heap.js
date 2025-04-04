@@ -1,5 +1,5 @@
 /** Implements a heap */
-class Heap {
+export default class Heap {
     /**
      *
      * @param comp - comparator to use for heap
@@ -72,6 +72,8 @@ class Heap {
     isEmpty() {
         return this.data.length === 0;
     }
+    toString() {
+        return this.data.toString();
+    }
 }
-module.exports = Heap;
 //# sourceMappingURL=heap.js.map

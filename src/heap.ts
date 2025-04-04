@@ -3,8 +3,9 @@ interface Comparator<T> {
 }
 
 /** Implements a heap */
-class Heap<T> {
-  private data: T[];
+export default class Heap<T> {
+  // TODO fix data access
+  public data: T[];
   // heap comparator should return > 0 for the root compared children
   private comparator: Comparator<T>;
 
@@ -92,6 +93,8 @@ class Heap<T> {
   isEmpty(): boolean {
     return this.data.length === 0;
   }
-}
 
-module.exports = Heap;
+  toString(): string {
+    return this.data.toString();
+  }
+}

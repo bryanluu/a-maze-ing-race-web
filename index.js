@@ -1,3 +1,5 @@
+import { MazeVertex, Graph, Player } from "../src/maze.js";
+
 // Demo Settings
 var mazeWidth = 4;
 var mazeHeight = 4;
