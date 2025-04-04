@@ -1,3 +1,4 @@
+const Heap = require("../src/heap");
 /**
  * Implements an element that lives on a MazeVertex spot
  */

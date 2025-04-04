@@ -1,3 +1,5 @@
+const Heap = require("../src/heap");
+
 /**
  * Describes a DOM element's rect
  */

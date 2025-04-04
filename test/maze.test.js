@@ -1,4 +1,3 @@
-const Heap = require("../src/heap");
 const { MazeVertex, Graph } = require("../src/maze");
 
 test("adjacencyGraph is built correctly", () => {
