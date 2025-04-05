@@ -1,3 +1,5 @@
+import Heap from "./heap.js";
+
 /**
  * Describes a DOM element's rect
  */
@@ -71,7 +73,7 @@ class VertexTile {
 /**
  * Implements a tile for the maze
  */
-class MazeVertex extends VertexTile {
+export class MazeVertex extends VertexTile {
   readonly id: string; // the id for the tile
   readonly data: TileData // data payload for tile
   static nodes: MazeVertex[] = []; // all existing tiles
@@ -138,7 +140,7 @@ type EdgeList<VertexType> = Map<VertexType, number>;
 /**
  * Implements a weighted undirected graph
  */
-class Graph<VertexType> implements Maze<VertexType> {
+export class Graph<VertexType> implements Maze<VertexType> {
   nodes: Set<VertexType>
   // stores unique edges for easier indexing
   edges: Set<Edge<VertexType>>;
@@ -147,6 +149,7 @@ class Graph<VertexType> implements Maze<VertexType> {
     width: number,
     height: number
   }
+  // TODO fix data access
   static adjacencyGraph: Graph<MazeVertex>;
   static mazeGraph: Graph<MazeVertex>;
 
@@ -244,7 +247,7 @@ class Graph<VertexType> implements Maze<VertexType> {
     adj.insertEdge(v(7), v(8), 2);
   }
 
-  private static buildAdjacencyGraph(mazeWidth: number, mazeHeight: number) {
+  static buildAdjacencyGraph(mazeWidth: number, mazeHeight: number) {
     for (let i = 0; i < (mazeWidth * mazeHeight); i++)
       new MazeVertex();
     let nodes = MazeVertex.nodes;
@@ -360,7 +363,7 @@ class Graph<VertexType> implements Maze<VertexType> {
   }
 }
 
-class Player extends VertexTile {
+export class Player extends VertexTile {
   id: string = "player"; // pseudo-constant id
   data: TileData; // contains metadata about player element
   static instance: Player;

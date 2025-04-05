@@ -1,3 +1,4 @@
+import Heap from "./heap.js";
 /**
  * Implements an element that lives on a MazeVertex spot
  */
@@ -39,7 +40,7 @@ class VertexTile {
 /**
  * Implements a tile for the maze
  */
-class MazeVertex extends VertexTile {
+export class MazeVertex extends VertexTile {
     constructor() {
         let index = MazeVertex.nodes.length;
         let id = `v${index}`;
@@ -87,7 +88,7 @@ MazeVertex.nodes = []; // all existing tiles
 /**
  * Implements a weighted undirected graph
  */
-class Graph {
+export class Graph {
     constructor(nodes, width, height) {
         this.dimensions = {
             width: width,
@@ -285,7 +286,7 @@ class Graph {
         $("#maze-grid").html(mazeHTML);
     }
 }
-class Player extends VertexTile {
+export class Player extends VertexTile {
     constructor(startIndex) {
         let id = "player";
         super(id, startIndex);

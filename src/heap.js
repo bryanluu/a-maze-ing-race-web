@@ -1,5 +1,5 @@
 /** Implements a heap */
-class Heap {
+export default class Heap {
     /**
      *
      * @param comp - comparator to use for heap
