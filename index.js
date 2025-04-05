@@ -36,7 +36,7 @@ function readyPlayer() {
  * Initializes the game
  */
 function initializeGame() {
-  Graph.buildMaze(3, 3, true); // TODO make dynamic
+  Graph.buildMaze(3, 3, false); // TODO make dynamic
   Graph.displayMaze();
   readyPlayer();
 };
