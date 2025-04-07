@@ -1,10 +1,10 @@
 import { expect, test } from '@jest/globals';
-import { MazeVertex, Maze } from "../src/maze";
+import { MazeVertex, Graph } from "../src/maze";
 test("adjacencyGraph is built correctly", () => {
-    Maze.buildAdjacencyGraph(3, 3);
+    Graph.buildAdjacencyGraph(3, 3);
     const v = MazeVertex.getNode;
     const isConnected = (v1, v2) => {
-        return Maze.adjacencyGraph.isNeighbor(v1, v2);
+        return Graph.adjacencyGraph.isNeighbor(v1, v2);
     };
     let i = 0;
     for (let r = 0; r < 3; r++) {
@@ -20,9 +20,9 @@ test("adjacencyGraph is built correctly", () => {
 test("Prim's algo is working correctly", () => {
     let mazeWidth = 3, mazeHeight = 3;
     const v = MazeVertex.getNode;
-    Maze.buildMaze(mazeWidth, mazeHeight, true);
+    Graph.buildMaze(mazeWidth, mazeHeight, true);
     const isConnected = (v1, v2) => {
-        return Maze.mazeGraph.isNeighbor(v1, v2);
+        return Graph.mazeGraph.isNeighbor(v1, v2);
     };
     expect(isConnected(v(0), v(1))).toBe(false);
     expect(isConnected(v(1), v(2))).toBe(false);

@@ -36,7 +36,11 @@ function readyPlayer() {
  * Initializes the game
  */
 function initializeGame() {
-  Graph.buildMaze(3, 3, false); // TODO make dynamic
+  Graph.buildMaze({
+    rows: 6,
+    columns: 6,
+    useDemoGraph: false
+  });
   Graph.displayMaze();
   readyPlayer();
 };

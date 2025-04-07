@@ -63,13 +63,13 @@ export class MazeVertex extends VertexTile {
         let newIndex = index;
         switch (direction) {
             case "up":
-                newIndex = index - Graph.dimensions.width;
+                newIndex = index - Graph.mazeGrid.columns;
                 break;
             case "right":
                 newIndex = index + 1;
                 break;
             case "down":
-                newIndex = index + Graph.dimensions.width;
+                newIndex = index + Graph.mazeGrid.columns;
                 break;
             case "left":
                 newIndex = index - 1;
@@ -147,6 +147,24 @@ export class Graph {
         return false;
     }
     /**
+     * Constructs the grid used by the maze
+     *
+     * @param dimensions
+     */
+    static constructMazeGrid(dimensions) {
+        Graph.mazeGrid = {
+            rows: dimensions.rows,
+            columns: dimensions.columns
+        };
+        let grid = $("#maze-grid");
+        let cssGrid = {
+            rows: (2 * dimensions.rows) - 1,
+            columns: (2 * dimensions.columns) - 1,
+        };
+        grid.css("grid-template-rows", `repeat(${cssGrid.rows}, 1fr)`);
+        grid.css("grid-template-columns", `repeat(${cssGrid.columns}, 1fr)`);
+    }
+    /**
      * Demo maze to debug stuff
      */
     static buildDemoGraph() {
@@ -154,10 +172,11 @@ export class Graph {
         for (let i = 0; i < (mazeWidth * mazeHeight); i++)
             new MazeVertex();
         let nodes = MazeVertex.nodes;
-        Graph.dimensions = {
-            width: mazeWidth,
-            height: mazeHeight
+        let dimensions = {
+            rows: mazeHeight,
+            columns: mazeWidth
         };
+        Graph.constructMazeGrid(dimensions);
         const v = MazeVertex.getNode;
         Graph.adjacencyGraph = new Graph(nodes);
         let adj = Graph.adjacencyGraph;
@@ -174,15 +193,13 @@ export class Graph {
         adj.insertEdge(v(6), v(7), 1);
         adj.insertEdge(v(7), v(8), 2);
     }
-    static buildAdjacencyGraph(mazeWidth, mazeHeight) {
+    static buildAdjacencyGraph(dimensions) {
+        let mazeWidth = dimensions.columns, mazeHeight = dimensions.columns;
         for (let i = 0; i < (mazeWidth * mazeHeight); i++)
             new MazeVertex();
         let nodes = MazeVertex.nodes;
+        Graph.constructMazeGrid(dimensions);
         Graph.adjacencyGraph = new Graph(nodes);
-        Graph.dimensions = {
-            width: mazeWidth,
-            height: mazeHeight
-        };
         let adj = Graph.adjacencyGraph;
         let i = 0;
         for (let r = 0; r < mazeHeight; r++) {
@@ -208,7 +225,8 @@ export class Graph {
      * @param {*} mazeWidth
      * @param {*} mazeHeight
      */
-    static buildMaze(mazeWidth, mazeHeight, useDemoGraph = false) {
+    static buildMaze(properties) {
+        let { useDemoGraph } = properties, mazeWidth = properties.columns, mazeHeight = properties.rows;
         let nodes = MazeVertex.nodes;
         if (useDemoGraph) {
             mazeWidth = 3;
@@ -216,7 +234,7 @@ export class Graph {
             Graph.buildDemoGraph();
         }
         else {
-            Graph.buildAdjacencyGraph(mazeWidth, mazeHeight);
+            Graph.buildAdjacencyGraph(properties);
         }
         let adj = Graph.adjacencyGraph;
         let hasCheaperEdge = (u, v) => {
@@ -251,8 +269,8 @@ export class Graph {
      */
     static displayMaze() {
         let g = Graph.mazeGraph;
-        let mazeWidth = Graph.dimensions.width;
-        let mazeHeight = Graph.dimensions.height;
+        let mazeWidth = Graph.mazeGrid.columns;
+        let mazeHeight = Graph.mazeGrid.rows;
         let mazeHTML = "";
         let gapHTML = '<div class="maze-tile maze-gap"></div>';
         let makeEdgeHTML = (srcIndex, tgtIndex) => {
