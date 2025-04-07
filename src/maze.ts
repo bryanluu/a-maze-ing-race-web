@@ -103,13 +103,13 @@ export class MazeVertex extends VertexTile {
     let newIndex = index;
     switch (direction) {
       case "up":
-        newIndex = index - Graph.adjacencyGraph.dimensions.width;
+        newIndex = index - Graph.dimensions.width;
         break;
       case "right":
         newIndex = index + 1;
         break;
       case "down":
-        newIndex = index + Graph.adjacencyGraph.dimensions.width;
+        newIndex = index + Graph.dimensions.width;
         break;
       case "left":
         newIndex = index - 1;
@@ -126,38 +126,26 @@ export class MazeVertex extends VertexTile {
   }
 }
 
-interface Maze<VertexType> {
-  nodes: Set<VertexType>;
-  dimensions: {
-    width: number,
-    height: number
-  };
-}
-
 type Edge<VertexType> = readonly [VertexType, VertexType];
 type EdgeList<VertexType> = Map<VertexType, number>;
 
 /**
  * Implements a weighted undirected graph
  */
-export class Graph<VertexType> implements Maze<VertexType> {
+export class Graph<VertexType>{
   nodes: Set<VertexType>
   // stores unique edges for easier indexing
   edges: Set<Edge<VertexType>>;
   weights: Map<VertexType, EdgeList<VertexType>>;
-  dimensions: {
-    width: number,
-    height: number
-  }
   // TODO fix data access
   static adjacencyGraph: Graph<MazeVertex>;
   static mazeGraph: Graph<MazeVertex>;
+  static dimensions: {
+    width: number,
+    height: number
+  };
 
-  constructor(nodes, width, height) {
-    this.dimensions = {
-      width: width,
-      height: height
-    };
+  constructor(nodes) {
     this.nodes = new Set<VertexType>(nodes);
     this.edges = new Set<Edge<VertexType>>();
     this.weights = new Map<VertexType, EdgeList<VertexType>>();
@@ -229,8 +217,12 @@ export class Graph<VertexType> implements Maze<VertexType> {
     for (let i = 0; i < (mazeWidth * mazeHeight); i++)
       new MazeVertex();
     let nodes = MazeVertex.nodes;
+    Graph.dimensions = {
+      width: mazeWidth,
+      height: mazeHeight
+    }
     const v = MazeVertex.getNode;
-    Graph.adjacencyGraph = new Graph(nodes, mazeWidth, mazeHeight);
+    Graph.adjacencyGraph = new Graph(nodes);
 
     let adj = Graph.adjacencyGraph;
     adj.insertEdge(v(0), v(1), 3);
@@ -252,7 +244,11 @@ export class Graph<VertexType> implements Maze<VertexType> {
       new MazeVertex();
     let nodes = MazeVertex.nodes;
 
-    Graph.adjacencyGraph = new Graph(nodes, mazeWidth, mazeHeight);
+    Graph.adjacencyGraph = new Graph(nodes);
+    Graph.dimensions = {
+      width: mazeWidth,
+      height: mazeHeight
+    }
     let adj = Graph.adjacencyGraph;
     let i = 0;
     for (let r = 0; r < mazeHeight; r++) {
@@ -297,7 +293,7 @@ export class Graph<VertexType> implements Maze<VertexType> {
 
     let start = MazeVertex.getNode(0); // TODO adjust for dynamic start
     priorityQueue.insert(start);
-    Graph.mazeGraph = new Graph(nodes, mazeWidth, mazeHeight);
+    Graph.mazeGraph = new Graph(nodes);
     let maze = Graph.mazeGraph;
     while (!priorityQueue.isEmpty()) {
       let v = priorityQueue.extract(); // return border node with cheapest edge
@@ -326,8 +322,8 @@ export class Graph<VertexType> implements Maze<VertexType> {
    */
   static displayMaze() {
     let g = Graph.mazeGraph;
-    let mazeWidth = g.dimensions.width;
-    let mazeHeight = g.dimensions.height;
+    let mazeWidth = Graph.dimensions.width;
+    let mazeHeight = Graph.dimensions.height;
     let mazeHTML = "";
     let gapHTML = '<div class="maze-tile maze-gap"></div>';
     let makeEdgeHTML = (srcIndex, tgtIndex) => {

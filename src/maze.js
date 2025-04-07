@@ -63,13 +63,13 @@ export class MazeVertex extends VertexTile {
         let newIndex = index;
         switch (direction) {
             case "up":
-                newIndex = index - Graph.adjacencyGraph.dimensions.width;
+                newIndex = index - Graph.dimensions.width;
                 break;
             case "right":
                 newIndex = index + 1;
                 break;
             case "down":
-                newIndex = index + Graph.adjacencyGraph.dimensions.width;
+                newIndex = index + Graph.dimensions.width;
                 break;
             case "left":
                 newIndex = index - 1;
@@ -89,11 +89,7 @@ MazeVertex.nodes = []; // all existing tiles
  * Implements a weighted undirected graph
  */
 export class Graph {
-    constructor(nodes, width, height) {
-        this.dimensions = {
-            width: width,
-            height: height
-        };
+    constructor(nodes) {
         this.nodes = new Set(nodes);
         this.edges = new Set();
         this.weights = new Map();
@@ -158,8 +154,12 @@ export class Graph {
         for (let i = 0; i < (mazeWidth * mazeHeight); i++)
             new MazeVertex();
         let nodes = MazeVertex.nodes;
+        Graph.dimensions = {
+            width: mazeWidth,
+            height: mazeHeight
+        };
         const v = MazeVertex.getNode;
-        Graph.adjacencyGraph = new Graph(nodes, mazeWidth, mazeHeight);
+        Graph.adjacencyGraph = new Graph(nodes);
         let adj = Graph.adjacencyGraph;
         adj.insertEdge(v(0), v(1), 3);
         adj.insertEdge(v(1), v(2), 5);
@@ -178,7 +178,11 @@ export class Graph {
         for (let i = 0; i < (mazeWidth * mazeHeight); i++)
             new MazeVertex();
         let nodes = MazeVertex.nodes;
-        Graph.adjacencyGraph = new Graph(nodes, mazeWidth, mazeHeight);
+        Graph.adjacencyGraph = new Graph(nodes);
+        Graph.dimensions = {
+            width: mazeWidth,
+            height: mazeHeight
+        };
         let adj = Graph.adjacencyGraph;
         let i = 0;
         for (let r = 0; r < mazeHeight; r++) {
@@ -221,7 +225,7 @@ export class Graph {
         let priorityQueue = new Heap(hasCheaperEdge);
         let start = MazeVertex.getNode(0); // TODO adjust for dynamic start
         priorityQueue.insert(start);
-        Graph.mazeGraph = new Graph(nodes, mazeWidth, mazeHeight);
+        Graph.mazeGraph = new Graph(nodes);
         let maze = Graph.mazeGraph;
         while (!priorityQueue.isEmpty()) {
             let v = priorityQueue.extract(); // return border node with cheapest edge
@@ -247,8 +251,8 @@ export class Graph {
      */
     static displayMaze() {
         let g = Graph.mazeGraph;
-        let mazeWidth = g.dimensions.width;
-        let mazeHeight = g.dimensions.height;
+        let mazeWidth = Graph.dimensions.width;
+        let mazeHeight = Graph.dimensions.height;
         let mazeHTML = "";
         let gapHTML = '<div class="maze-tile maze-gap"></div>';
         let makeEdgeHTML = (srcIndex, tgtIndex) => {
