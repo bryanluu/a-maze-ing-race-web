@@ -31,8 +31,30 @@ h1 {
   color: greenyellow;
 }
 
+#settings-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: black;
+  border: 0px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+#settings-button:hover {
+  background-color: greenyellow;
+  scale: 1.1;
+  cursor: pointer;
+}
+
 header {
   border-bottom: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 /* --- Game Area --- */
