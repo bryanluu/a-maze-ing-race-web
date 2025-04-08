@@ -78,6 +78,9 @@ function releaseDPad() {
  * Handles the keyboard down presses, which control the game
  */
 function handleKeydown(keyEvent) {
+  if (settingsDialog.open)
+    return;
+
   let key = keyEvent.key;
   switch(key) {
     case "ArrowUp":
@@ -101,6 +104,9 @@ function handleKeydown(keyEvent) {
 
 function handleKeyup(keyEvent) {
   if (keyEvent.type != "keyup")
+    return;
+
+  if (settingsDialog.open)
     return;
 
   let key = keyEvent.key;
