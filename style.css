@@ -43,7 +43,7 @@ h1 {
   border-radius: 50%;
 }
 
-#settings-button:hover {
+#settings-button:hover, #settings-button:focus-visible   {
   background-color: greenyellow;
   scale: 1.1;
   cursor: pointer;
@@ -81,14 +81,14 @@ header {
   border-color: white;
 }
 
-#settings-dialog > form > div > button:hover {
+#settings-dialog button[value="confirm"]:hover, #settings-dialog button[value="confirm"]:focus-visible {
   background-color: greenyellow;
   color: black;
   border-color: greenyellow;
   cursor: pointer;
 }
 
-#settings-dialog > form > div > button[value="cancel"]:hover {
+#settings-dialog button[value="cancel"]:hover, #settings-dialog button[value="cancel"]:focus-visible {
   background-color: red;
   color: black;
   border-color: red;
@@ -219,9 +219,8 @@ header {
   font-size: larger;
 }
 
-.key-symbol:hover {
+.key-symbol:hover, .key-symbol:focus-visible {
   background-color: lightgray;
-  color: white;
 }
 
 .key-symbol.pressed {
