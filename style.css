@@ -121,8 +121,8 @@ header {
 #maze-grid {
   margin: 0;
   display: grid;
-  grid-template-rows: repeat(5, 1fr); /* TODO adjust to dynamic */
-  grid-template-columns: repeat(5, 1fr); /* TODO adjust to dynamic */
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   width: min-content;
 }
 
