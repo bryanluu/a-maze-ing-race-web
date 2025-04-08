@@ -1,7 +1,13 @@
 import { MazeVertex, Graph, Player } from "../src/maze.js";
 
-const settingsButton = document.querySelector("#settings-button");
+const defaultOptions = {
+  rows: 5,
+  columns: 5
+};
+
 const settingsDialog = document.querySelector("#settings-dialog");
+const settingsWidth = settingsDialog.querySelector("#maze-width");
+const settingsHeight = settingsDialog.querySelector("#maze-height");
 
 /**
  * Styles the DPad button to look like its being pressed
@@ -34,12 +40,8 @@ function readyPlayer() {
 /**
  * Initializes the game
  */
-function initializeGame() {
-  Graph.buildMaze({
-    rows: 6,
-    columns: 6,
-    useDemoGraph: false
-  });
+function initializeGame(options) {
+  Graph.buildMaze(options);
   Graph.displayMaze();
   readyPlayer();
 };
@@ -114,7 +116,9 @@ function handleKeyup(keyEvent) {
   }
 }
 
-$(document).ready(initializeGame);
+$(document).ready(() => {
+  initializeGame(defaultOptions);
+});
 
 $(document).on("keydown", handleKeydown);
 $(document).on("keyup", handleKeyup);
@@ -128,5 +132,19 @@ $("button.key-symbol").on("mousedown",
 
 $("button.key-symbol").on("mouseup", releaseDPad);
 $("#settings-button").on("click", () => {
+  settingsWidth.value = Graph.mazeGrid.columns;
+  settingsHeight.value = Graph.mazeGrid.rows;
   settingsDialog.showModal();
+});
+$("#cancel-settings").on("click", (event) => {
+  event.preventDefault();
+  settingsDialog.close();
+});
+$("#settings-dialog").on("submit", () => {
+  let options = {
+    rows: Number.parseInt(settingsHeight.value),
+    columns: Number.parseInt(settingsWidth.value)
+  };
+  // TODO remove
+  console.log(options);
 });
