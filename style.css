@@ -65,6 +65,7 @@ header {
 
 #settings-dialog h2 {
   font-size: x-large;
+  align-self: center;
 }
 
 #settings-dialog > form > .form-line {
@@ -81,15 +82,16 @@ header {
 }
 
 #settings-dialog > form > div > button:hover {
-  background-color: red;
-  color: black;
-  border-color: red;
-}
-
-#settings-dialog > form > div > button.confirm:hover {
   background-color: greenyellow;
   color: black;
   border-color: greenyellow;
+  cursor: pointer;
+}
+
+#settings-dialog > form > div > button[value="cancel"]:hover {
+  background-color: red;
+  color: black;
+  border-color: red;
 }
 
 /* --- Game Area --- */
