@@ -1,8 +1,7 @@
 import { MazeVertex, Graph, Player } from "../src/maze.js";
 
-// Demo Settings
-var mazeWidth = 4;
-var mazeHeight = 4;
+const settingsButton = document.querySelector("#settings-button");
+const settingsDialog = document.querySelector("#settings-dialog");
 
 /**
  * Styles the DPad button to look like its being pressed
@@ -128,3 +127,6 @@ $("button.key-symbol").on("mousedown",
 );
 
 $("button.key-symbol").on("mouseup", releaseDPad);
+$("#settings-button").on("click", () => {
+  settingsDialog.showModal();
+});

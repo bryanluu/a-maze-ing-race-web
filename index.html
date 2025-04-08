@@ -11,6 +11,39 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <dialog id="settings-dialog">
+    <form class="container">
+      <h2>Settings</h2>
+      <p class="form-line">
+        <label for="maze-width">Width</label>
+        <!-- TODO increase max -->
+        <input
+          type="number"
+          name="maze-width"
+          id="maze-width"
+          min="3"
+          max="10"
+          value="5"
+          step="1">
+      </p>
+      <p class="form-line">
+        <label for="maze-height">Height</label>
+        <!-- TODO increase max -->
+        <input
+          type="number"
+          name="maze-height"
+          id="maze-height"
+          min="3"
+          max="10"
+          value="5"
+          step="1">
+      </p>
+      <div class="form-line">
+        <button value="default" id="confirm-button" class="confirm">Confirm</button>
+        <button value="cancel" formmethod="dialog">Cancel</button>
+      </div>
+    </form>
+  </dialog>
   <header id="header" class="container">
     <h1 id="title">A-<em>Maze</em>-ing Race</h1>
     <p>Collect artifacts and escape the maze before time runs out!</p>
