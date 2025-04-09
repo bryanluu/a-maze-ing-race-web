@@ -151,6 +151,6 @@ $("#settings-dialog").on("submit", () => {
     rows: Number.parseInt(settingsHeight.value),
     columns: Number.parseInt(settingsWidth.value)
   };
-  // TODO remove
-  console.log(options);
+
+  initializeGame(options);
 });
