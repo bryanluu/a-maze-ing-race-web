@@ -38,20 +38,27 @@ class VertexTile {
     }
 }
 /**
- * Implements a tile for the maze
+ * Implements a weighted undirected graph
  */
-export class MazeVertex extends VertexTile {
+export class Graph {
     constructor() {
-        let index = MazeVertex.nodes.length;
-        let id = `v${index}`;
-        super(id, index);
-        MazeVertex.nodes.push(this);
+        this.edges = new Set();
+        this.weights = new Map();
+    }
+    static resetNodeList(properties) {
+        let mazeWidth = properties.columns, mazeHeight = properties.rows;
+        Graph.nodes = [];
+        for (let index = 0; index < (mazeWidth * mazeHeight); index++) {
+            let id = `v${index}`;
+            let node = new VertexTile(id, index);
+            Graph.nodes.push(node);
+        }
     }
     static getNode(index) {
-        return MazeVertex.nodes[index];
+        return Graph.nodes[index];
     }
     static isValidIndex(index) {
-        return ((0 <= index) && (index < MazeVertex.nodes.length));
+        return ((0 <= index) && (index < Graph.nodes.length));
     }
     /**
      *
@@ -78,21 +85,10 @@ export class MazeVertex extends VertexTile {
                 console.error(`Invalid direction: "${direction}"`);
                 return null;
         }
-        if (MazeVertex.isValidIndex(newIndex))
+        if (Graph.isValidIndex(newIndex))
             return newIndex;
         else
             return null;
-    }
-}
-MazeVertex.nodes = []; // all existing tiles
-/**
- * Implements a weighted undirected graph
- */
-export class Graph {
-    constructor(nodes) {
-        this.nodes = new Set(nodes);
-        this.edges = new Set();
-        this.weights = new Map();
     }
     insertEdge(source, target, weight, directed = false) {
         let newEdges = this.weights.get(source) || new Map();
@@ -107,10 +103,10 @@ export class Graph {
         let str = "nodes: {";
         // nodes toString
         let i = 0;
-        for (let node of this.nodes) {
+        for (let node of Graph.nodes) {
             str += node.toString();
             i++;
-            if (i < this.nodes.size)
+            if (i < Graph.nodes.length)
                 str += ", ";
             else // last node
                 str += "}\n";
@@ -169,16 +165,13 @@ export class Graph {
      */
     static buildDemoGraph() {
         let mazeWidth = 3, mazeHeight = 3;
-        for (let i = 0; i < (mazeWidth * mazeHeight); i++)
-            new MazeVertex();
-        let nodes = MazeVertex.nodes;
         let dimensions = {
             rows: mazeHeight,
             columns: mazeWidth
         };
         Graph.constructMazeGrid(dimensions);
-        const v = MazeVertex.getNode;
-        Graph.adjacencyGraph = new Graph(nodes);
+        const v = Graph.getNode;
+        Graph.adjacencyGraph = new Graph();
         let adj = Graph.adjacencyGraph;
         adj.insertEdge(v(0), v(1), 3);
         adj.insertEdge(v(1), v(2), 5);
@@ -195,24 +188,22 @@ export class Graph {
     }
     static buildAdjacencyGraph(dimensions) {
         let mazeWidth = dimensions.columns, mazeHeight = dimensions.columns;
-        for (let i = 0; i < (mazeWidth * mazeHeight); i++)
-            new MazeVertex();
-        let nodes = MazeVertex.nodes;
+        let nodes = Graph.nodes;
         Graph.constructMazeGrid(dimensions);
-        Graph.adjacencyGraph = new Graph(nodes);
+        Graph.adjacencyGraph = new Graph();
         let adj = Graph.adjacencyGraph;
         let i = 0;
         for (let r = 0; r < mazeHeight; r++) {
             for (let c = 0; c < mazeWidth; c++) {
-                let src = MazeVertex.getNode(i);
+                let src = Graph.getNode(i);
                 let srcIndex = src.data.index;
                 let weight = Math.floor(nodes.length * Math.random());
                 if (c > 0) {
-                    let left = MazeVertex.getNode(MazeVertex.getNeighborIndex(srcIndex, "left"));
+                    let left = Graph.getNode(Graph.getNeighborIndex(srcIndex, "left"));
                     adj.insertEdge(src, left, weight);
                 }
                 if (r > 0) {
-                    let above = MazeVertex.getNode(MazeVertex.getNeighborIndex(srcIndex, "up"));
+                    let above = Graph.getNode(Graph.getNeighborIndex(srcIndex, "up"));
                     adj.insertEdge(src, above, weight);
                 }
                 i++;
@@ -227,7 +218,7 @@ export class Graph {
      */
     static buildMaze(properties) {
         let { useDemoGraph } = properties, mazeWidth = properties.columns, mazeHeight = properties.rows;
-        let nodes = MazeVertex.nodes;
+        Graph.resetNodeList(properties);
         if (useDemoGraph) {
             mazeWidth = 3;
             mazeHeight = 3;
@@ -241,15 +232,15 @@ export class Graph {
             return v.data.cost - u.data.cost;
         };
         let priorityQueue = new Heap(hasCheaperEdge);
-        let start = MazeVertex.getNode(0); // TODO adjust for dynamic start
+        let start = Graph.getNode(0); // TODO adjust for dynamic start
         priorityQueue.insert(start);
-        Graph.mazeGraph = new Graph(nodes);
+        Graph.mazeGraph = new Graph();
         let maze = Graph.mazeGraph;
         while (!priorityQueue.isEmpty()) {
             let v = priorityQueue.extract(); // return border node with cheapest edge
             v.data.used = true;
             let cheapestCost = v.data.cost;
-            let cheapestNeighbor = MazeVertex.getNode(v.data.route);
+            let cheapestNeighbor = Graph.getNode(v.data.route);
             // if v touches the maze, add cheapest neighboring edge to maze
             if (cheapestNeighbor)
                 maze.insertEdge(v, cheapestNeighbor, cheapestCost);
@@ -274,8 +265,8 @@ export class Graph {
         let mazeHTML = "";
         let gapHTML = '<div class="maze-tile maze-gap"></div>';
         let makeEdgeHTML = (srcIndex, tgtIndex) => {
-            let src = MazeVertex.getNode(srcIndex);
-            let tgt = MazeVertex.getNode(tgtIndex);
+            let src = Graph.getNode(srcIndex);
+            let tgt = Graph.getNode(tgtIndex);
             let visible = g.isNeighbor(src, tgt);
             let classes = (visible ? "maze-tile maze-edge maze-path" : "maze-tile maze-edge maze-gap");
             return `<div id="e${srcIndex}-${tgtIndex}" class="${classes}"></div>`;
@@ -315,7 +306,7 @@ export class Player extends VertexTile {
         this.id = "player"; // pseudo-constant id
         // load the image and position at the startIndex's node
         this.ref().load("public/assets/cursor-vertical.svg", () => {
-            this.centerAt(MazeVertex.getNode(startIndex).center());
+            this.centerAt(Graph.getNode(startIndex).center());
         });
         Player.instance = this;
     }
@@ -335,7 +326,7 @@ export class Player extends VertexTile {
     }
     /**
      *
-     * @param {MazeVertex} target
+     * @param {VertexTile} target
      *
      * Moves the player's center to the target vertex
      */
@@ -422,15 +413,15 @@ export class Player extends VertexTile {
             return;
         this.pointTo(direction);
         let startIndex = this.data.index;
-        let newIndex = MazeVertex.getNeighborIndex(startIndex, direction);
+        let newIndex = Graph.getNeighborIndex(startIndex, direction);
         // if newIndex is invalid, i.e. player would move out-of-bounds, stop
-        if (!MazeVertex.isValidIndex(newIndex))
+        if (!Graph.isValidIndex(newIndex))
             return;
-        let src = MazeVertex.getNode(startIndex);
-        let tgt = MazeVertex.getNode(newIndex);
+        let src = Graph.getNode(startIndex);
+        let tgt = Graph.getNode(newIndex);
         if (maze.isNeighbor(src, tgt)) {
             this.data.index = newIndex;
-            this.moveTo(MazeVertex.getNode(newIndex));
+            this.moveTo(Graph.getNode(newIndex));
         }
     }
 }

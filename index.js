@@ -1,4 +1,4 @@
-import { MazeVertex, Graph, Player } from "../src/maze.js";
+import { Graph, Player } from "../src/maze.js";
 
 const defaultOptions = {
   rows: 5,
@@ -32,7 +32,7 @@ function styleDpadButton(direction) {
  * Initializes the player
  */
 function readyPlayer() {
-  let firstVertex = MazeVertex.nodes[0];
+  let firstVertex = Graph.nodes[0];
   new Player(firstVertex.data.index);
 };
 
