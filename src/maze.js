@@ -159,6 +159,7 @@ export class Graph {
         };
         grid.css("grid-template-rows", `repeat(${cssGrid.rows}, 1fr)`);
         grid.css("grid-template-columns", `repeat(${cssGrid.columns}, 1fr)`);
+        Graph.resetNodeList(dimensions);
     }
     /**
      * Demo maze to debug stuff
@@ -187,9 +188,9 @@ export class Graph {
         adj.insertEdge(v(7), v(8), 2);
     }
     static buildAdjacencyGraph(dimensions) {
-        let mazeWidth = dimensions.columns, mazeHeight = dimensions.columns;
-        let nodes = Graph.nodes;
+        let mazeWidth = dimensions.columns, mazeHeight = dimensions.rows;
         Graph.constructMazeGrid(dimensions);
+        let nodes = Graph.nodes;
         Graph.adjacencyGraph = new Graph();
         let adj = Graph.adjacencyGraph;
         let i = 0;
@@ -217,11 +218,8 @@ export class Graph {
      * @param {*} mazeHeight
      */
     static buildMaze(properties) {
-        let { useDemoGraph } = properties, mazeWidth = properties.columns, mazeHeight = properties.rows;
-        Graph.resetNodeList(properties);
+        let { useDemoGraph } = properties;
         if (useDemoGraph) {
-            mazeWidth = 3;
-            mazeHeight = 3;
             Graph.buildDemoGraph();
         }
         else {

@@ -223,6 +223,7 @@ export class Graph{
     };
     grid.css("grid-template-rows", `repeat(${cssGrid.rows}, 1fr)`);
     grid.css("grid-template-columns", `repeat(${cssGrid.columns}, 1fr)`);
+    Graph.resetNodeList(dimensions);
   }
 
   /**
@@ -254,10 +255,10 @@ export class Graph{
   }
 
   static buildAdjacencyGraph(dimensions: {rows: number, columns: number}) {
-    let mazeWidth = dimensions.columns, mazeHeight = dimensions.columns;
-    let nodes = Graph.nodes;
-
+    let mazeWidth = dimensions.columns, mazeHeight = dimensions.rows;
     Graph.constructMazeGrid(dimensions);
+
+    let nodes = Graph.nodes;
     Graph.adjacencyGraph = new Graph();
     let adj = Graph.adjacencyGraph;
     let i = 0;
@@ -287,11 +288,8 @@ export class Graph{
    * @param {*} mazeHeight
    */
   static buildMaze(properties: { rows: number, columns: number, useDemoGraph: boolean}) {
-    let { useDemoGraph } = properties, mazeWidth = properties.columns, mazeHeight = properties.rows;
-    Graph.resetNodeList(properties);
+    let { useDemoGraph } = properties;
     if (useDemoGraph) {
-      mazeWidth = 3;
-      mazeHeight = 3;
       Graph.buildDemoGraph();
     } else {
       Graph.buildAdjacencyGraph(properties);
@@ -324,7 +322,7 @@ export class Graph{
           w.data.route = v.data.index;
           priorityQueue.insert(w);
         }
-      })
+      });
     }
   }
 
