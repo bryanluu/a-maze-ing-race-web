@@ -209,33 +209,37 @@ export class Graph{
   /**
    * Constructs the grid used by the maze
    *
-   * @param dimensions
+   * @param properties
    */
-  private static constructMazeGrid(dimensions: { rows: number, columns: number}) {
+  private static constructMazeGrid(properties: { rows: number, columns: number, testing?: boolean}) {
     Graph.mazeGrid = {
-      rows: dimensions.rows,
-      columns: dimensions.columns
+      rows: properties.rows,
+      columns: properties.columns
     };
-    let grid = $("#maze-grid");
     let cssGrid = {
-      rows: (2 * dimensions.rows) - 1,
-      columns: (2 * dimensions.columns) - 1,
+      rows: (2 * properties.rows) - 1,
+      columns: (2 * properties.columns) - 1,
     };
+    if (properties.testing)
+      return;
+
+    let grid = $("#maze-grid");
     grid.css("grid-template-rows", `repeat(${cssGrid.rows}, 1fr)`);
     grid.css("grid-template-columns", `repeat(${cssGrid.columns}, 1fr)`);
-    Graph.resetNodeList(dimensions);
   }
 
   /**
    * Demo maze to debug stuff
    */
-  private static buildDemoGraph() {
+  private static buildDemoGraph(properties: { testing?: boolean }) {
     let mazeWidth = 3, mazeHeight = 3;
     let dimensions = {
       rows: mazeHeight,
-      columns: mazeWidth
+      columns: mazeWidth,
+      testing: properties.testing
     }
     Graph.constructMazeGrid(dimensions);
+    Graph.resetNodeList(dimensions);
     const v = Graph.getNode;
     Graph.adjacencyGraph = new Graph();
 
@@ -254,10 +258,10 @@ export class Graph{
     adj.insertEdge(v(7), v(8), 2);
   }
 
-  static buildAdjacencyGraph(dimensions: {rows: number, columns: number}) {
-    let mazeWidth = dimensions.columns, mazeHeight = dimensions.rows;
-    Graph.constructMazeGrid(dimensions);
-
+  static buildAdjacencyGraph(properties: {rows: number, columns: number}) {
+    let mazeWidth = properties.columns, mazeHeight = properties.rows;
+    Graph.constructMazeGrid(properties);
+    Graph.resetNodeList(properties);
     let nodes = Graph.nodes;
     Graph.adjacencyGraph = new Graph();
     let adj = Graph.adjacencyGraph;
@@ -287,10 +291,12 @@ export class Graph{
    * @param {*} mazeWidth
    * @param {*} mazeHeight
    */
-  static buildMaze(properties: { rows: number, columns: number, useDemoGraph: boolean}) {
+  static buildMaze(properties: {
+    rows: number, columns: number, useDemoGraph: boolean, testing?: boolean
+  }) {
     let { useDemoGraph } = properties;
     if (useDemoGraph) {
-      Graph.buildDemoGraph();
+      Graph.buildDemoGraph(properties);
     } else {
       Graph.buildAdjacencyGraph(properties);
     }
