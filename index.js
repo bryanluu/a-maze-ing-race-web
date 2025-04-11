@@ -1,4 +1,5 @@
-import { Graph, Player } from "../src/maze.js";
+import { Graph } from "./src/maze.js";
+import { Player } from "./src/player.js";
 
 const defaultOptions = {
   rows: 5,
