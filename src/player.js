@@ -45,12 +45,12 @@ export class Player extends VertexTile {
             complete: () => {
                 player.css(newPosition);
                 player.removeClass("moving");
+                // update the index position of player
+                this.data.index = target.data.index;
             },
             duration: 100, // quick movement
             easing: "linear"
         });
-        // update the index position of player
-        this.data.index = target.data.index;
     }
     /**
      *

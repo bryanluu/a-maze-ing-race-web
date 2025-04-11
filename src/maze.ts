@@ -88,6 +88,8 @@ export class Graph{
     rows: number,
     columns: number
   };
+  static startVertex: VertexTile;
+  static endVertex: VertexTile;
 
   constructor() {
     this.edges = new Set<Edge<VertexTile>>();
@@ -330,6 +332,18 @@ export class Graph{
         }
       });
     }
+  }
+
+  /**
+   * Determines the start and end of the maze
+   */
+  static prepareEndpoints() {
+    // for now, choose top left corner for start
+    let firstVertex = Graph.getNode(0);
+    Graph.startVertex = firstVertex;
+    // for now, choose bottom right corner for finish
+    let lastVertexIndex = (Graph.mazeGrid.rows * Graph.mazeGrid.columns) - 1;
+    Graph.endVertex = Graph.getNode(lastVertexIndex);
   }
 
   /**

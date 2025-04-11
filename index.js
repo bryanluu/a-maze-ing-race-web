@@ -33,17 +33,14 @@ function styleDpadButton(direction) {
  * Initializes the player
  */
 function readyPlayer() {
-  let firstVertex = Graph.nodes[0];
-  new Player(firstVertex.data.index);
+  new Player(Graph.startVertex.data.index);
 };
 
 /**
  * Initializes the finish location
  */
 function readyFinish() {
-  let lastVertexIndex = (Graph.mazeGrid.rows * Graph.mazeGrid.columns) - 1;
-  let endVertex = Graph.getNode(lastVertexIndex);
-  let tile = $(endVertex.data.selector);
+  let tile = $(Graph.endVertex.data.selector);
   tile.addClass("end-tile");
 }
 
@@ -53,6 +50,7 @@ function readyFinish() {
  */
 function initializeGame(options) {
   Graph.buildMaze(options);
+  Graph.prepareEndpoints();
   Graph.displayMaze();
   readyPlayer();
   readyFinish();
