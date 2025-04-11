@@ -37,6 +37,16 @@ function readyPlayer() {
   new Player(firstVertex.data.index);
 };
 
+/**
+ * Initializes the finish location
+ */
+function readyFinish() {
+  let lastVertexIndex = (Graph.mazeGrid.rows * Graph.mazeGrid.columns) - 1;
+  let endVertex = Graph.getNode(lastVertexIndex);
+  let tile = $(endVertex.data.selector);
+  tile.addClass("end-tile");
+}
+
 
 /**
  * Initializes the game
@@ -45,6 +55,7 @@ function initializeGame(options) {
   Graph.buildMaze(options);
   Graph.displayMaze();
   readyPlayer();
+  readyFinish();
 };
 
 /**
