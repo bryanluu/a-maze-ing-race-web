@@ -49,6 +49,8 @@ export class Player extends VertexTile {
             duration: 100, // quick movement
             easing: "linear"
         });
+        // update the index position of player
+        this.data.index = target.data.index;
     }
     /**
      *
