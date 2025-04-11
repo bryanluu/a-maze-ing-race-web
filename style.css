@@ -1,10 +1,23 @@
+:root {
+  --base-color: white;
+  --background-color: black;
+  --highlight-color: greenyellow;
+  --highlight-negative-color: red;
+  --highlight-subtle-color: grey;
+  --highlight-subtle-light-color: lightgrey;
+  --highlight-info-color: cyan;
+  --highlight-info-light-color: lightblue;
+  --maze-path-color: grey;
+  --player-color: var(--base-color);
+}
+
 body {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: black;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
 }
 
@@ -27,15 +40,15 @@ h1 {
 }
 
 #title > em {
-  color: greenyellow;
+  color: var(--highlight-color);
 }
 
 #settings-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
-  color: black;
+  background-color: var(--base-color);
+  color: var(--background-color);
   border: 0px;
   width: 30px;
   height: 30px;
@@ -44,21 +57,21 @@ h1 {
 }
 
 #settings-button:hover, #settings-button:focus-visible   {
-  background-color: greenyellow;
+  background-color: var(--highlight-color);
   scale: 1.1;
   cursor: pointer;
 }
 
 header {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--base-color);
   display: flex;
   flex-direction: column;
   align-items: start;
 }
 
 #settings-dialog {
-  background-color: black;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
   position: fixed;
 }
@@ -75,23 +88,23 @@ header {
 }
 
 #settings-dialog > form > div > button {
-  background-color: black;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
-  border-color: white;
+  border-color: var(--base-color);
 }
 
 #settings-dialog button[value="confirm"]:hover, #settings-dialog button[value="confirm"]:focus-visible {
-  background-color: greenyellow;
+  background-color: var(--highlight-color);
   color: black;
-  border-color: greenyellow;
+  border-color: var(--highlight-color);
   cursor: pointer;
 }
 
 #settings-dialog button[value="cancel"]:hover, #settings-dialog button[value="cancel"]:focus-visible {
-  background-color: red;
+  background-color: var(--highlight-negative-color);
   color: black;
-  border-color: red;
+  border-color: var(--highlight-negative-color);
 }
 
 /* --- Game Area --- */
@@ -104,7 +117,7 @@ header {
 }
 
 #time-progress {
-  background-color: greenyellow; /* TODO adjust to dynamic */
+  background-color: var(--highlight-color); /* TODO adjust to dynamic */
   width: 95%; /* TODO adjust to dynamic */
   height: 1em;
 }
@@ -130,11 +143,10 @@ header {
   width: 50px; /* TODO adjust to dynamic */
   height: 50px; /* TODO adjust to dynamic */
   box-sizing: border-box;
-  /* border: 1px solid white; */
 }
 
 .maze-path {
-  background-color: gray;
+  background-color: var(--maze-path-color);
 }
 
 #player {
@@ -145,7 +157,7 @@ header {
 #player > svg {
   width: 30px; /* TODO adjust to dynamic */
   height: 30px; /* TODO adjust to dynamic */
-  fill: greenyellow;
+  fill: var(--player-color);
   margin: 0;
   padding: 0;
 }
@@ -206,9 +218,9 @@ header {
 }
 
 .key-symbol {
-  background-color: gray;
-  color: white;
-  border: 2px outset white;
+  background-color: var(--highlight-subtle-color);
+  color: var(--base-color);
+  border: 2px outset var(--base-color);
   width: 1.2em;
   height: 1em;
   display: flex;
@@ -220,13 +232,13 @@ header {
 }
 
 .key-symbol:hover, .key-symbol:focus-visible {
-  background-color: lightgray;
+  background-color: var(--highlight-subtle-light-color);
 }
 
 .key-symbol.pressed {
-  background-color: white;
+  background-color: var(--base-color);
   color: black;
-  border: 2px inset white;
+  border: 2px inset var(--base-color);
 }
 
 /* Footer */
@@ -237,11 +249,11 @@ footer {
 }
 
 a#website-link {
-  color: lightblue;
+  color: var(--highlight-info-light-color);
   text-decoration: none;
 }
 
 a#website-link:hover {
-  color: cyan;
+  color: var(--highlight-info-color);
   text-decoration: underline;
 }
