@@ -31,6 +31,10 @@ body {
   margin: 1em;
 }
 
+dialog::backdrop {
+  background-color: black;
+}
+
 /* Site Info Header */
 
 h1 {
