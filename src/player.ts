@@ -65,6 +65,15 @@ export class Player extends VertexTile {
       complete: () => {
         player.removeClass("moving");
         this.updatePosition(target.data.index, newPosition);
+        const event = new CustomEvent("playermove", {
+          bubbles: true,
+          detail: {
+            lastVertex: Graph.getNode(this.data.index),
+            newVertex: Graph.getNode(target.data.index)
+          }
+        });
+        let el = document.querySelector(this.data.selector);
+        el.dispatchEvent(event);
       },
       duration: 100, // quick movement
       easing: "linear"
@@ -118,6 +127,18 @@ export class Player extends VertexTile {
       complete: () => {
         player.css("rotate", `${targetAngle}deg`);
         player.removeClass("rotating");
+        if (angle === targetAngle)
+          return; // don't emit event if nothing changed
+
+        const event = new CustomEvent("playerrotate", {
+          bubbles: true,
+          detail: {
+            lastAngle: angle,
+            newAngle: targetAngle
+          }
+        });
+        let el = document.querySelector(this.data.selector);
+        el.dispatchEvent(event);
       },
       duration: 100, // quick rotation
       easing: "linear"

@@ -163,3 +163,10 @@ $("#settings-dialog").on("submit", () => {
   };
   initializeGame(options);
 });
+// TODO fix up
+$("#play-space").on("playermove", (event) => {
+  console.log(event);
+});
+$("#play-space").on("playerrotate", (event) => {
+  console.log(event);
+});
