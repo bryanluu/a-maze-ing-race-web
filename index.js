@@ -89,28 +89,38 @@ function releaseDPad() {
  * Handles the keyboard down presses, which control the game
  */
 function handleKeydown(keyEvent) {
-  if (settingsDialog.open)
-    return;
-
   let key = keyEvent.key;
-  switch(key) {
-    case "ArrowUp":
-      inputDPad("up");
-      break;
-    case "ArrowRight":
-      inputDPad("right");
-      break;
-    case "ArrowDown":
-      inputDPad("down");
-      break;
-    case "ArrowLeft":
-      inputDPad("left");
-      break;
-    default:
-      // do nothing
-      return;
+  if (key === "Escape") {
+    // if a no-escape dialog is open, ignore Escape press
+    const dialog = $("dialog[open]");
+    if (dialog.hasClass("no-escape")) {
+      keyEvent.preventDefault();
+      keyEvent.stopImmediatePropagation();
+    }
+    return;
   }
-  keyEvent.preventDefault();
+
+  // allows arrow keys to control inputs
+  if (!settingsDialog.open) {
+    switch(key) {
+      case "ArrowUp":
+        inputDPad("up");
+        break;
+      case "ArrowRight":
+        inputDPad("right");
+        break;
+      case "ArrowDown":
+        inputDPad("down");
+        break;
+      case "ArrowLeft":
+        inputDPad("left");
+        break;
+      default:
+        // do nothing
+        return;
+    }
+    keyEvent.preventDefault();
+  }
 }
 
 function handleKeyup(keyEvent) {
@@ -138,8 +148,10 @@ function showSettings(cancellable = true) {
   settingsWidth.value = Graph.mazeGrid.columns;
   settingsHeight.value = Graph.mazeGrid.rows;
   if (cancellable) {
+    $("#settings-dialog").removeClass("no-escape");
     $("#cancel-settings").attr("hidden", false);
   } else {
+    $("#settings-dialog").addClass("no-escape");
     $("#cancel-settings").attr("hidden", true);
   }
   settingsDialog.showModal();
