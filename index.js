@@ -9,6 +9,7 @@ const defaultOptions = {
 const settingsDialog = document.querySelector("#settings-dialog");
 const settingsWidth = settingsDialog.querySelector("#maze-width");
 const settingsHeight = settingsDialog.querySelector("#maze-height");
+const endgameDialog = document.querySelector("#endgame-dialog");
 
 /**
  * Styles the DPad button to look like its being pressed
@@ -132,6 +133,22 @@ function handleKeyup(keyEvent) {
   }
 }
 
+function showSettings(cancellable = true) {
+  // load existing settings
+  settingsWidth.value = Graph.mazeGrid.columns;
+  settingsHeight.value = Graph.mazeGrid.rows;
+  if (cancellable) {
+    $("#cancel-settings").attr("hidden", false);
+  } else {
+    $("#cancel-settings").attr("hidden", true);
+  }
+  settingsDialog.showModal();
+}
+
+function endGame() {
+  endgameDialog.showModal();
+}
+
 $(document).ready(() => {
   initializeGame(defaultOptions);
 });
@@ -147,11 +164,7 @@ $("button.key-symbol").on("mousedown",
 );
 
 $("button.key-symbol").on("mouseup", releaseDPad);
-$("#settings-button").on("click", () => {
-  settingsWidth.value = Graph.mazeGrid.columns;
-  settingsHeight.value = Graph.mazeGrid.rows;
-  settingsDialog.showModal();
-});
+$("#settings-button").on("click", showSettings);
 $("#cancel-settings").on("click", (event) => {
   event.preventDefault();
   settingsDialog.close();
@@ -163,10 +176,15 @@ $("#settings-dialog").on("submit", () => {
   };
   initializeGame(options);
 });
-// TODO fix up
 $("#play-space").on("playermove", (event) => {
-  console.log(event);
+  if (event.detail.newVertex === Graph.endVertex) {
+    endGame();
+  }
 });
 $("#play-space").on("playerrotate", (event) => {
-  console.log(event);
+  // console.log(event);
+  // for now, noop
+});
+$("#replay-button").on("click", () => {
+  showSettings(false);
 });

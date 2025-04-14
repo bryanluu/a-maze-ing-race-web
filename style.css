@@ -43,7 +43,7 @@ h1 {
   font-weight: 36pt;
 }
 
-#title > em {
+em {
   color: var(--highlight-color);
 }
 
@@ -73,14 +73,18 @@ header {
   align-items: start;
 }
 
-#settings-dialog {
+form.container {
+  align-items: center;
+}
+
+dialog {
   background-color: var(--background-color);
   color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
   position: fixed;
 }
 
-#settings-dialog h2 {
+dialog h2 {
   font-size: x-large;
   align-self: center;
 }
@@ -91,21 +95,22 @@ header {
   gap: 2em;
 }
 
-#settings-dialog > form > div > button {
+button {
   background-color: var(--background-color);
   color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
   border-color: var(--base-color);
+  width: fit-content;
 }
 
-#settings-dialog button[value="confirm"]:hover, #settings-dialog button[value="confirm"]:focus-visible {
+button[value="confirm"]:hover, button[value="confirm"]:focus-visible {
   background-color: var(--highlight-color);
   color: black;
   border-color: var(--highlight-color);
   cursor: pointer;
 }
 
-#settings-dialog button[value="cancel"]:hover, #settings-dialog button[value="cancel"]:focus-visible {
+button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   background-color: var(--highlight-negative-color);
   color: black;
   border-color: var(--highlight-negative-color);
