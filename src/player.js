@@ -25,6 +25,17 @@ export class Player extends VertexTile {
         ref.css(newPosition);
     }
     /**
+     * Updates the player's data and runs any relevant functions
+     * @param newIndex - the new index to update to
+     * @param newPosition - the new position to set player to
+     */
+    updatePosition(newIndex, newPosition) {
+        let player = this.ref();
+        player.css(newPosition);
+        // update the index position of player
+        this.data.index = newIndex;
+    }
+    /**
      *
      * @param {VertexTile} target
      *
@@ -43,10 +54,8 @@ export class Player extends VertexTile {
         player.animate(newPosition, {
             // this ensures the final resting position is the target
             complete: () => {
-                player.css(newPosition);
                 player.removeClass("moving");
-                // update the index position of player
-                this.data.index = target.data.index;
+                this.updatePosition(target.data.index, newPosition);
             },
             duration: 100, // quick movement
             easing: "linear"

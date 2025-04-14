@@ -1,11 +1,17 @@
 import Heap from "./heap.js";
 
 /**
- * Describes a DOM element's rect
+ * Describes a DOM position
  */
-export interface Rect {
+export interface Position {
   top: number;
   left: number;
+}
+
+/**
+ * Describes a DOM element's rect
+ */
+export interface Rect extends Position {
   width: number;
   height: number;
 }

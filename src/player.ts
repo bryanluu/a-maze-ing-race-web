@@ -1,4 +1,4 @@
-import { VertexTile, TileData, Graph, Rect } from "./maze.js"
+import { VertexTile, TileData, Graph, Rect, Position } from "./maze.js"
 
 export class Player extends VertexTile {
   id: string = "player"; // pseudo-constant id
@@ -21,13 +21,25 @@ export class Player extends VertexTile {
    *
    * Moves the player's center to the position coordinates: {top, left}
    */
-  centerAt(position: Rect) {
+  centerAt(position: Position ) {
     let ref = this.ref();
     let newPosition = {
       "top": position.top - (ref.outerHeight() / 2),
       "left": position.left - (ref.outerWidth() / 2)
     };
     ref.css(newPosition);
+  }
+
+  /**
+   * Updates the player's data and runs any relevant functions
+   * @param newIndex - the new index to update to
+   * @param newPosition - the new position to set player to
+   */
+  updatePosition(newIndex: number, newPosition: Position) {
+    let player = this.ref();
+    player.css(newPosition as any);
+    // update the index position of player
+    this.data.index = newIndex;
   }
 
   /**
@@ -51,10 +63,8 @@ export class Player extends VertexTile {
     {
       // this ensures the final resting position is the target
       complete: () => {
-        player.css(newPosition);
         player.removeClass("moving");
-        // update the index position of player
-        this.data.index = target.data.index;
+        this.updatePosition(target.data.index, newPosition);
       },
       duration: 100, // quick movement
       easing: "linear"
