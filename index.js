@@ -3,7 +3,8 @@ import { Player } from "./src/player.js";
 
 const defaultOptions = {
   rows: 5,
-  columns: 5
+  columns: 5,
+  cancellable: true
 };
 
 const settingsDialog = document.querySelector("#settings-dialog");
@@ -143,11 +144,15 @@ function handleKeyup(keyEvent) {
   }
 }
 
-function showSettings(cancellable = true) {
+function showSettings(options) {
+  let settings = {...defaultOptions, ...options};
+  let maze = Graph.mazeGrid;
+  settings.rows = (maze && maze.rows) || settings.rows;
+  settings.columns = (maze && maze.columns) || settings.columns;
   // load existing settings
-  settingsWidth.value = Graph.mazeGrid.columns;
-  settingsHeight.value = Graph.mazeGrid.rows;
-  if (cancellable) {
+  settingsWidth.value = settings.columns;
+  settingsHeight.value = settings.rows;
+  if (settings.cancellable) {
     $("#settings-dialog").removeClass("no-escape");
     $("#cancel-settings").attr("hidden", false);
   } else {
@@ -162,7 +167,7 @@ function endGame() {
 }
 
 $(document).ready(() => {
-  initializeGame(defaultOptions);
+  showSettings({cancellable: false});
 });
 
 $(document).on("keydown", handleKeydown);
@@ -198,5 +203,5 @@ $("#play-space").on("playerrotate", (event) => {
   // for now, noop
 });
 $("#replay-button").on("click", () => {
-  showSettings(false);
+  showSettings({cancellable: false});
 });
