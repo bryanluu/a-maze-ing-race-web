@@ -12,6 +12,16 @@ const settingsWidth = settingsDialog.querySelector("#maze-width");
 const settingsHeight = settingsDialog.querySelector("#maze-height");
 const endgameDialog = document.querySelector("#endgame-dialog");
 
+// Game Timer
+const timerProgress = document.querySelector("#time-progress");
+const timerValue = document.querySelector("#time-value");
+const TIMER_DELAY = 1000; // ms
+const TIMER_UPDATE_INTERVAL = 100; // ms
+const TIMER_DURATION = (5 // minutes
+  * 60 * 1000); // in ms
+var timerID = null;
+var startTime = null;
+
 /**
  * Styles the DPad button to look like its being pressed
  *
@@ -46,6 +56,30 @@ function readyFinish() {
   tile.addClass("end-tile");
 }
 
+function updateTimer() {
+  let elapsed = Date.now() - startTime;
+  let timeLeft = TIMER_DURATION - elapsed;
+  let progress = (timeLeft / TIMER_DURATION);
+  // use ceil so that when we reach last second it looks like there's still time
+  let secondsLeft = Math.ceil(timeLeft / 1000);
+  let minutesLeft = Math.floor(secondsLeft / 60);
+  timerValue.textContent = `${minutesLeft}:`
+    + String(secondsLeft % 60).padStart(2, "0");
+  // the 95 is to ensure the bar isn't too wide to start
+  $("#time-progress").css("width", `${progress * 95}%`)
+  if (timeLeft <= 0)
+    endGame();
+}
+
+function startTimer() {
+  if (timerID)
+    clearInterval(timerID);
+  startTime = Date.now();
+  updateTimer();
+  setTimeout(() => {
+    timerID = setInterval(updateTimer, TIMER_UPDATE_INTERVAL);
+  }, TIMER_DELAY)
+}
 
 /**
  * Initializes the game
@@ -56,6 +90,7 @@ function initializeGame(options) {
   Graph.displayMaze();
   readyPlayer();
   readyFinish();
+  startTimer();
 };
 
 /**
@@ -164,6 +199,8 @@ function showSettings(options) {
 
 function endGame() {
   endgameDialog.showModal();
+  if (timerID)
+    clearInterval(timerID);
 }
 
 $(document).ready(() => {
