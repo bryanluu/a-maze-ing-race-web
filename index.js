@@ -22,6 +22,12 @@ const TIMER_DURATION = (5 // minutes
 var timerID = null;
 var startTime = null;
 
+// End Game
+const EndCondition = Object.freeze({
+  ESCAPED: 0,
+  TIMER: 1
+});
+
 /**
  * Styles the DPad button to look like its being pressed
  *
@@ -56,19 +62,38 @@ function readyFinish() {
   tile.addClass("end-tile");
 }
 
-function updateTimer() {
+function checkProgress() {
   let elapsed = Date.now() - startTime;
   let timeLeft = TIMER_DURATION - elapsed;
-  let progress = (timeLeft / TIMER_DURATION);
+  let percentRemaining = (timeLeft / TIMER_DURATION);
   // use ceil so that when we reach last second it looks like there's still time
   let secondsLeft = Math.ceil(timeLeft / 1000);
   let minutesLeft = Math.floor(secondsLeft / 60);
-  timerValue.textContent = `${minutesLeft}:`
-    + String(secondsLeft % 60).padStart(2, "0");
+  let data = {
+    elapsed: elapsed,
+    timeLeft: timeLeft,
+    secondsLeft: secondsLeft,
+    minutesLeft: minutesLeft,
+    percentRemaining: percentRemaining,
+    timerString: `${minutesLeft}:`
+    + String(secondsLeft % 60).padStart(2, "0")
+  };
+  return data;
+}
+
+function updateTimer() {
+  let gameData = checkProgress();
+  timerValue.textContent = gameData.timerString;
   // the 95 is to ensure the bar isn't too wide to start
-  $("#time-progress").css("width", `${progress * 95}%`)
-  if (timeLeft <= 0)
-    endGame();
+  $("#time-progress").css("width", `${gameData.percentRemaining * 95}%`)
+  if (gameData.timeLeft <= 0) {
+    let options = {
+      ...gameData,
+      score: 0,
+      endCondition: EndCondition.TIMER
+    }
+    endGame(options);
+  }
 }
 
 function startTimer() {
@@ -197,7 +222,26 @@ function showSettings(options) {
   settingsDialog.showModal();
 }
 
-function endGame() {
+function endGame(options) {
+  let endHTML = "";
+  switch(options.endCondition) {
+    case EndCondition.ESCAPED:
+      endHTML = `
+        <h2>Congratulations, you <em>escaped with ${options.timerString}</em> left!</h2>
+        <p>Your score is <em>${options.score}</em></p>
+      `;
+      break;
+    case EndCondition.TIMER:
+      endHTML = `
+        <h2>You ran out of time!</h2>
+        <p>Your score is <em>${options.score}</em></p>
+      `;
+      break;
+    default:
+      console.error("Invalid End Condition");
+      return;
+  }
+  $("#end-message").html(endHTML);
   endgameDialog.showModal();
   if (timerID)
     clearInterval(timerID);
@@ -232,7 +276,13 @@ $("#settings-dialog").on("submit", () => {
 });
 $("#play-space").on("playermove", (event) => {
   if (event.detail.newVertex === Graph.endVertex) {
-    endGame();
+    let gameData = checkProgress();
+    let options = {
+      ...gameData,
+      score: Math.ceil(gameData.percentRemaining * 100),
+      endCondition: EndCondition.ESCAPED
+    }
+    endGame(options);
   }
 });
 $("#play-space").on("playerrotate", (event) => {
