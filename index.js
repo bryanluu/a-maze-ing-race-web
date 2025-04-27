@@ -1,5 +1,6 @@
 import { Graph } from "./src/maze.js";
 import { Player } from "./src/player.js";
+import { Artifact } from "./src/artifact.js";
 
 const defaultOptions = {
   rows: 5,
@@ -11,6 +12,9 @@ const settingsDialog = document.querySelector("#settings-dialog");
 const settingsWidth = settingsDialog.querySelector("#maze-width");
 const settingsHeight = settingsDialog.querySelector("#maze-height");
 const endgameDialog = document.querySelector("#endgame-dialog");
+
+// Artifacts
+const ARTIFACTS_FRACTION = 0.2; // fraction of free tiles that should be artifacts
 
 // Game Timer
 const timerProgress = document.querySelector("#time-progress");
@@ -61,6 +65,25 @@ function readyFinish() {
   let tile = $(Graph.endVertex.data.selector);
   tile.addClass("end-tile");
 }
+
+/**
+ * Spawns set of artifacts according to maze size
+ */
+function spawnArtifacts() {
+  let freeTiles = Graph.nodes.filter((tile) => {
+    return ((tile.data.index !== Player.instance.data.index) &&
+              tile.data.index !== Graph.endVertex.data.index);
+  });
+  let spawnTiles = freeTiles.filter((tile) => {
+    return (Math.random() < ARTIFACTS_FRACTION);
+  });
+  Artifact.activeArtifacts = [];
+  $("#artifacts").html("");
+  spawnTiles.forEach((tile) => {
+    new Artifact(tile.data.index);
+  });
+}
+
 
 function checkProgress() {
   let elapsed = Date.now() - startTime;
@@ -115,6 +138,7 @@ function initializeGame(options) {
   Graph.displayMaze();
   readyPlayer();
   readyFinish();
+  spawnArtifacts();
   startTimer();
 };
 
@@ -249,6 +273,13 @@ function endGame(options) {
 
 $(document).ready(() => {
   showSettings({cancellable: false});
+  $.get({
+    url: "public/assets/star-fill.svg",
+    success: (data) => {
+      Artifact.svg = data;
+    },
+    dataType: "html"
+});
 });
 
 $(document).on("keydown", handleKeydown);

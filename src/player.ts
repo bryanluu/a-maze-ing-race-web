@@ -1,4 +1,4 @@
-import { VertexTile, TileData, Graph, Rect, Position } from "./maze.js"
+import { VertexTile, TileData, Graph, Position } from "./maze.js"
 
 export class Player extends VertexTile {
   id: string = "player"; // pseudo-constant id

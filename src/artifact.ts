@@ -1,0 +1,34 @@
+import { VertexTile, TileData, Graph, Position } from "./maze.js";
+import { Player } from "./player.js";
+
+export class Artifact extends VertexTile {
+  id: string;
+  data: TileData;
+  static activeArtifacts: Artifact[] = [];
+  static svg: XMLDocument;
+
+  constructor(tileIndex: number) {
+    let id = `a${Artifact.activeArtifacts.length}`;
+    super(id, tileIndex);
+    let artifactHTML = `<div id="${id}" class="artifact">${Artifact.svg}</div>`;
+    let artifactsNode = document.querySelector("#artifacts");
+    artifactsNode.innerHTML += artifactHTML;
+    this.centerAt(Graph.getNode(tileIndex).center());
+    Artifact.activeArtifacts.push(this);
+  }
+
+  /**
+   *
+   * @param {Rect} position
+   *
+   * Moves the artifact's center to the position coordinates: {top, left}
+   */
+  centerAt(position: Position ) {
+    let ref = this.ref();
+    let newPosition = {
+      "top": position.top - (ref.outerHeight() / 2),
+      "left": position.left - (ref.outerWidth() / 2)
+    };
+    ref.css(newPosition);
+  }
+}

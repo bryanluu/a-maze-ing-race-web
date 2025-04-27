@@ -9,6 +9,7 @@
   --highlight-info-light-color: lightblue;
   --maze-path-color: grey;
   --player-color: var(--base-color);
+  --artifact-color: yellow;
 }
 
 body {
@@ -167,6 +168,19 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   width: 30px; /* TODO adjust to dynamic */
   height: 30px; /* TODO adjust to dynamic */
   fill: var(--player-color);
+  margin: 0;
+  padding: 0;
+}
+
+#artifacts .artifact {
+  position: absolute;
+  margin: 0;
+}
+
+.artifact > svg {
+  width: 10px; /* TODO adjust to dynamic */
+  height: 10px; /* TODO adjust to dynamic */
+  fill: var(--artifact-color);
   margin: 0;
   padding: 0;
 }
