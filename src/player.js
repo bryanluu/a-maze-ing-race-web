@@ -4,6 +4,7 @@ export class Player extends VertexTile {
         let id = "player";
         super(id, startIndex);
         this.id = "player"; // pseudo-constant id
+        this.data.collected = 0;
         // load the image and position at the startIndex's node
         this.ref().load("public/assets/cursor-vertical.svg", () => {
             this.centerAt(Graph.getNode(startIndex).center());

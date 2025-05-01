@@ -1,13 +1,14 @@
 import { VertexTile, Graph } from "./maze.js";
 export class Artifact extends VertexTile {
     constructor(tileIndex) {
+        let tile = Graph.getNode(tileIndex);
         let id = `a${tileIndex}`;
         super(id, tileIndex);
         let artifactHTML = `<div id="${id}" class="artifact">${Artifact.svg}</div>`;
         let artifactsNode = document.querySelector("#artifacts");
         artifactsNode.innerHTML += artifactHTML;
-        this.centerAt(Graph.getNode(tileIndex).center());
-        Artifact.activeArtifacts.push(this);
+        this.centerAt(tile.center());
+        tile.data.artifact = this;
     }
     /**
      *
@@ -24,5 +25,4 @@ export class Artifact extends VertexTile {
         ref.css(newPosition);
     }
 }
-Artifact.activeArtifacts = [];
 //# sourceMappingURL=artifact.js.map

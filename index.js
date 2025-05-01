@@ -15,6 +15,7 @@ const endgameDialog = document.querySelector("#endgame-dialog");
 
 // Artifacts
 const ARTIFACTS_FRACTION = 0.2; // fraction of free tiles that should be artifacts
+const ARTIFACT_REWARD = 5; // the score rewarded when an artifact is collected
 
 // Game Timer
 const timerProgress = document.querySelector("#time-progress");
@@ -91,6 +92,8 @@ function checkProgress() {
   // use ceil so that when we reach last second it looks like there's still time
   let secondsLeft = Math.ceil(timeLeft / 1000);
   let minutesLeft = Math.floor(secondsLeft / 60);
+  let artifacts = Player.instance.data.collected;
+  let score = (artifacts * ARTIFACT_REWARD) + Math.ceil(percentRemaining * 100);
   let data = {
     elapsed: elapsed,
     timeLeft: timeLeft,
@@ -98,7 +101,9 @@ function checkProgress() {
     minutesLeft: minutesLeft,
     percentRemaining: percentRemaining,
     timerString: `${minutesLeft}:`
-    + String(secondsLeft % 60).padStart(2, "0")
+    + String(secondsLeft % 60).padStart(2, "0"),
+    artifacts: artifacts,
+    score: score
   };
   return data;
 }
@@ -111,7 +116,6 @@ function updateTimer() {
   if (gameData.timeLeft <= 0) {
     let options = {
       ...gameData,
-      score: 0,
       endCondition: EndCondition.TIMER
     }
     endGame(options);
@@ -245,9 +249,10 @@ function showSettings(options) {
   settingsDialog.showModal();
 }
 
-function handleArtifactConsumption(artifact) {
+function handleArtifactCollection(artifact) {
   const tile = Graph.getNode(artifact.data.index);
   const artifactNode = document.querySelector(artifact.data.selector);
+  Player.instance.data.collected++;
   artifactNode.remove();
   delete tile.data.artifact;
 }
@@ -319,7 +324,6 @@ $("#play-space").on("playermove", (event) => {
     let gameData = checkProgress();
     let options = {
       ...gameData,
-      score: Math.ceil(gameData.percentRemaining * 100),
       endCondition: EndCondition.ESCAPED
     }
     endGame(options);
@@ -331,7 +335,7 @@ $("#play-space").on("playerrotate", (event) => {
 $("#play-space").on("playercollide", (event) => {
   switch (event.detail.type) {
     case "Artifact":
-      handleArtifactConsumption(event.detail.vertex);
+      handleArtifactCollection(event.detail.vertex);
       break;
   }
 });

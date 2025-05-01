@@ -24,6 +24,7 @@ export interface TileData {
   route?: number; // the index of the neighbor providing the cheapest edge
   used?: boolean; // whether the tile is in the maze
   artifact?: VertexTile; // the reference to a contained artifact, if any
+  collected?: number; // number of artifacts collected by player, if any
 }
 
 /**
