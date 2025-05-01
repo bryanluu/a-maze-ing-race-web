@@ -12,7 +12,7 @@ export class Player extends VertexTile {
     }
     /**
      *
-     * @param {Rect} position
+     * @param {Position} position
      *
      * Moves the player's center to the position coordinates: {top, left}
      */
@@ -52,6 +52,32 @@ export class Player extends VertexTile {
         };
         player.addClass("moving");
         player.animate(newPosition, {
+            progress: () => {
+                const el = document.querySelector(this.data.selector);
+                // check collisions with other elements inside the target tile
+                const targetTile = Graph.getNode(target.data.index);
+                if (this.collidesWith(targetTile)) {
+                    const event = new CustomEvent("playercollide", {
+                        bubbles: true,
+                        detail: {
+                            type: "Tile",
+                            vertex: targetTile
+                        }
+                    });
+                    el.dispatchEvent(event);
+                }
+                const artifact = targetTile.data.artifact;
+                if (artifact && this.collidesWith(artifact)) {
+                    const event = new CustomEvent("playercollide", {
+                        bubbles: true,
+                        detail: {
+                            type: "Artifact",
+                            vertex: artifact
+                        }
+                    });
+                    el.dispatchEvent(event);
+                }
+            },
             // this ensures the final resting position is the target
             complete: () => {
                 player.removeClass("moving");
@@ -153,6 +179,25 @@ export class Player extends VertexTile {
         if (maze.isNeighbor(src, tgt)) {
             this.data.index = newIndex;
             this.moveTo(Graph.getNode(newIndex));
+        }
+    }
+    /**
+     *
+     * @param other - the other VertexTile to check collision with
+     */
+    collidesWith(other) {
+        const playerDim = this.dimensions();
+        const otherDim = other.dimensions();
+        // use algorithm from:
+        // https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+        if ((playerDim.left < otherDim.left + otherDim.width) &&
+            (playerDim.left + playerDim.width > otherDim.left) &&
+            (playerDim.top < otherDim.top + otherDim.height) &&
+            (playerDim.top + playerDim.height > otherDim.top)) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

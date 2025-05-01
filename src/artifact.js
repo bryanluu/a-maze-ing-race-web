@@ -1,7 +1,7 @@
 import { VertexTile, Graph } from "./maze.js";
 export class Artifact extends VertexTile {
     constructor(tileIndex) {
-        let id = `a${Artifact.activeArtifacts.length}`;
+        let id = `a${tileIndex}`;
         super(id, tileIndex);
         let artifactHTML = `<div id="${id}" class="artifact">${Artifact.svg}</div>`;
         let artifactsNode = document.querySelector("#artifacts");
@@ -11,7 +11,7 @@ export class Artifact extends VertexTile {
     }
     /**
      *
-     * @param {Rect} position
+     * @param {Position} position
      *
      * Moves the artifact's center to the position coordinates: {top, left}
      */

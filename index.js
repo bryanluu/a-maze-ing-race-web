@@ -77,10 +77,9 @@ function spawnArtifacts() {
   let spawnTiles = freeTiles.filter((tile) => {
     return (Math.random() < ARTIFACTS_FRACTION);
   });
-  Artifact.activeArtifacts = [];
   $("#artifacts").html("");
   spawnTiles.forEach((tile) => {
-    new Artifact(tile.data.index);
+    tile.data.artifact = new Artifact(tile.data.index);
   });
 }
 
@@ -246,6 +245,13 @@ function showSettings(options) {
   settingsDialog.showModal();
 }
 
+function handleArtifactConsumption(artifact) {
+  const tile = Graph.getNode(artifact.data.index);
+  const artifactNode = document.querySelector(artifact.data.selector);
+  artifactNode.remove();
+  delete tile.data.artifact;
+}
+
 function endGame(options) {
   let endHTML = "";
   switch(options.endCondition) {
@@ -305,6 +311,9 @@ $("#settings-dialog").on("submit", () => {
   };
   initializeGame(options);
 });
+$("#replay-button").on("click", () => {
+  showSettings({cancellable: false});
+});
 $("#play-space").on("playermove", (event) => {
   if (event.detail.newVertex === Graph.endVertex) {
     let gameData = checkProgress();
@@ -317,9 +326,12 @@ $("#play-space").on("playermove", (event) => {
   }
 });
 $("#play-space").on("playerrotate", (event) => {
-  // console.log(event);
   // for now, noop
 });
-$("#replay-button").on("click", () => {
-  showSettings({cancellable: false});
+$("#play-space").on("playercollide", (event) => {
+  switch (event.detail.type) {
+    case "Artifact":
+      handleArtifactConsumption(event.detail.vertex);
+      break;
+  }
 });

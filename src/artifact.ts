@@ -4,22 +4,22 @@ import { Player } from "./player.js";
 export class Artifact extends VertexTile {
   id: string;
   data: TileData;
-  static activeArtifacts: Artifact[] = [];
   static svg: XMLDocument;
 
   constructor(tileIndex: number) {
-    let id = `a${Artifact.activeArtifacts.length}`;
+    let tile = Graph.getNode(tileIndex);
+    let id = `a${tileIndex}`;
     super(id, tileIndex);
     let artifactHTML = `<div id="${id}" class="artifact">${Artifact.svg}</div>`;
     let artifactsNode = document.querySelector("#artifacts");
     artifactsNode.innerHTML += artifactHTML;
-    this.centerAt(Graph.getNode(tileIndex).center());
-    Artifact.activeArtifacts.push(this);
+    this.centerAt(tile.center());
+    tile.data.artifact = this;
   }
 
   /**
    *
-   * @param {Rect} position
+   * @param {Position} position
    *
    * Moves the artifact's center to the position coordinates: {top, left}
    */

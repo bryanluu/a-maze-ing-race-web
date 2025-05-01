@@ -23,6 +23,7 @@ export interface TileData {
   cost?: number; // the cheapest cost of connection to vertex
   route?: number; // the index of the neighbor providing the cheapest edge
   used?: boolean; // whether the tile is in the maze
+  artifact?: VertexTile; // the reference to a contained artifact, if any
 }
 
 /**
