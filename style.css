@@ -44,6 +44,10 @@ h1 {
   font-weight: 36pt;
 }
 
+header > p {
+  flex: 1;
+}
+
 em {
   color: var(--highlight-color);
 }
@@ -70,8 +74,20 @@ em {
 header {
   border-bottom: 1px solid var(--base-color);
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  header {
+    flex-direction: column;
+    align-items: start;
+  }
 }
 
 form.container {
