@@ -175,11 +175,6 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   background-color: var(--maze-path-color);
 }
 
-#player {
-  position: absolute;
-  margin: 0;
-}
-
 #player > svg {
   width: 30px; /* TODO adjust to dynamic */
   height: 30px; /* TODO adjust to dynamic */
@@ -188,17 +183,17 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   padding: 0;
 }
 
-#artifacts .artifact {
-  position: absolute;
-  margin: 0;
-}
-
 .artifact > svg {
   width: 10px; /* TODO adjust to dynamic */
   height: 10px; /* TODO adjust to dynamic */
   fill: var(--artifact-color);
   margin: 0;
   padding: 0;
+}
+
+.tile-object {
+  position: absolute;
+  margin: 0;
 }
 
 .end-tile {

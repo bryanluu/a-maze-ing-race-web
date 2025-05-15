@@ -10,7 +10,7 @@ export class Artifact extends VertexTile {
     let tile = Graph.getNode(tileIndex);
     let id = `a${tileIndex}`;
     super(id, tileIndex);
-    let artifactHTML = `<div id="${id}" class="artifact">${Artifact.svg}</div>`;
+    let artifactHTML = `<div id="${id}" class="artifact tile-object">${Artifact.svg}</div>`;
     let artifactsNode = document.querySelector("#artifacts");
     artifactsNode.innerHTML += artifactHTML;
     this.centerAt(tile.center());
