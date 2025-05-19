@@ -339,3 +339,12 @@ $("#play-space").on("playercollide", (event) => {
       break;
   }
 });
+
+function handleResize() {
+  const player = Player.instance;
+  player.centerAt(Graph.getNode(player.data.index).center());
+
+  // TODO reposition artifacts
+};
+
+window.onresize = handleResize;
