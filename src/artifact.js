@@ -8,6 +8,7 @@ export class Artifact extends VertexTile {
         let artifactsNode = document.querySelector("#artifacts");
         artifactsNode.innerHTML += artifactHTML;
         this.centerAt(tile.center());
+        Artifact.activeArtifacts[id] = this;
         tile.data.artifact = this;
     }
     /**
@@ -25,4 +26,5 @@ export class Artifact extends VertexTile {
         ref.css(newPosition);
     }
 }
+Artifact.activeArtifacts = {};
 //# sourceMappingURL=artifact.js.map

@@ -5,6 +5,7 @@ export class Artifact extends VertexTile {
   id: string;
   data: TileData;
   static svg: XMLDocument;
+  static activeArtifacts = {};
 
   constructor(tileIndex: number) {
     let tile = Graph.getNode(tileIndex);
@@ -14,6 +15,7 @@ export class Artifact extends VertexTile {
     let artifactsNode = document.querySelector("#artifacts");
     artifactsNode.innerHTML += artifactHTML;
     this.centerAt(tile.center());
+    Artifact.activeArtifacts[id] = this;
     tile.data.artifact = this;
   }
 

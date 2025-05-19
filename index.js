@@ -80,7 +80,7 @@ function spawnArtifacts() {
   });
   $("#artifacts").html("");
   spawnTiles.forEach((tile) => {
-    tile.data.artifact = new Artifact(tile.data.index);
+    new Artifact(tile.data.index);
   });
 }
 
@@ -255,6 +255,7 @@ function handleArtifactCollection(artifact) {
   Player.instance.data.collected++;
   artifactNode.remove();
   delete tile.data.artifact;
+  delete Artifact.activeArtifacts[artifact.id];
 }
 
 function endGame(options) {
@@ -290,7 +291,7 @@ $(document).ready(() => {
       Artifact.svg = data;
     },
     dataType: "html"
-});
+  });
 });
 
 $(document).on("keydown", handleKeydown);
@@ -341,10 +342,14 @@ $("#play-space").on("playercollide", (event) => {
 });
 
 function handleResize() {
+  // reposition the player
   const player = Player.instance;
   player.centerAt(Graph.getNode(player.data.index).center());
 
-  // TODO reposition artifacts
+  // reposition active artifacts
+  Object.values(Artifact.activeArtifacts).forEach((artifact) => {
+    artifact.centerAt(Graph.getNode(artifact.data.index).center());
+  });
 };
 
 window.onresize = handleResize;
