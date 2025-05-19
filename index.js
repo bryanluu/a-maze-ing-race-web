@@ -68,6 +68,26 @@ function readyFinish() {
 }
 
 /**
+ * Shuffles an array via Fisher-Yates shuffle
+ * https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+ */
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
+/**
  * Spawns set of artifacts according to maze size
  */
 function spawnArtifacts() {
@@ -75,9 +95,9 @@ function spawnArtifacts() {
     return ((tile.data.index !== Player.instance.data.index) &&
               tile.data.index !== Graph.endVertex.data.index);
   });
-  let spawnTiles = freeTiles.filter((tile) => {
-    return (Math.random() < ARTIFACTS_FRACTION);
-  });
+  const numArtifacts = Math.floor(ARTIFACTS_FRACTION * freeTiles.length);
+  shuffle(freeTiles);
+  let spawnTiles = freeTiles.slice(0, numArtifacts);
   $("#artifacts").html("");
   spawnTiles.forEach((tile) => {
     new Artifact(tile.data.index);
