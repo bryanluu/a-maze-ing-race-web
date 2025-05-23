@@ -150,11 +150,17 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
 
 /* Play Space */
 
-#play-space {
+#centerpiece {
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
+}
+
+#play-space {
+  max-width: 80%;
+  overflow: hidden;
+  border: 1px solid white;
 }
 
 #maze-grid {
@@ -162,7 +168,6 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   display: grid;
   grid-template-rows: repeat(5, 1fr);
   grid-template-columns: repeat(5, 1fr);
-  width: min-content;
 }
 
 .maze-tile {

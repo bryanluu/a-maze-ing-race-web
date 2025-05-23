@@ -278,6 +278,17 @@ function handleArtifactCollection(artifact) {
   delete Artifact.activeArtifacts[artifact.id];
 }
 
+function handlePlayerMove(event) {
+  if (event.detail.newVertex === Graph.endVertex) {
+    let gameData = checkProgress();
+    let options = {
+      ...gameData,
+      endCondition: EndCondition.ESCAPED
+    }
+    endGame(options);
+  }
+}
+
 function endGame(options) {
   let endHTML = "";
   switch(options.endCondition) {
@@ -340,16 +351,7 @@ $("#settings-dialog").on("submit", () => {
 $("#replay-button").on("click", () => {
   showSettings({cancellable: false});
 });
-$("#play-space").on("playermove", (event) => {
-  if (event.detail.newVertex === Graph.endVertex) {
-    let gameData = checkProgress();
-    let options = {
-      ...gameData,
-      endCondition: EndCondition.ESCAPED
-    }
-    endGame(options);
-  }
-});
+$("#play-space").on("playermove", handlePlayerMove);
 $("#play-space").on("playerrotate", (event) => {
   // for now, noop
 });
