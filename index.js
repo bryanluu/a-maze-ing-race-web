@@ -278,14 +278,43 @@ function handleArtifactCollection(artifact) {
   delete Artifact.activeArtifacts[artifact.id];
 }
 
+function repositionTileObjects() {
+  // reposition the player
+  const player = Player.instance;
+  player.centerAt(Graph.getNode(player.data.index).center());
+
+  // reposition active artifacts
+  Object.values(Artifact.activeArtifacts).forEach((artifact) => {
+    artifact.centerAt(Graph.getNode(artifact.data.index).center());
+  });
+};
+
 function handlePlayerMove(event) {
-  if (event.detail.newVertex === Graph.endVertex) {
+  const target = event.detail.newVertex
+  // if target is the end vertex, end the game
+  if (target === Graph.endVertex) {
     let gameData = checkProgress();
     let options = {
       ...gameData,
       endCondition: EndCondition.ESCAPED
     }
     endGame(options);
+  }
+  // if target is outside play window, scroll
+  const targetTile = document.querySelector(target.data.selector);
+  const playWindow = document.querySelector("#play-space");
+  const targetRect = targetTile.getBoundingClientRect();
+  const playWindowRect = playWindow.getBoundingClientRect();
+  if ((targetRect.left < playWindowRect.left)
+    || (targetRect.right > playWindowRect.right)
+    || (targetRect.top < playWindowRect.top)
+    || (targetRect.bottom > playWindowRect.bottom))
+  {
+    targetTile.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center"
+    });
   }
 }
 
@@ -362,16 +391,8 @@ $("#play-space").on("playercollide", (event) => {
       break;
   }
 });
+$("#play-space").on("scroll", (event) => {
+  repositionTileObjects();
+});
 
-function handleResize() {
-  // reposition the player
-  const player = Player.instance;
-  player.centerAt(Graph.getNode(player.data.index).center());
-
-  // reposition active artifacts
-  Object.values(Artifact.activeArtifacts).forEach((artifact) => {
-    artifact.centerAt(Graph.getNode(artifact.data.index).center());
-  });
-};
-
-window.onresize = handleResize;
+window.onresize = repositionTileObjects;

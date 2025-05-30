@@ -161,6 +161,7 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   max-width: 80%;
   overflow: hidden;
   border: 1px solid white;
+  overscroll-behavior: contain;
 }
 
 #maze-grid {
