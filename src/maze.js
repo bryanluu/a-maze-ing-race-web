@@ -23,9 +23,17 @@ export class VertexTile {
     ref() {
         return $(this.data.selector);
     }
+    el() {
+        return document.querySelector(this.data.selector);
+    }
     dimensions() {
-        let el = this.ref();
-        return Object.assign(Object.assign({}, el.position()), { width: el.outerWidth(), height: el.outerHeight() });
+        let el = this.el();
+        return {
+            left: el.offsetLeft,
+            top: el.offsetTop,
+            width: el.offsetWidth,
+            height: el.offsetHeight
+        };
     }
     center() {
         let { top, left, width, height } = this.dimensions();

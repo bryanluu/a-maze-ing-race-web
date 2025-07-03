@@ -290,7 +290,7 @@ function repositionTileObjects() {
 };
 
 function handlePlayerMove(event) {
-  const target = event.detail.newVertex
+  const target = event.detail.newVertex;
   // if target is the end vertex, end the game
   if (target === Graph.endVertex) {
     let gameData = checkProgress();

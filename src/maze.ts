@@ -58,12 +58,17 @@ export class VertexTile {
     return $(this.data.selector);
   }
 
+  protected el(): HTMLElement {
+    return document.querySelector(this.data.selector);
+  }
+
   dimensions(): Rect {
-    let el = this.ref();
+    let el = this.el();
     return {
-      ...el.position(),
-      width: el.outerWidth(),
-      height: el.outerHeight()
+      left: el.offsetLeft,
+      top: el.offsetTop,
+      width: el.offsetWidth,
+      height: el.offsetHeight
     }
   }
 
