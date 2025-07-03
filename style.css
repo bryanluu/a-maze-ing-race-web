@@ -162,6 +162,8 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   overflow: hidden;
   border: 1px solid white;
   overscroll-behavior: contain;
+  position: relative;
+  z-index: 1;
 }
 
 #maze-grid {
@@ -200,6 +202,7 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
 .tile-object {
   position: absolute;
   margin: 0;
+  z-index: 0;
 }
 
 .end-tile {
