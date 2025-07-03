@@ -20,6 +20,7 @@ const ARTIFACT_REWARD = 5; // the score rewarded when an artifact is collected
 // Game Timer
 const timerProgress = document.querySelector("#time-progress");
 const timerValue = document.querySelector("#time-value");
+const START_DELAY = 10; //  ms
 const TIMER_DELAY = 1000; // ms
 const TIMER_UPDATE_INTERVAL = 100; // ms
 const TIMER_DURATION = (5 // minutes
@@ -162,7 +163,14 @@ function initializeGame(options) {
   readyPlayer();
   readyFinish();
   spawnArtifacts();
-  startTimer();
+  startTimer() ;
+  setTimeout(() => {
+    Player.instance.el().scrollIntoView({
+      behavior: "instant",
+      block: "center",
+      inline: "center"
+    });
+  }, START_DELAY)
 };
 
 /**
