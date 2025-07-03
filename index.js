@@ -164,13 +164,14 @@ function initializeGame(options) {
   readyFinish();
   spawnArtifacts();
   startTimer() ;
+  repositionTileObjects();
   setTimeout(() => {
     Player.instance.el().scrollIntoView({
       behavior: "instant",
       block: "center",
       inline: "center"
     });
-  }, START_DELAY)
+  }, START_DELAY);
 };
 
 /**
