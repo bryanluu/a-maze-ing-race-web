@@ -200,6 +200,15 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   padding: 0;
 }
 
+#mist {
+  /* TODO remove color */
+  background-color: yellow;
+  opacity: 0.5;
+  /* TODO make dynamic */
+  width: 200px;
+  height: 200px;
+}
+
 .tile-object {
   position: absolute;
   margin: 0;

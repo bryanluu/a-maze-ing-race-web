@@ -291,6 +291,14 @@ function repositionTileObjects() {
   const player = Player.instance;
   player.centerAt(Graph.getNode(player.data.index).center());
 
+  // reposition the mist
+  const mist = $("#mist");
+  let center = Graph.getNode(player.data.index).center();
+  mist.css({
+    "top": center.top - mist.outerHeight() / 2,
+    "left": center.left - mist.outerWidth() / 2
+  });
+
   // reposition active artifacts
   Object.values(Artifact.activeArtifacts).forEach((artifact) => {
     artifact.centerAt(Graph.getNode(artifact.data.index).center());
@@ -324,6 +332,7 @@ function handlePlayerMove(event) {
       inline: "center"
     });
   }
+  repositionTileObjects();
 }
 
 function endGame(options) {
