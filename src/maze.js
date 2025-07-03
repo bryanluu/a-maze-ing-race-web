@@ -266,15 +266,44 @@ export class Graph {
         }
     }
     /**
+     * Computes the furthest node from a given vertex
+     * @param src vertex index to find furthest node from
+     * @returns vertex index of furthest node
+     */
+    static getFurthestIndex(src) {
+        let maze = Graph.mazeGraph;
+        let v = src; // current node
+        let stack = [v];
+        let distance = new Map();
+        distance.set(v, 0);
+        let furthest = src;
+        while (stack.length > 0) {
+            v = stack.pop();
+            ["up", "right", "down", "left"].forEach((dir) => {
+                let n = Graph.getNeighborIndex(v, dir);
+                if ((n !== null)
+                    && (maze.isNeighbor(Graph.getNode(v), Graph.getNode(n)))
+                    && (distance.get(n) === undefined)) {
+                    stack.push(n);
+                    let dist = distance.get(v) + 1;
+                    distance.set(n, dist);
+                    if (dist > distance.get(furthest))
+                        furthest = n;
+                }
+            });
+        }
+        return furthest;
+    }
+    /**
      * Determines the start and end of the maze
      */
     static prepareEndpoints() {
-        // for now, choose top left corner for start
-        let firstVertex = Graph.getNode(0);
-        Graph.startVertex = firstVertex;
-        // for now, choose bottom right corner for finish
-        let lastVertexIndex = (Graph.mazeGrid.rows * Graph.mazeGrid.columns) - 1;
+        // choose furthest from top left corner for finish
+        let lastVertexIndex = Graph.getFurthestIndex(0);
         Graph.endVertex = Graph.getNode(lastVertexIndex);
+        // choose further from finish for start
+        let firstVertexIndex = Graph.getFurthestIndex(lastVertexIndex);
+        Graph.startVertex = Graph.getNode(firstVertexIndex);
     }
     /**
      * Creates the HTML for the Maze and inserts it into the document
