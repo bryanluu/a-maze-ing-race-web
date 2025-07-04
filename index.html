@@ -14,45 +14,37 @@
   <dialog id="settings-dialog">
     <form class="container" method="dialog">
       <h2>Settings</h2>
-      <p class="form-line">
-        <label for="maze-width">Width</label>
-        <input
-          type="number"
-          name="maze-width"
-          id="maze-width"
-          min="3"
-          max="20"
-          value="5"
-          step="1">
-      </p>
-      <p class="form-line">
-        <label for="maze-height">Height</label>
-        <input
-          type="number"
-          name="maze-height"
-          id="maze-height"
-          min="3"
-          max="20"
-          value="5"
-          step="1">
-      </p>
-      <p class="form-line">
-        <label for="maze-viz">Visibility</label>
-        <select name="maze-viz" id="maze-viz">
-          <option value="Small">Small</option>
-          <option value="Medium">Medium</option>
-          <option value="Large">Large</option>
-          <option value="Infinite" selected>Infinite</option>
-        </select>
-      </p>
-      <p class="form-line">
-        <label for="maze-memory">Memory?</label>
-        <input
-          type="checkbox"
-          name="maze-memory"
-          id="maze-memory"
-          checked>
-      </p>
+      <label for="maze-width">Width</label>
+      <input
+        type="number"
+        name="maze-width"
+        id="maze-width"
+        min="3"
+        max="20"
+        value="5"
+        step="1">
+      <label for="maze-height">Height</label>
+      <input
+        type="number"
+        name="maze-height"
+        id="maze-height"
+        min="3"
+        max="20"
+        value="5"
+        step="1">
+      <label for="maze-viz">Visibility</label>
+      <select name="maze-viz" id="maze-viz">
+        <option value="Small">Small</option>
+        <option value="Medium">Medium</option>
+        <option value="Large">Large</option>
+        <option value="Infinite" selected>Infinite</option>
+      </select>
+      <label for="maze-memory">Memory?</label>
+      <input
+        type="checkbox"
+        name="maze-memory"
+        id="maze-memory"
+        checked>
       <div class="form-line">
         <button value="confirm">Confirm</button>
         <button value="cancel" id="cancel-settings">Cancel</button>
