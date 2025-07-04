@@ -184,6 +184,10 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   background-color: var(--maze-path-color);
 }
 
+.artifact, .maze-path {
+  opacity: 0;
+}
+
 #player > svg {
   width: 30px; /* TODO adjust to dynamic */
   height: 30px; /* TODO adjust to dynamic */
@@ -200,13 +204,13 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   padding: 0;
 }
 
-#mist {
+#viz {
   /* TODO remove color */
   background-color: yellow;
   opacity: 0.5;
   /* TODO make dynamic */
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
 }
 
 .tile-object {

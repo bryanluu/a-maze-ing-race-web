@@ -10,6 +10,8 @@ export class Player extends VertexTile {
             this.centerAt(Graph.getNode(startIndex).center());
         });
         Player.instance = this;
+        // create the viz box
+        this.viz = document.querySelector("#viz");
     }
     /**
      *
@@ -24,6 +26,12 @@ export class Player extends VertexTile {
             "left": position.left - (ref.outerWidth() / 2)
         };
         ref.css(newPosition);
+        // center the viz square
+        let viz = $(`#${this.viz.id}`);
+        viz.css({
+            "top": position.top - (viz.outerHeight() / 2),
+            "left": position.left - (viz.outerWidth() / 2)
+        });
     }
     /**
      * Updates the player's data and runs any relevant functions
@@ -200,6 +208,46 @@ export class Player extends VertexTile {
         else {
             return false;
         }
+    }
+    /**
+     *
+     * @param other - the other VertexTile to check within view
+     */
+    canSee(other) {
+        const vizDim = {
+            left: this.viz.offsetLeft,
+            top: this.viz.offsetTop,
+            width: this.viz.offsetWidth,
+            height: this.viz.offsetHeight
+        };
+        const otherDim = {
+            left: other.offsetLeft,
+            top: other.offsetTop,
+            width: other.offsetWidth,
+            height: other.offsetHeight
+        };
+        // use algorithm from:
+        // https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+        if ((vizDim.left < otherDim.left + otherDim.width) &&
+            (vizDim.left + vizDim.width > otherDim.left) &&
+            (vizDim.top < otherDim.top + otherDim.height) &&
+            (vizDim.top + vizDim.height > otherDim.top)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    /**
+     * Checks whether other objects come into view
+     */
+    checkVisibility() {
+        document.querySelectorAll(".artifact, .maze-tile").forEach((obj) => {
+            let other = obj;
+            if (this.canSee(other)) {
+                other.style.opacity = "1";
+            }
+        });
     }
 }
 //# sourceMappingURL=player.js.map
