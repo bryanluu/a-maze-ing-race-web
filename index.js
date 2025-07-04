@@ -29,7 +29,7 @@ const timerProgress = document.querySelector("#time-progress");
 const timerValue = document.querySelector("#time-value");
 const TIMER_DELAY = 1000; // ms
 const TIMER_UPDATE_INTERVAL = 100; // ms
-const TIMER_DURATION = (5 // minutes
+let timerDuration = (5 // minutes
   * 60 * 1000); // in ms
 var timerID = null;
 var startTime = null;
@@ -119,8 +119,8 @@ function spawnArtifacts() {
 
 function checkProgress() {
   let elapsed = Date.now() - startTime;
-  let timeLeft = TIMER_DURATION - elapsed;
-  let percentRemaining = (timeLeft / TIMER_DURATION);
+  let timeLeft = timerDuration - elapsed;
+  let percentRemaining = (timeLeft / timerDuration);
   // use ceil so that when we reach last second it looks like there's still time
   let secondsLeft = Math.ceil(timeLeft / 1000);
   let minutesLeft = Math.floor(secondsLeft / 60);
@@ -133,7 +133,7 @@ function checkProgress() {
     minutesLeft: minutesLeft,
     percentRemaining: percentRemaining,
     timerString: `${minutesLeft}:`
-    + String(secondsLeft % 60).padStart(2, "0"),
+      + String(secondsLeft % 60).padStart(2, "0"),
     artifacts: artifacts,
     score: score
   };
@@ -154,9 +154,10 @@ function updateTimer() {
   }
 }
 
-function startTimer() {
+function startTimer(options) {
   if (timerID)
     clearInterval(timerID);
+  timerDuration = (options.rows * options.columns * 1000);
   startTime = Date.now();
   updateTimer();
   setTimeout(() => {
@@ -174,7 +175,7 @@ function initializeGame(options) {
   readyPlayer(options);
   readyFinish();
   spawnArtifacts();
-  startTimer() ;
+  startTimer(options);
   repositionTileObjects();
   setTimeout(() => {
     Player.instance.el().scrollIntoView({
