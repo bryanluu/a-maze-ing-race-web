@@ -6,6 +6,7 @@ const defaultOptions = {
   rows: 5,
   columns: 5,
   viz: "Infinite",
+  memory: true,
   cancellable: true
 };
 
@@ -13,6 +14,7 @@ const settingsDialog = document.querySelector("#settings-dialog");
 const settingsWidth = settingsDialog.querySelector("#maze-width");
 const settingsHeight = settingsDialog.querySelector("#maze-height");
 const settingsViz = settingsDialog.querySelector("#maze-viz");
+const settingsMemory = settingsDialog.querySelector("#maze-memory");
 const endgameDialog = document.querySelector("#endgame-dialog");
 
 // Artifacts
@@ -63,7 +65,8 @@ function styleDpadButton(direction) {
 function readyPlayer(options) {
   let opts = {
     spawnPoint: Graph.startVertex.data.index,
-    vizSize: options.viz
+    vizSize: options.viz,
+    memory: options.memory
   };
   new Player(opts);
 };
@@ -274,11 +277,15 @@ function showSettings(options) {
   let maze = Graph.mazeGrid;
   settings.rows = (maze && maze.rows) || settings.rows;
   settings.columns = (maze && maze.columns) || settings.columns;
-  settings.viz = (Player.instance && Player.instance.vizSize) || settings.viz;
+  let player = Player.instance;
+  settings.viz = (player && player.vizSize) || settings.viz;
+  if (player && player.memory !== null)
+    settings.memory = player.memory;
   // load existing settings
   settingsWidth.value = settings.columns;
   settingsHeight.value = settings.rows;
   settingsViz.value = settings.viz;
+  settingsMemory.checked = settings.memory;
   if (settings.cancellable) {
     $("#settings-dialog").removeClass("no-escape");
     $("#cancel-settings").attr("hidden", false);
@@ -396,7 +403,8 @@ $("#settings-dialog").on("submit", () => {
   let options = {
     rows: Number.parseInt(settingsHeight.value),
     columns: Number.parseInt(settingsWidth.value),
-    viz: settingsViz.value
+    viz: settingsViz.value,
+    memory: settingsMemory.checked
   };
   initializeGame(options);
 });

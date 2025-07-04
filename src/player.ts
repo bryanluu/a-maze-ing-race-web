@@ -8,8 +8,9 @@ const VIZ_SIZE_LARGE = 500; // px
 export class Player extends VertexTile {
   id: string = "player"; // pseudo-constant id
   data: TileData; // contains metadata about player element
-  vizBox: HTMLElement;
-  vizSize: string;
+  vizBox: HTMLElement; // the visibility box for the player
+  vizSize: string; // the size setting for the vizBox
+  memory: boolean; // whether the player remembers what's seen
   static instance: Player;
 
   constructor(options) {
@@ -46,6 +47,7 @@ export class Player extends VertexTile {
     this.vizSize = options.vizSize;
     this.vizBox.style.width = `${vizSize}px`;
     this.vizBox.style.height = `${vizSize}px`;
+    this.memory = options.memory;
   }
 
   /**
@@ -289,7 +291,9 @@ export class Player extends VertexTile {
     document.querySelectorAll(".artifact, .maze-tile").forEach((obj) => {
       let other = (obj as HTMLElement);
       if (this.canSee(other)) {
-        other.classList.add("visible", "seen");
+        other.classList.add("visible");
+        if (this.memory)
+          other.classList.add("seen");
       } else {
         other.classList.remove("visible");
       }

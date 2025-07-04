@@ -38,6 +38,7 @@ export class Player extends VertexTile {
         this.vizSize = options.vizSize;
         this.vizBox.style.width = `${vizSize}px`;
         this.vizBox.style.height = `${vizSize}px`;
+        this.memory = options.memory;
     }
     /**
      *
@@ -271,7 +272,9 @@ export class Player extends VertexTile {
         document.querySelectorAll(".artifact, .maze-tile").forEach((obj) => {
             let other = obj;
             if (this.canSee(other)) {
-                other.classList.add("seen", "visible");
+                other.classList.add("visible");
+                if (this.memory)
+                    other.classList.add("seen");
             }
             else {
                 other.classList.remove("visible");
