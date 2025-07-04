@@ -171,6 +171,7 @@ function initializeGame(options) {
       block: "center",
       inline: "center"
     });
+    Player.instance.checkVisibility();
   }, START_DELAY);
 };
 
