@@ -5,22 +5,26 @@ import { Artifact } from "./src/artifact.js";
 const defaultOptions = {
   rows: 5,
   columns: 5,
+  viz: "Infinite",
   cancellable: true
 };
 
 const settingsDialog = document.querySelector("#settings-dialog");
 const settingsWidth = settingsDialog.querySelector("#maze-width");
 const settingsHeight = settingsDialog.querySelector("#maze-height");
+const settingsViz = settingsDialog.querySelector("#maze-viz");
 const endgameDialog = document.querySelector("#endgame-dialog");
 
 // Artifacts
 const ARTIFACTS_FRACTION = 0.2; // fraction of free tiles that should be artifacts
 const ARTIFACT_REWARD = 5; // the score rewarded when an artifact is collected
 
+// Game Mechanics
+const START_DELAY = 10; // ms
+
 // Game Timer
 const timerProgress = document.querySelector("#time-progress");
 const timerValue = document.querySelector("#time-value");
-const START_DELAY = 10; //  ms
 const TIMER_DELAY = 1000; // ms
 const TIMER_UPDATE_INTERVAL = 100; // ms
 const TIMER_DURATION = (5 // minutes
@@ -56,8 +60,12 @@ function styleDpadButton(direction) {
 /**
  * Initializes the player
  */
-function readyPlayer() {
-  new Player(Graph.startVertex.data.index);
+function readyPlayer(options) {
+  let opts = {
+    spawnPoint: Graph.startVertex.data.index,
+    vizSize: options.viz
+  };
+  new Player(opts);
 };
 
 /**
@@ -160,7 +168,7 @@ function initializeGame(options) {
   Graph.buildMaze(options);
   Graph.prepareEndpoints();
   Graph.displayMaze();
-  readyPlayer();
+  readyPlayer(options);
   readyFinish();
   spawnArtifacts();
   startTimer() ;
@@ -266,9 +274,11 @@ function showSettings(options) {
   let maze = Graph.mazeGrid;
   settings.rows = (maze && maze.rows) || settings.rows;
   settings.columns = (maze && maze.columns) || settings.columns;
+  settings.viz = (Player.instance && Player.instance.vizSize) || settings.viz;
   // load existing settings
   settingsWidth.value = settings.columns;
   settingsHeight.value = settings.rows;
+  settingsViz.value = settings.viz;
   if (settings.cancellable) {
     $("#settings-dialog").removeClass("no-escape");
     $("#cancel-settings").attr("hidden", false);
@@ -385,7 +395,8 @@ $("#cancel-settings").on("click", (event) => {
 $("#settings-dialog").on("submit", () => {
   let options = {
     rows: Number.parseInt(settingsHeight.value),
-    columns: Number.parseInt(settingsWidth.value)
+    columns: Number.parseInt(settingsWidth.value),
+    viz: settingsViz.value
   };
   initializeGame(options);
 });

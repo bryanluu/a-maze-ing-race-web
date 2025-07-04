@@ -1,17 +1,43 @@
 import { VertexTile, Graph } from "./maze.js";
+const VIZ_SIZE_SMALL = 100; // px
+const VIZ_SIZE_MEDIUM = 200; // px
+const VIZ_SIZE_LARGE = 500; // px
 export class Player extends VertexTile {
-    constructor(startIndex) {
+    constructor(options) {
         let id = "player";
-        super(id, startIndex);
+        super(id, options.spawnPoint);
         this.id = "player"; // pseudo-constant id
         this.data.collected = 0;
         // load the image and position at the startIndex's node
         this.ref().load("public/assets/cursor-vertical.svg", () => {
-            this.centerAt(Graph.getNode(startIndex).center());
+            this.centerAt(Graph.getNode(options.spawnPoint).center());
         });
         Player.instance = this;
         // create the viz box
-        this.viz = document.querySelector("#viz");
+        this.vizBox = document.querySelector("#viz");
+        let vizSize = null;
+        switch (options.vizSize) {
+            case "Small":
+                vizSize = VIZ_SIZE_SMALL;
+                break;
+            case "Medium":
+                vizSize = VIZ_SIZE_MEDIUM;
+                break;
+            case "Large":
+                vizSize = VIZ_SIZE_LARGE;
+                break;
+            case "Infinite":
+                const playWindow = document.querySelector("#play-space");
+                vizSize = 2 * (playWindow.clientWidth > playWindow.clientHeight ?
+                    playWindow.clientWidth : playWindow.clientHeight);
+                break;
+            default:
+                console.error(`Invalid size: "${vizSize}"`);
+                return;
+        }
+        this.vizSize = options.vizSize;
+        this.vizBox.style.width = `${vizSize}px`;
+        this.vizBox.style.height = `${vizSize}px`;
     }
     /**
      *
@@ -27,7 +53,7 @@ export class Player extends VertexTile {
         };
         ref.css(newPosition);
         // center the viz square
-        let viz = $(`#${this.viz.id}`);
+        let viz = $(`#${this.vizBox.id}`);
         viz.css({
             "top": position.top - (viz.outerHeight() / 2),
             "left": position.left - (viz.outerWidth() / 2)
@@ -215,10 +241,10 @@ export class Player extends VertexTile {
      */
     canSee(other) {
         const vizDim = {
-            left: this.viz.offsetLeft,
-            top: this.viz.offsetTop,
-            width: this.viz.offsetWidth,
-            height: this.viz.offsetHeight
+            left: this.vizBox.offsetLeft,
+            top: this.vizBox.offsetTop,
+            width: this.vizBox.offsetWidth,
+            height: this.vizBox.offsetHeight
         };
         const otherDim = {
             left: other.offsetLeft,
