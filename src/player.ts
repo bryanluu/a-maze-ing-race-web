@@ -289,7 +289,9 @@ export class Player extends VertexTile {
     document.querySelectorAll(".artifact, .maze-tile").forEach((obj) => {
       let other = (obj as HTMLElement);
       if (this.canSee(other)) {
-        other.style.opacity = "1";
+        other.classList.add("visible", "seen");
+      } else {
+        other.classList.remove("visible");
       }
     });
   }

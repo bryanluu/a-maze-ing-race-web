@@ -188,6 +188,14 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   opacity: 0;
 }
 
+.maze-path.seen {
+  opacity: 0.5;
+}
+
+.visible {
+  opacity: 1 !important;
+}
+
 #player > svg {
   width: 30px; /* TODO adjust to dynamic */
   height: 30px; /* TODO adjust to dynamic */
