@@ -212,15 +212,6 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   padding: 0;
 }
 
-#viz {
-  /* TODO remove color */
-  background-color: yellow;
-  opacity: 0.5;
-  /* TODO make dynamic */
-  width: 100px;
-  height: 100px;
-}
-
 .tile-object {
   position: absolute;
   margin: 0;
