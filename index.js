@@ -317,6 +317,22 @@ function repositionTileObjects() {
   });
 };
 
+function centerPlayWindowOn(targetTile) {
+  const playWindow = document.querySelector("#play-space");
+  const targetCenterLeft = targetTile.offsetLeft + targetTile.offsetWidth / 2;
+  const targetCenterTop = targetTile.offsetTop + targetTile.offsetHeight / 2;
+  const maxScrollLeft = playWindow.scrollWidth - playWindow.clientWidth;
+  const maxScrollTop = playWindow.scrollHeight - playWindow.clientHeight;
+  const scrollLeft = Math.min(Math.max(targetCenterLeft - playWindow.clientWidth / 2, 0), maxScrollLeft);
+  const scrollTop = Math.min(Math.max(targetCenterTop - playWindow.clientHeight / 2, 0), maxScrollTop);
+  // stop() cancels any in-flight scroll so rapid moves don't fight each other
+  $(playWindow).stop(true).animate({ scrollLeft, scrollTop }, {
+    duration: 100, // matches Player's moveTo animation
+    easing: "linear"
+  });
+  repositionTileObjects();
+}
+
 function handlePlayerMove(event) {
   const target = event.detail.newVertex;
   // if target is the end vertex, end the game
@@ -328,23 +344,9 @@ function handlePlayerMove(event) {
     }
     endGame(options);
   }
-  // if target is outside play window, scroll
+  // center the play window on the target tile
   const targetTile = document.querySelector(target.data.selector);
-  const playWindow = document.querySelector("#play-space");
-  const targetRect = targetTile.getBoundingClientRect();
-  const playWindowRect = playWindow.getBoundingClientRect();
-  if ((targetRect.left < playWindowRect.left)
-    || (targetRect.right > playWindowRect.right)
-    || (targetRect.top < playWindowRect.top)
-    || (targetRect.bottom > playWindowRect.bottom))
-  {
-    targetTile.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center"
-    });
-  }
-  repositionTileObjects();
+  centerPlayWindowOn(targetTile);
   Player.instance.checkVisibility();
 }
 
