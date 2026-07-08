@@ -20,6 +20,7 @@ body {
   background-color: var(--background-color);
   color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
+  touch-action: manipulation;
 }
 
 .container {
