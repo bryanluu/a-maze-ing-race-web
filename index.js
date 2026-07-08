@@ -423,8 +423,4 @@ $("#play-space").on("playercollide", (event) => {
       break;
   }
 });
-$("#play-space").on("scroll", (event) => {
-  repositionTileObjects();
-});
-
 window.onresize = repositionTileObjects;
