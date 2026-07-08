@@ -245,6 +245,19 @@ export class Player extends VertexTile {
             return false;
         }
     }
+    static cachedRect(el) {
+        let rect = Player.rectCache.get(el);
+        if (!rect) {
+            rect = {
+                left: el.offsetLeft,
+                top: el.offsetTop,
+                width: el.offsetWidth,
+                height: el.offsetHeight
+            };
+            Player.rectCache.set(el, rect);
+        }
+        return rect;
+    }
     /**
      *
      * @param other - the other VertexTile to check within view
@@ -256,12 +269,7 @@ export class Player extends VertexTile {
             width: this.vizBox.offsetWidth,
             height: this.vizBox.offsetHeight
         };
-        const otherDim = {
-            left: other.offsetLeft,
-            top: other.offsetTop,
-            width: other.offsetWidth,
-            height: other.offsetHeight
-        };
+        const otherDim = Player.cachedRect(other);
         // use algorithm from:
         // https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
         if ((vizDim.left < otherDim.left + otherDim.width) &&
@@ -291,4 +299,7 @@ export class Player extends VertexTile {
         });
     }
 }
+// caches static tile/artifact rects so checkVisibility doesn't force a
+// layout read on every tile for every move on large mazes
+Player.rectCache = new WeakMap();
 //# sourceMappingURL=player.js.map
