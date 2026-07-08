@@ -317,20 +317,14 @@ function repositionTileObjects() {
   });
 };
 
-function centerPlayWindowOn(targetTile) {
+function centerPlayWindowOn(position) {
   const playWindow = document.querySelector("#play-space");
-  const targetCenterLeft = targetTile.offsetLeft + targetTile.offsetWidth / 2;
-  const targetCenterTop = targetTile.offsetTop + targetTile.offsetHeight / 2;
   const maxScrollLeft = playWindow.scrollWidth - playWindow.clientWidth;
   const maxScrollTop = playWindow.scrollHeight - playWindow.clientHeight;
-  const scrollLeft = Math.min(Math.max(targetCenterLeft - playWindow.clientWidth / 2, 0), maxScrollLeft);
-  const scrollTop = Math.min(Math.max(targetCenterTop - playWindow.clientHeight / 2, 0), maxScrollTop);
-  // stop() cancels any in-flight scroll so rapid moves don't fight each other
-  $(playWindow).stop(true).animate({ scrollLeft, scrollTop }, {
-    duration: 100, // matches Player's moveTo animation
-    easing: "linear"
-  });
-  repositionTileObjects();
+  // set directly (no separate animation): this is called every tick of the
+  // player's own move animation, so it's already updated in lockstep
+  playWindow.scrollLeft = Math.min(Math.max(position.left - playWindow.clientWidth / 2, 0), maxScrollLeft);
+  playWindow.scrollTop = Math.min(Math.max(position.top - playWindow.clientHeight / 2, 0), maxScrollTop);
 }
 
 function handlePlayerMove(event) {
@@ -344,9 +338,10 @@ function handlePlayerMove(event) {
     }
     endGame(options);
   }
-  // center the play window on the target tile
-  const targetTile = document.querySelector(target.data.selector);
-  centerPlayWindowOn(targetTile);
+  // snap the play window precisely onto the final tile center
+  centerPlayWindowOn(target.center());
+  // reposition tile objects (player/artifacts) only once, now that the move is done
+  repositionTileObjects();
   Player.instance.checkVisibility();
 }
 
@@ -415,6 +410,9 @@ $("#replay-button").on("click", () => {
   showSettings({cancellable: false});
 });
 $("#play-space").on("playermove", handlePlayerMove);
+$("#play-space").on("playermoving", (event) => {
+  centerPlayWindowOn(event.detail.position);
+});
 $("#play-space").on("playerrotate", (event) => {
   // for now, noop
 });

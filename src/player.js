@@ -113,6 +113,15 @@ export class Player extends VertexTile {
                     });
                     el.dispatchEvent(event);
                 }
+                // let the camera track the player's current position every tick,
+                // instead of only jumping to center once the move completes
+                const movingEvent = new CustomEvent("playermoving", {
+                    bubbles: true,
+                    detail: {
+                        position: this.center()
+                    }
+                });
+                el.dispatchEvent(movingEvent);
             },
             // this ensures the final resting position is the target
             complete: () => {
