@@ -11,9 +11,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <dialog id="settings-dialog">
+  <dialog id="settings-dialog" aria-labelledby="settings-heading">
     <form class="container" method="dialog">
-      <h2>Settings</h2>
+      <h2 id="settings-heading">Settings</h2>
       <label for="maze-width">Width</label>
       <input
         type="number"
@@ -51,10 +51,10 @@
       </div>
     </form>
   </dialog>
-  <dialog id="endgame-dialog" class="no-escape">
+  <dialog id="endgame-dialog" class="no-escape" aria-labelledby="end-heading" aria-describedby="end-score">
     <form class="container" method="dialog">
       <div id="end-message">
-        <h2 class="end-title">Congratulations, you <em>escaped</em>!</h2>
+        <h2 class="end-title" id="end-heading">Congratulations, you <em>escaped</em>!</h2>
       </div>
       <button id="replay-button" value="confirm">Replay</button>
     </form>
@@ -62,35 +62,36 @@
   <header id="header">
     <h1 id="title">A-<em>Maze</em>-ing Race</h1>
     <p>Collect artifacts and escape the maze before time runs out!</p>
-    <button id="settings-button">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+    <button id="settings-button" aria-label="Open settings">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
       </svg>
     </button>
   </header>
-  <div id="centerpiece" class="container">
+  <main id="centerpiece" class="container">
     <div id="time-content" class="container">
       <span id="time-label">Time Remaining:</span>
       <span id="time-value">5:00</span>
-      <div id="time-progress"></div>
+      <div id="time-progress" aria-hidden="true"></div>
     </div>
-    <div id="play-space">
+    <div id="play-space" aria-hidden="true">
       <div id="viz" class="tile-object"></div>
       <div id="artifacts"></div>
       <div id="player" class="tile-object"></div>
       <div id="maze-grid"></div>
     </div>
-    <div id="controls">
-      <button class="key-symbol" id="up">↑</button>
-      <button class="key-symbol" id="left">←</button>
-      <button class="key-symbol" id="right">→</button>
-      <button class="key-symbol" id="down">↓</button>
+    <div id="controls" role="group" aria-label="Movement controls">
+      <button class="key-symbol" id="up" aria-labelledby="up-label">↑</button>
+      <button class="key-symbol" id="left" aria-labelledby="left-label">←</button>
+      <button class="key-symbol" id="right" aria-labelledby="right-label">→</button>
+      <button class="key-symbol" id="down" aria-labelledby="down-label">↓</button>
       <span id="up-label">Move up</span>
       <span id="left-label">Move left</span>
       <span id="right-label">Move right</span>
       <span id="down-label">Move down</span>
     </div>
-  </div>
+    <div id="a11y-status" class="visually-hidden" role="status"></div>
+  </main>
   <footer>© <a id="website-link" href="https://bryanluu.github.io/">Bryan Luu</a>. All rights reserved.</footer>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="index.js" type="module"></script>

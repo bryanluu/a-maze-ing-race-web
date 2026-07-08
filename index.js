@@ -34,6 +34,15 @@ let timerDuration = (5 // minutes
 var timerID = null;
 var startTime = null;
 
+// Accessibility: live-region status announcements
+const a11yStatus = document.querySelector("#a11y-status");
+const TIME_WARNING_THRESHOLDS = [30, 10]; // seconds remaining
+let announcedThresholds = new Set();
+
+function announce(message) {
+  a11yStatus.textContent = message;
+}
+
 // End Game
 const EndCondition = Object.freeze({
   ESCAPED: 0,
@@ -145,6 +154,12 @@ function updateTimer() {
   timerValue.textContent = gameData.timerString;
   // the 95 is to ensure the bar isn't too wide to start
   $("#time-progress").css("width", `${gameData.percentRemaining * 95}%`)
+  TIME_WARNING_THRESHOLDS.forEach((threshold) => {
+    if (gameData.secondsLeft <= threshold && !announcedThresholds.has(threshold)) {
+      announcedThresholds.add(threshold);
+      announce(`${threshold} seconds remaining!`);
+    }
+  });
   if (gameData.timeLeft <= 0) {
     let options = {
       ...gameData,
@@ -159,6 +174,7 @@ function startTimer(options) {
     clearInterval(timerID);
   timerDuration = (options.rows * options.columns * 1000);
   startTime = Date.now();
+  announcedThresholds.clear();
   updateTimer();
   setTimeout(() => {
     timerID = setInterval(updateTimer, TIMER_UPDATE_INTERVAL);
@@ -304,6 +320,7 @@ function handleArtifactCollection(artifact) {
   artifactNode.remove();
   delete tile.data.artifact;
   delete Artifact.activeArtifacts[artifact.id];
+  announce(`Artifact collected! ${Player.instance.data.collected} collected.`);
 }
 
 function repositionTileObjects() {
@@ -350,14 +367,14 @@ function endGame(options) {
   switch(options.endCondition) {
     case EndCondition.ESCAPED:
       endHTML = `
-        <h2>Congratulations, you <em>escaped with ${options.timerString}</em> left!</h2>
-        <p>Your score is <em>${options.score}</em></p>
+        <h2 id="end-heading">Congratulations, you <em>escaped with ${options.timerString}</em> left!</h2>
+        <p id="end-score">Your score is <em>${options.score}</em></p>
       `;
       break;
     case EndCondition.TIMER:
       endHTML = `
-        <h2>You ran out of time!</h2>
-        <p>Your score is <em>${options.score}</em></p>
+        <h2 id="end-heading">You ran out of time!</h2>
+        <p id="end-score">Your score is <em>${options.score}</em></p>
       `;
       break;
     default:

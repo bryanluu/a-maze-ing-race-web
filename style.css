@@ -23,6 +23,23 @@ body {
   touch-action: manipulation;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--highlight-color);
+  outline-offset: 2px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -287,6 +304,13 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   }
 
   to {
+    background-color: var(--highlight-color);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .end-tile {
+    animation: none;
     background-color: var(--highlight-color);
   }
 }
