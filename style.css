@@ -35,6 +35,7 @@ body {
 
 dialog::backdrop {
   background-color: black;
+  touch-action: manipulation;
 }
 
 /* Site Info Header */
@@ -100,6 +101,7 @@ dialog {
   color: var(--base-color);
   font-family: 'Silkscreen', Courier, monospace;
   position: fixed;
+  touch-action: manipulation;
 }
 
 dialog h2 {
