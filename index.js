@@ -185,6 +185,7 @@ function startTimer(options) {
  * Initializes the game
  */
 function initializeGame(options) {
+  document.body.classList.add("game-active");
   Graph.buildMaze(options);
   Graph.prepareEndpoints();
   Graph.displayMaze();
@@ -393,6 +394,13 @@ $(document).ready(() => {
     url: "public/assets/star-fill.svg",
     success: (data) => {
       Artifact.svg = data;
+    },
+    dataType: "html"
+  });
+  $.get({
+    url: "public/assets/cursor-vertical.svg",
+    success: (data) => {
+      Player.svg = data;
     },
     dataType: "html"
   });

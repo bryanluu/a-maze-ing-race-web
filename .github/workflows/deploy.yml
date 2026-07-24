@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+# Run on every push to main, and allow manually triggering a deploy
+# from the Actions tab (handy while you're still learning/tweaking this).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Required by actions/deploy-pages to publish to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If a new push comes in while a deploy is running, cancel the old one
+# instead of letting two deploys race each other.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      # Assemble only what the game actually needs to run into _site/,
+      # leaving out source .ts files, tests, and dev tooling.
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp index.html style.css reset.css _site/
+          cp -r public _site/
+          mkdir _site/src
+          cp src/*.js src/*.js.map _site/src/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

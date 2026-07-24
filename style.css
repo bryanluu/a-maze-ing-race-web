@@ -233,6 +233,19 @@ button[value="cancel"]:hover, button[value="cancel"]:focus-visible {
   align-items: center;
 }
 
+/* Hide all page chrome until a game is actually running, so nothing
+   flashes into view before the settings modal opens on load. */
+header, #centerpiece, #controls, footer {
+  visibility: hidden;
+}
+
+body.game-active header,
+body.game-active #centerpiece,
+body.game-active #controls,
+body.game-active footer {
+  visibility: visible;
+}
+
 #play-space {
   max-width: 80vw;
   max-height: 60vh;
