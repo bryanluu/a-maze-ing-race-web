@@ -10,7 +10,9 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "dev": "npx serve ."
   },
   "name": "a-maze-ing-race",
   "version": "1.0.0",
