@@ -120,6 +120,7 @@ function spawnArtifacts() {
   shuffle(freeTiles);
   let spawnTiles = freeTiles.slice(0, numArtifacts);
   $("#artifacts").html("");
+  Artifact.activeArtifacts = {};
   spawnTiles.forEach((tile) => {
     new Artifact(tile.data.index);
   });
