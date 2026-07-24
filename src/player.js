@@ -8,10 +8,10 @@ export class Player extends VertexTile {
         super(id, options.spawnPoint);
         this.id = "player"; // pseudo-constant id
         this.data.collected = 0;
-        // load the image and position at the startIndex's node
-        this.ref().load("public/assets/cursor-vertical.svg", () => {
-            this.centerAt(Graph.getNode(options.spawnPoint).center());
-        });
+        // insert the cached cursor markup synchronously instead of
+        // re-fetching it over the network on every game start (which left
+        // the player uncentered for a moment)
+        this.ref().html(`${Player.svg}`);
         Player.instance = this;
         // create the viz box
         this.vizBox = document.querySelector("#viz");
@@ -39,6 +39,9 @@ export class Player extends VertexTile {
         this.vizBox.style.width = `${vizSize}px`;
         this.vizBox.style.height = `${vizSize}px`;
         this.memory = options.memory;
+        // now that the viz box is fully set up, position both it and the
+        // player at the starting node
+        this.centerAt(Graph.getNode(options.spawnPoint).center());
     }
     /**
      *

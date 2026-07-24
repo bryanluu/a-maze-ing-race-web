@@ -397,6 +397,13 @@ $(document).ready(() => {
     },
     dataType: "html"
   });
+  $.get({
+    url: "public/assets/cursor-vertical.svg",
+    success: (data) => {
+      Player.svg = data;
+    },
+    dataType: "html"
+  });
 });
 
 $(document).on("keydown", handleKeydown);
