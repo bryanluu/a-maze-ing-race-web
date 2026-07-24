@@ -31,15 +31,15 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm test
       - run: npm run build
+      - run: npm test
 
       # Assemble only what the game actually needs to run into _site/,
       # leaving out source .ts files, tests, and dev tooling.
       - name: Assemble site
         run: |
           mkdir _site
-          cp index.html style.css reset.css _site/
+          cp index.html index.js style.css reset.css _site/
           cp -r public _site/
           mkdir _site/src
           cp src/*.js src/*.js.map _site/src/

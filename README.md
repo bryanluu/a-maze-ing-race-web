@@ -1,5 +1,8 @@
 # A-Maze-ing Race
 
+[![Tests](https://github.com/bryanluu/a-maze-ing-race-web/actions/workflows/test.yml/badge.svg)](https://github.com/bryanluu/a-maze-ing-race-web/actions/workflows/test.yml)
+[![Deploy to GitHub Pages](https://github.com/bryanluu/a-maze-ing-race-web/actions/workflows/deploy.yml/badge.svg)](https://github.com/bryanluu/a-maze-ing-race-web/actions/workflows/deploy.yml)
+
 A browser maze game built with vanilla TypeScript and jQuery — no framework, no bundler. Generate a random maze, explore it under a fog-of-war visibility box, collect artifacts, and escape before the timer runs out.
 
 Play it live: https://bryanluu.github.io/a-maze-ing-race-web/

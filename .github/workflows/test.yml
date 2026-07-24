@@ -1,0 +1,22 @@
+name: Tests
+
+# Runs on every push (any branch) and every PR, so you get feedback
+# while working on a feature branch, not just once you merge to main.
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
