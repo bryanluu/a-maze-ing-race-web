@@ -39,7 +39,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp index.html style.css reset.css _site/
+          cp index.html index.js style.css reset.css _site/
           cp -r public _site/
           mkdir _site/src
           cp src/*.js src/*.js.map _site/src/
