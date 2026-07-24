@@ -31,8 +31,8 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm test
       - run: npm run build
+      - run: npm test
 
       # Assemble only what the game actually needs to run into _site/,
       # leaving out source .ts files, tests, and dev tooling.
