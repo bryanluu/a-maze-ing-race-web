@@ -29,13 +29,15 @@ Player position and camera panning happen through jQuery `.animate()` callbacks,
 index.html         entry point (loads jQuery from CDN, then index.js)
 index.js           game orchestration: DOM wiring, timer, settings, input handling
 src/
-  maze.ts          Graph: maze generation, grid layout, rendering
-  heap.ts          generic binary heap (priority queue for maze generation)
-  player.ts        Player: movement, rotation, collisions, fog-of-war visibility
-  artifact.ts       Artifact: collectible items
+  maze.ts            Graph: maze generation, grid layout, rendering
+  heap.ts            generic binary heap (priority queue for maze generation)
+  player.ts          Player: movement, rotation, collisions, fog-of-war visibility
+  artifact.ts        Artifact: collectible items
 test/
-  maze.test.ts     tests for maze generation
-  heap.test.ts     tests for the heap
+  maze.test.ts       tests for maze generation
+  heap.test.ts       tests for the heap
+  player.test.ts     tests for Player movement, collisions, visibility
+  artifact.test.ts   tests for Artifact placement
 style.css          game styling
 reset.css          CSS reset
 public/assets/     SVG art assets
@@ -43,25 +45,22 @@ public/assets/     SVG art assets
 
 ## Development
 
-This project has **no bundler** — `src/*.ts` files are compiled directly to sibling `.js` files (with source maps), and those compiled `.js` files are what `index.html` actually loads in the browser. Both the `.ts` sources and their compiled `.js` output are committed to the repo.
-
-That means after editing any file in `src/`, you need to recompile before the change shows up in the browser:
+This project has **no bundler** — `src/*.ts` files are compiled directly to sibling `.js` files (with source maps), and those compiled `.js` files are what `index.html` actually loads in the browser. The compiled output is *not* committed (it's gitignored), so after cloning — and after editing any file in `src/` — you need to (re)compile before there's anything for the browser to load:
 
 ```bash
-npx tsc
+npm run build
 ```
 
-TypeScript here is used purely for type-checking / editor support (via `tsconfig.json`, `moduleResolution: "bundler"`) — it doesn't bundle or minify anything. Babel + `babel-preset-typescript` handles the type-stripping for Jest tests only.
+TypeScript here is used purely for type-checking / editor support (via `tsconfig.json`, `moduleResolution: "bundler"`) — it doesn't bundle or minify anything. Babel + `babel-preset-typescript` handles the type-stripping for Jest tests only. Deploys to GitHub Pages run this same build step in CI (see `.github/workflows/deploy.yml`).
 
 ### Running locally
 
-Serve the directory with any static file server, e.g.:
-
 ```bash
-npx serve .
+npm run build
+npm run dev
 ```
 
-then open the served `index.html` in a browser.
+then open the served game at the printed local URL (`npm run dev` runs `npx serve .`).
 
 ### Running tests
 
@@ -69,7 +68,7 @@ then open the served `index.html` in a browser.
 npm test
 ```
 
-Runs the Jest suite (`test/*.test.ts`) covering maze generation and the heap.
+Runs the Jest suite (`test/*.test.ts`) covering maze generation, the heap, and the Player/Artifact DOM logic.
 
 ## Tech stack
 
