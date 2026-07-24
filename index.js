@@ -185,6 +185,7 @@ function startTimer(options) {
  * Initializes the game
  */
 function initializeGame(options) {
+  document.body.classList.add("game-active");
   Graph.buildMaze(options);
   Graph.prepareEndpoints();
   Graph.displayMaze();
